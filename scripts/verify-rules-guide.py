@@ -21,7 +21,7 @@ def contrast(a,b):
 
 def verify(base,out):
  out.mkdir(parents=True,exist_ok=True)
- report={'game_version':'1.5.3','base_url':base,'network':'All API calls isolated; no production ranking writes','tests':[]}
+ report={'game_version':'1.5.4','base_url':base,'network':'All API calls isolated; no production ranking writes','tests':[]}
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium') or None,args=['--no-sandbox','--disable-dev-shm-usage'])
   for width,height in [(360,640),(390,844),(412,915)]:
@@ -34,16 +34,16 @@ def verify(base,out):
      data={'player':{'id':'guide-qa','nickname':'설명검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':IDS if discovered else ['classic'],'bestScore':0}
      route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
     page.route('**/api/**',fixture)
-    page.goto(base+'?rules-guide=1.5.3',wait_until='domcontentloaded')
+    page.goto(base+'?rules-guide=1.5.4',wait_until='domcontentloaded')
     page.locator('.home-screen').wait_for(state='visible')
-    expect(page.locator('.home-version')).to_have_text('GiraLab · 1.5.3')
+    expect(page.locator('.home-version')).to_have_text('GiraLab · 1.5.4')
     suffix=f'{width}x{height}-'+('discovered' if discovered else 'undiscovered')
     page.get_by_role('button',name='옵션',exact=True).click()
     page.get_by_role('button',name=re.compile('게임 설명')).click()
     guide=page.locator('.game-help');expect(guide).to_be_visible()
     expect(guide.locator('[data-guide-section]')).to_have_count(5)
     text=guide.inner_text()
-    for phrase in ['기본점수 × 콤보 배율 × 난이도 연속 보너스','5초가 되기 전에','3개 → 4개 → 5개','×1.5','25점 단위','55% 느려져요','최대 32번','최대 3칸','0.6초','일반·고급 조합이 모두 0개','레어 조합은 재배치 판단에서 제외','시간제 재배치와 자동 정답 힌트는 없어요']:
+    for phrase in ['기본점수 × 콤보 배율 × 난이도 연속 보너스','5초가 되기 전에','3개 → 4개 → 5개','×1.5','25점 단위','55% 느려져요','최대 32번','최대 3칸','0.6초','일반·고급 조합이 모두 0개','전설 조합은 재배치 판단에서 제외','시간제 재배치와 자동 정답 힌트는 없어요']:
      assert phrase in text,phrase
     cells=guide.locator('.guide-score-table tbody tr').all_inner_texts()
     for expected,actual in zip(['550점','6,600점','23,100점'],cells):assert expected in actual,(expected,actual)
@@ -89,8 +89,8 @@ def verify(base,out):
     for key in ['elapsed','danger','combo','slow']:
      if key in before:assert after[key]==before[key],(key,before,after)
     assert not errors,errors
-    meta=ctx.request.get(base+'source-build.json?rules-guide=1.5.3').json()
-    assert meta['game_version']=='1.5.3' and meta['board_validity_max_tier']=='advanced'
+    meta=ctx.request.get(base+'source-build.json?rules-guide=1.5.4').json()
+    assert meta['game_version']=='1.5.4' and meta['board_validity_max_tier']=='advanced'
     assert meta['rules_guide'] is True and meta['tier_palette_version']==2 and meta['automatic_board_hints'] is False
     report['tests'].append({'viewport':[width,height],'all_discovered':discovered,'guide_sections':5,'score_examples_verified':True,'scroll':scroll,'colors':verified,'help_pauses_game':True,'initial_board_has_normal_or_advanced':True,'page_errors':errors})
     ctx.close()

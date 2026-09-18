@@ -1,6 +1,6 @@
 {
-  "sourceRun": 35326859620,
-  "sourceCommit": "a234e8d417acaf532d5ffe75825a7c46ff4261f8",
+  "sourceRun": 35328895977,
+  "sourceCommit": "775cf34b1047ba7b926dcc5b281b588e1dec7f2a",
   "artworkSHA256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "dimensions": [
     864,
@@ -8,7 +8,8 @@
   ],
   "imageUnchanged": true,
   "rulesVersion": 2,
-  "gameVersion": "1.5.3",
+  "gameVersion": "1.5.4",
   "automaticBoardHints": false,
-  "boardValidityMaxTier": "advanced"
+  "boardValidityMaxTier": "advanced",
+  "codexGrouped": true
 }
