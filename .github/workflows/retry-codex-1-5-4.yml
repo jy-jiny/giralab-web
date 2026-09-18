@@ -1,0 +1,81 @@
+name: Retry verified codex deployment
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/retry-codex-1-5-4.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require the exact site and tests that passed run 35329205514
+        run: |
+          set -euo pipefail
+          git diff --exit-code ff32fa3eed47e4b66f3f007c4062fdaf6b4d165e HEAD -- site scripts
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          meta=json.loads(Path('site/source-build.json').read_text())
+          assert meta['game_version']=='1.5.4' and meta['source_commit']=='775cf34b1047ba7b926dcc5b281b588e1dec7f2a'
+          expected={
+            'index.html':'76627d98d78bc88b902c592f7ff394516d3f168d52dc59fdf322fdc6e768ee14',
+            'source-build.json':'2a24ad54ce038800a1d6586eae8b78f75e2e8b7c8d06707d3aee382a1c37ea75',
+            'assets/index-DiuLQ_BD.js':'4d8ff4e7325f1d88e0833ecabb9bbd8ff4cb5a63ae17b8b0a2fe913b1d900196',
+            'assets/index-CQNxQXdQ.css':'6d92c7e2c6e59efada4d3671624457ce147cbd5a527d30b33d10d6a2d2403513',
+            'giralab-loading-approved-aecda336.jpg':'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4',
+          }
+          for name,digest in expected.items():assert hashlib.sha256((Path('site')/name).read_bytes()).hexdigest()==digest,name
+          print('Exact previously verified site and verifier trees; retrying only deployment after HTTP 500.')
+          PY
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish verified Pages artifact
+        id: publish
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Brief backoff after a transient deployment error
+        if: steps.publish.outcome == 'failure'
+        run: sleep 10
+      - name: Retry the same immutable Pages artifact once
+        id: retry
+        if: steps.publish.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Install browser verifier
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify actual live codex, rules, scoring and approved artwork
+        run: |
+          sleep 5
+          python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex-order-proof
+          python3 scripts/verify-rules-guide.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-rules-guide-proof
+          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo-proof
+          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-proof
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: codex-1.5.4-live-verification
+          path: |
+            live-codex-order-proof
+            live-rules-guide-proof
+            live-combo-proof
+            live-loading-proof
+          if-no-files-found: warn
+          retention-days: 7
