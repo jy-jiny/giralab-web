@@ -6,9 +6,9 @@ on:
       - '.github/workflows/deploy.yml'
       - 'site/**'
       - 'scripts/verify-*.py'
-      - 'scripts/restore-loading-audio.py'
+      - 'scripts/restore-lunch-rush.py'
       - 'release-tools/verify-audio-mythic.py'
-      - 'deploy-assets/loading-audio*'
+      - 'deploy-assets/lunch-rush*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -38,19 +38,21 @@ jobs:
           assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
           print('Existing storage server compatible:',health)
           PY
-      - name: Restore exact tested audio build and browser tests
+      - name: Restore checksum-verified soundtrack build and regression verifiers
         run: |
+          set -euo pipefail
           python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
-          python3 scripts/restore-loading-audio.py
+          python3 scripts/restore-lunch-rush.py
           for f in site/assets/*.js; do node --check "$f"; done
           python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
       - name: Install Korean fonts for mobile screenshots
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify loading audio and existing gameplay before publishing
+      - name: Verify music loop and all existing behavior before publication
         run: |
           set -euo pipefail
+          python3 scripts/verify-lunch-rush.py --site site --out predeploy-lunch-rush
           python3 scripts/verify-loading-audio.py --site site --out predeploy-loading-audio
           python3 release-tools/verify-audio-mythic.py --site site --out predeploy-audio-mythic
           python3 scripts/verify-board-regeneration.py --site site --out predeploy-regeneration
@@ -59,13 +61,14 @@ jobs:
           python3 scripts/verify-live-loading.py --site site --out predeploy-loading
       - name: Persist verified files and remove completed transfer
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-loading-audio.py scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-board-regeneration.py scripts/verify-codex-order.py release-tools/verify-audio-mythic.py
-          git rm --ignore-unmatch deploy-assets/loading-audio.json deploy-assets/loading-audio.delta.b64
+          git add scripts/verify-lunch-rush.py scripts/verify-loading-audio.py scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-board-regeneration.py scripts/verify-codex-order.py release-tools/verify-audio-mythic.py
+          git rm --ignore-unmatch deploy-assets/lunch-rush.json deploy-assets/lunch-rush.delta.b64
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist verified loading audio and gear-only controls web 1.6.2 [skip ci]'
+            git commit -m 'deploy: persist verified fast-food Lunch Rush soundtrack web 1.6.3 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -83,10 +86,11 @@ jobs:
         id: retry
         if: steps.publish.outcome == 'failure'
         uses: actions/deploy-pages@v4
-      - name: Verify actual live loading audio and preserved game behavior
+      - name: Verify actual live music loop and preserved game behavior
         run: |
           set -euo pipefail
           sleep 5
+          python3 scripts/verify-lunch-rush.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-lunch-rush
           python3 scripts/verify-loading-audio.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-audio
           python3 release-tools/verify-audio-mythic.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-audio-mythic
           python3 scripts/verify-board-regeneration.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-regeneration
@@ -96,7 +100,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: loading-audio-1.6.2-live-verification
+          name: lunch-rush-1.6.3-live-verification
           path: |
             predeploy-*
             live-*
