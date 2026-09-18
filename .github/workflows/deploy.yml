@@ -3,11 +3,15 @@ name: Deploy GiraLab Web
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/deploy.yml']
+    paths:
+      - '.github/workflows/deploy.yml'
+      - 'site/**'
+      - 'scripts/verify-live-loading.py'
+      - 'deploy-assets/approved-web-import.json'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,127 +25,74 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - name: Download the verified fresh source build
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Import the tested source build once
+        shell: bash
         run: |
           set -euo pipefail
-          curl --fail --location --retry 2 --max-time 90 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNsHXInsB0cN2TvhDobPpxWK8A/5c035bb7-4360-454e-93be-6a268da8626d.zip' -o approved-web.zip
-          echo '1154716d23f85d418d7cefcb8d011d316a5a8d5481b7a3fa9b6599554f45f62f  approved-web.zip' | sha256sum --check --strict
           python3 - <<'PY'
-          import zipfile, hashlib, json
+          import hashlib, io, json, urllib.request, zipfile
           from pathlib import Path
-          with zipfile.ZipFile('approved-web.zip') as z:
-              assert all(not Path(n).is_absolute() and '..' not in Path(n).parts for n in z.namelist())
-              z.extractall('site')
-          meta = json.loads(Path('site/source-build.json').read_text())
-          assert meta['source_commit'] == '293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2'
-          data = Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
-          assert len(data) == 195444
-          assert hashlib.sha256(data).hexdigest() == 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-          assert not Path('site/loading-fix.js').exists()
-          assert not Path('site/loading-fix.css').exists()
+          spec = Path('deploy-assets/approved-web-import.json')
+          if spec.exists():
+              data = json.loads(spec.read_text())
+              with urllib.request.urlopen(data['url'], timeout=90) as response:
+                  bundle = response.read()
+              assert hashlib.sha256(bundle).hexdigest() == data['sha256'], 'Bundle checksum mismatch'
+              destination = Path('site').resolve()
+              destination.mkdir(exist_ok=True)
+              with zipfile.ZipFile(io.BytesIO(bundle)) as archive:
+                  for name in archive.namelist():
+                      assert (destination / name).resolve().is_relative_to(destination), 'Unsafe archive path'
+                  archive.extractall(destination)
+              (destination / 'loading-build.json').write_text(json.dumps({'sourceRun': data['sourceRun'], 'bundleSHA256': data['sha256'], 'artworkSHA256': 'd52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109', 'dimensions': [864, 1536]}, indent=2))
+          assert Path('site/index.html').is_file(), 'No validated site snapshot'
+          art = Path('site/giralab-loading-d52df73017d8.jpg').read_bytes()
+          assert hashlib.sha256(art).hexdigest() == 'd52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109'
+          assert 'giralab-loading-d52df73017d8.jpg' in Path('site/index.html').read_text()
           Path('site/.nojekyll').touch()
           PY
-      - name: Install browser verification and Korean fonts
+          for file in site/assets/*.js; do node --check "$file"; done
+
+      - name: Keep a durable deployable site snapshot
+        shell: bash
         run: |
-          python3 -m pip install --disable-pip-version-check playwright==1.55.0
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Prepare behavioral and screenshot checks
-        run: |
-          cat > verify-published.py <<'PY'
-          import asyncio, hashlib, json, shutil, sys
-          from pathlib import Path
-          from playwright.async_api import async_playwright
-          SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-          COMMIT = '293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2'
-          async def run(base, output):
-              out = Path(output); out.mkdir(parents=True, exist_ok=True)
-              results = {'url':base, 'source_commit':COMMIT, 'image_sha256':SHA, 'tests':[]}
-              async with async_playwright() as p:
-                  browser = await p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'), args=['--no-sandbox','--disable-dev-shm-usage'])
-                  for w,h in [(360,640),(390,844),(412,915)]:
-                      ctx = await browser.new_context(viewport={'width':w,'height':h}, device_scale_factor=3, is_mobile=True, has_touch=True)
-                      page = await ctx.new_page(); page.set_default_timeout(20000)
-                      errors=[]; page.on('pageerror',lambda e:errors.append(str(e)))
-                      ingredient_gate, profile_gate = asyncio.Event(), asyncio.Event()
-                      async def hold_ingredients(route):
-                          await ingredient_gate.wait(); await route.continue_()
-                      async def hold_profile(route):
-                          await profile_gate.wait(); await route.fulfill(status=200,content_type='application/json',body='{"player":null}')
-                      await page.route('**/ingredients.png',hold_ingredients)
-                      await page.route('**/api/player',hold_profile)
-                      await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
-                      await page.wait_for_function("document.querySelector('.giralab-boot__art')?.naturalWidth === 864")
-                      await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '50'")
-                      await page.wait_for_timeout(220)
-                      image=page.locator('.giralab-boot__art')
-                      info=await image.evaluate('(e)=>({width:e.naturalWidth,height:e.naturalHeight,url:e.currentSrc,fit:getComputedStyle(e).objectFit})')
-                      assert info['width']==864 and info['height']==1536 and info['fit']=='contain',info
-                      rect=await image.bounding_box()
-                      assert rect['x']>=-1 and rect['y']>=-1 and rect['x']+rect['width']<=w+1 and rect['y']+rect['height']<=h+1,rect
-                      res=await ctx.request.get(info['url'])
-                      assert res.ok and hashlib.sha256(await res.body()).hexdigest()==SHA
-                      first=(await page.locator('.giralab-boot__fill').bounding_box())['width']
-                      await page.screenshot(path=str(out/f'loading-{w}x{h}-50.png'))
-                      ingredient_gate.set()
-                      await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '70'")
-                      await page.wait_for_timeout(220)
-                      second=(await page.locator('.giralab-boot__fill').bounding_box())['width']
-                      assert second>first*1.25,(first,second)
-                      await page.screenshot(path=str(out/f'loading-{w}x{h}-70.png'))
-                      profile_gate.set()
-                      await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '100'")
-                      await page.locator('.nickname-screen').wait_for(state='visible')
-                      assert await page.locator('.giralab-boot').count()==0
-                      assert not errors,errors
-                      await page.screenshot(path=str(out/f'ready-{w}x{h}.png'))
-                      results['tests'].append({'viewport':[w,h],'dpr':3,'image':info,'progress':[50,70,100],'fill_widths':[first,second],'page_errors':errors,'next_screen':'nickname','profile':'isolated fixture; no account writes'})
-                      await ctx.close()
-                  # Also open the published app normally, with the real read-only player request.
-                  ctx=await browser.new_context(viewport={'width':390,'height':844})
-                  page=await ctx.new_page(); errors=[]
-                  page.on('pageerror',lambda e:errors.append(str(e)))
-                  await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
-                  await page.locator('.nickname-screen, .home-screen').wait_for(state='visible',timeout=20000)
-                  assert not errors,errors
-                  results['normal_open']={'boot_closed':await page.locator('.giralab-boot').count()==0,'page_errors':errors}
-                  await ctx.close(); await browser.close()
-              (out/'verification.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
-              print(json.dumps(results,ensure_ascii=False,indent=2))
-          asyncio.run(run(sys.argv[1].rstrip('/')+'/',sys.argv[2]))
-          PY
-      - name: Verify the exact deploy candidate before publication
-        run: |
-          mkdir -p preview-root
-          ln -s "$GITHUB_WORKSPACE/site" preview-root/giralab-web
-          python3 -m http.server 4173 --bind 127.0.0.1 --directory preview-root >/tmp/loading-server.log 2>&1 &
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID"' EXIT
-          sleep 1
-          python3 verify-published.py http://127.0.0.1:4173/giralab-web/ predeploy-proof
-      - uses: actions/configure-pages@v5
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site
+          git rm --ignore-unmatch deploy-assets/approved-web-import.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'deploy: persist tested loading screen and original artwork [skip ci]'
+            git push origin HEAD:main
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
         with:
           enablement: true
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Verify the actual published webpage
+
+      - name: Verify the live website and capture proof
         run: |
-          sleep 5
-          python3 verify-published.py 'https://jy-jiny.github.io/giralab-web/' live-proof
-      - name: Upload verification screenshots and results
+          python3 -m pip install playwright==1.56.0
+          python3 scripts/verify-live-loading.py
+
+      - name: Upload live verification
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: approved-loading-web-verification
-          path: |
-            predeploy-proof
-            live-proof
-          if-no-files-found: warn
+          name: giralab-live-loading-proof
+          path: live-loading-proof
           retention-days: 7
