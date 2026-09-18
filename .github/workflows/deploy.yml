@@ -10,8 +10,10 @@ on:
       - 'scripts/verify-combo-browser.py'
       - 'scripts/verify-recipe-tiers.py'
       - 'scripts/verify-rules-guide.py'
-      - 'scripts/apply-rules-guide.py'
-      - 'deploy-assets/rules-guide-web.delta.b64'
+      - 'scripts/verify-codex-order.py'
+      - 'scripts/apply-codex-order.py'
+      - 'deploy-assets/codex-order-web.delta.b64'
+      - 'deploy-assets/codex-order-web.json'
   workflow_dispatch:
 
 permissions:
@@ -32,12 +34,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Restore the checksum-verified rules guide build
-        if: hashFiles('deploy-assets/rules-guide-web.delta.b64') != ''
+      - name: Restore the exact tested grouped-codex build
+        if: hashFiles('deploy-assets/codex-order-web.delta.b64') != ''
         run: |
           python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6
-          python3 scripts/apply-rules-guide.py
-      - name: Validate the durable build and bind regression tests to its revision
+          python3 scripts/apply-codex-order.py
+      - name: Validate build metadata and bind existing regression tests
         shell: bash
         run: |
           set -euo pipefail
@@ -46,30 +48,25 @@ jobs:
           from pathlib import Path
           assert Path('site/index.html').is_file()
           art=Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
-          assert len(art)==195444
-          assert hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
+          assert len(art)==195444 and hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
           assert not Path('site/loading-fix.js').exists() and not Path('site/loading-fix.css').exists()
           Path('site/.nojekyll').touch()
           meta=json.loads(Path('site/source-build.json').read_text())
-          assert meta['game_version']=='1.5.3' and meta['recipe_tier_badges'] is True
+          assert meta['game_version']=='1.5.4' and meta['recipe_tier_badges'] is True
           assert meta['automatic_board_hints'] is False and meta['rules_version']==2
-          assert meta['board_validity_max_tier']=='advanced' and meta['rules_guide'] is True
-          assert meta['tier_palette_version']==2
+          assert meta['board_validity_max_tier']=='advanced' and meta['rules_guide'] is True and meta['tier_palette_version']==2
+          assert meta['codex_grouped'] is True and meta['recipe_badge_position']=='below-name' and meta['rare_display_name']=='전설'
           revision=meta['source_commit']
           verifier=Path('scripts/verify-live-loading.py')
-          source=re.sub(r"^COMMIT = '[0-9a-f]+'$",'COMMIT = '+repr(revision),verifier.read_text(),flags=re.M)
-          verifier.write_text(source)
+          verifier.write_text(re.sub(r"^COMMIT = '[0-9a-f]+'$",'COMMIT = '+repr(revision),verifier.read_text(),flags=re.M))
           verifier=Path('scripts/verify-combo-browser.py')
           source=re.sub(r"^EXPECTED='[0-9a-f]+'$",'EXPECTED='+repr(revision),verifier.read_text(),flags=re.M)
           source=re.sub(r'GiraLab · [0-9]+\.[0-9]+\.[0-9]+','GiraLab · '+meta['game_version'],source)
-          anchor="    assert now['combo']==step+1,now"
-          addition="    assert any(find(now['board'],seq) for _,seq,_ in RECIPES if len(seq)<6), 'Normal/advanced safety path missing after refill'"
-          if addition not in source:
-              assert source.count(anchor)==1
-              source=source.replace(anchor,anchor+'\n'+addition)
           verifier.write_text(source)
-          verifier=Path('scripts/verify-recipe-tiers.py')
-          verifier.write_text(verifier.read_text().replace('1.5.2',meta['game_version']))
+          verifier=Path('scripts/verify-rules-guide.py')
+          verifier.write_text(verifier.read_text().replace('1.5.3',meta['game_version']).replace('레어','전설'))
+          # Keep the previous verifier entrypoint working, now with ID-based sorted checks.
+          Path('scripts/verify-recipe-tiers.py').write_text('import runpy\nfrom pathlib import Path\nif __name__ == "__main__":\n    runpy.run_path(str(Path(__file__).with_name("verify-codex-order.py")), run_name="__main__")\n')
           PY
           for file in site/assets/*.js; do node --check "$file"; done
       - name: Install browser verifier and Korean fonts
@@ -81,19 +78,19 @@ jobs:
         run: |
           python3 scripts/verify-live-loading.py --site site --out predeploy-proof
           python3 scripts/verify-combo-browser.py --site site --out predeploy-combo-proof
-          python3 scripts/verify-recipe-tiers.py --site site --out predeploy-recipe-tier-proof
+          python3 scripts/verify-recipe-tiers.py --site site --out predeploy-codex-order-proof
           python3 scripts/verify-rules-guide.py --site site --out predeploy-rules-guide-proof
-      - name: Persist the exact verified static build
+      - name: Persist the verified static build
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-recipe-tiers.py
-          git rm --ignore-unmatch deploy-assets/rules-guide-web.delta.b64
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-recipe-tiers.py scripts/verify-rules-guide.py
+          git rm --ignore-unmatch deploy-assets/codex-order-web.delta.b64 deploy-assets/codex-order-web.json
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist verified rules guide and board safety v1.5.3 [skip ci]'
+            git commit -m 'deploy: persist verified grouped codex and badge layout v1.5.4 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -110,21 +107,21 @@ jobs:
           sleep 5
           python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-proof
           python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo-proof
-          python3 scripts/verify-recipe-tiers.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-recipe-tier-proof
+          python3 scripts/verify-recipe-tiers.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex-order-proof
           python3 scripts/verify-rules-guide.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-rules-guide-proof
-      - name: Upload browser screenshots and verification results
+      - name: Upload screenshots and verification results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rules-guide-tier-colors-board-safety-verification
+          name: codex-order-badge-layout-verification
           path: |
             predeploy-proof
             predeploy-combo-proof
-            predeploy-recipe-tier-proof
+            predeploy-codex-order-proof
             predeploy-rules-guide-proof
             live-loading-proof
             live-combo-proof
-            live-recipe-tier-proof
+            live-codex-order-proof
             live-rules-guide-proof
           if-no-files-found: warn
           retention-days: 7
