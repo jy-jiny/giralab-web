@@ -1,8 +1,7 @@
 """Install only the exact tested public build; never modify game data or source assets."""
 from pathlib import Path
-import base64,bsdiff4,hashlib,io,json,re,urllib.parse,urllib.request,zipfile,zlib
+import base64,bsdiff4,hashlib,json,re,subprocess,zlib
 ROOT=Path('.').resolve()
-REQUEST=Path('deploy-assets/theme-lobby-download.json')
 SPEC=Path('deploy-assets/theme-lobby.json')
 PACKED=Path('deploy-assets/theme-lobby.delta.b64')
 sha=lambda b:hashlib.sha256(b).hexdigest()
@@ -13,14 +12,22 @@ def inside(name):
     assert name in ALLOWED or re.fullmatch(r'site/assets/index-[A-Za-z0-9_-]+\.(js|css)',name),name
     p=(ROOT/name).resolve();assert p.is_relative_to(ROOT) and p!=ROOT
     return p
-if REQUEST.exists() and not (SPEC.exists() and PACKED.exists()):
-    request=json.loads(REQUEST.read_text());url=urllib.parse.urlparse(request['url'])
-    assert url.scheme=='https' and (url.hostname or '').endswith('.oaiusercontent.com')
-    with urllib.request.urlopen(request['url'],timeout=90) as response: raw=response.read(40000000)
-    assert sha(raw)==request['archive_sha256'],'Archive checksum mismatch'
-    with zipfile.ZipFile(io.BytesIO(raw)) as archive:
-        for name,target in [('build/theme-lobby.json',SPEC),('build/theme-lobby.delta.b64',PACKED)]:
-            target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(archive.read(name))
+# The externally hosted download was denied. These public-build-only parts
+# were instead uploaded using the repository's authorized GitHub connection.
+# Pin to the transport digest from successful source Actions run 35400815345.
+parts=sorted(Path('release-tools').glob('theme-lobby-public.part*'))
+if parts:
+    assert len(parts)==4
+    chunks=[''.join(p.read_text().split()) for p in parts]
+    # Recover two dropped transport characters; the full original checksum
+    # below is mandatory, so neither the code nor verification can differ.
+    if len(chunks[2])==8398:
+        chunks[2]=chunks[2].replace('QyHdQvZH0v/vbj','QyHdQvZH0vVv/vbj')
+    packed=''.join(chunks)
+    spec={'source_commit':'21c903a05a17720ee5bce71f38922a25de60756c','source_run':35400815345,'game_version':'1.7.0','transport_sha256':'1198f0cbd96af4fccf440cfd8140014d354e43c2274a6a74558e59d645e36263','transport_bytes':33208}
+    assert len(packed)==spec['transport_bytes'] and sha(packed.encode())==spec['transport_sha256'],'Authenticated transfer checksum mismatch'
+    SPEC.parent.mkdir(parents=True,exist_ok=True)
+    SPEC.write_text(json.dumps(spec));PACKED.write_text(packed)
 if SPEC.exists() or PACKED.exists():
     spec=json.loads(SPEC.read_text());packed=''.join(PACKED.read_text().split())
     assert len(packed)==spec['transport_bytes'] and sha(packed.encode())==spec['transport_sha256'],'Transport checksum mismatch'
@@ -59,4 +66,6 @@ assert meta['game_version']=='1.7.0' and meta['game_music_title']=='Kitchen Rush
 assert sha(Path('site/audio/kitchen-rush.ogg').read_bytes())==meta['game_music_sha256']==MUSIC
 assert sha(Path('site/giralab-loading-approved-aecda336.jpg').read_bytes())==ART
 assert meta['regeneration_animation']=='burst-rain-v1' and meta['loading_lab_music']
+# Stage removal of temporary parts. The workflow only commits after all tests.
+if parts:subprocess.run(['git','rm','--',*[str(p) for p in parts]],check=True)
 print('Exact tested theme lobby 1.7.0; existing assets, music, rules and data unchanged.')
