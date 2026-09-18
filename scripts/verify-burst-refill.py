@@ -3,7 +3,7 @@ import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 
-VERSION='1.6.5'
+VERSION='1.7.0'
 ROWS=['LBBPPP','PALCPA','PLALPA','PLLLLC','LLPAAL','LPAALP','APCCLC','ALCPCL','PCPPPP']
 VALUE={'L':.85,'B':.1,'P':.5,'A':.95,'C':.7}
 TYPES={'L':'lettuce','B':'bun','P':'patty','A':'bacon','C':'cheese'}
@@ -120,6 +120,7 @@ def verify(base,out):
     page.evaluate(ANIMS+'.forEach(a=>{a.pause();a.currentTime=240})')
     page.get_by_role('button',name='메인으로',exact=True).click();held=game()
     page.wait_for_timeout(700);assert game()['board']==held['board'] and game()['elapsed']==held['elapsed']
+    if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
     page.locator('.home-play').click();page.locator('.regeneration-scene').wait_for(state='attached')
     assert game()['regenerating'],'Re-entry must resume the visual sequence, not snap to completion'
     assert page.evaluate(ANIMS+'.every(a=>Math.abs(a.currentTime-240)<1)'), 'Preserve the shared animation playhead'

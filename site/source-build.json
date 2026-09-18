@@ -1,8 +1,8 @@
 {
-  "source_commit": "8d4f4345ea5a7a8d6f28718191e5d81df6b13546",
+  "source_commit": "21c903a05a17720ee5bce71f38922a25de60756c",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
-  "game_version": "1.6.5",
+  "game_version": "1.7.0",
   "recipe_tier_badges": true,
   "automatic_board_hints": false,
   "board_validity_max_tier": "advanced",
@@ -26,5 +26,22 @@
   "game_music_sha256": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
   "regeneration_completion": "animation-finished",
   "regeneration_overlay": false,
-  "game_music_asset": "audio/kitchen-rush.ogg"
+  "game_music_asset": "audio/kitchen-rush.ogg",
+  "theme_lobby": true,
+  "theme_ids": [
+    "burger",
+    "music",
+    "war",
+    "robot"
+  ],
+  "playable_themes": [
+    "burger"
+  ],
+  "theme_price_krw": {
+    "burger": 0,
+    "music": 1000,
+    "war": 1000,
+    "robot": 1000
+  },
+  "payments_enabled": false
 }

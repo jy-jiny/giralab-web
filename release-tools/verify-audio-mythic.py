@@ -3,7 +3,7 @@ import argparse, json, os, shutil, subprocess, tempfile, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.6.5'
+VERSION='1.7.0'
 IDS=['classic','cheese','green','bacon','double-patty','double','bacon-cheese','cheese-melt','garden-stack','smoky-green','bacon-first','green-cheese','cheese-bacon-stack','double-bacon','cheese-mad','meat-monster','green-monster','bacon-bomb','forbidden-seven']
 MYTH=['bun','bacon','bacon','bacon','bacon','bacon','bun']
 HOOK="window.__boardDraws=[];const originalRandom=Math.random;Math.random=()=>window.__boardDraws.length?window.__boardDraws.shift():originalRandom();window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t;}}});"
@@ -67,6 +67,7 @@ def verify(base,out):
                     assert not untouched('!!document.querySelector(".audio-enable")')
                 audio=lambda:untouched('window.__gameTools.get_audio_state.execute({})')
                 game=lambda:untouched('window.__gameTools.get_game_state.execute({})')
+                if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
                 page.locator('.home-play').click()
                 page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying')
                 page.wait_for_timeout(350)
@@ -104,6 +105,7 @@ def verify(base,out):
                     page.screenshot(path=str(out/f'mythic-help-{width}.png'))
                     help.get_by_role('button',name='알겠어요',exact=True).click()
                     page.get_by_role('button',name='닫기',exact=True).click()
+                    if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
                     page.locator('.home-play').click()
                     page.get_by_role('button',name='옵션',exact=True).click()
                     board=[['lettuce']*6 for _ in range(9)];board[0][0:3]=['bun','patty','bun']
@@ -141,6 +143,7 @@ def verify(base,out):
         page.wait_for_function('window.__gameTools.get_audio_state?.execute({})')
         assert page.evaluate('window.__gameTools.get_audio_state.execute({}).musicVolume')==0
         expect(page.locator('.audio-enable')).to_have_count(0)
+        if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
         page.locator('.home-play').click();page.wait_for_timeout(250)
         assert not page.evaluate('window.__gameTools.get_audio_state.execute({}).gamePlaying')
         report['mutedPreferencePreserved']=True

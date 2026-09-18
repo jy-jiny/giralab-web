@@ -3,7 +3,7 @@ import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 
-VERSION='1.6.5'
+VERSION='1.7.0'
 HOOK='''window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});
 window.__audioContexts=[];const RealAudioContext=window.AudioContext;
 if(RealAudioContext)window.AudioContext=class extends RealAudioContext{constructor(...args){super(...args);window.__audioContexts.push(this)}};
@@ -70,9 +70,10 @@ def verify(base,out):
    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
    expect(page.locator(FORBIDDEN)).to_have_count(0)
    if policy=='document-user-activation-required':
-    assert not state()['labPlaying'];page.locator('.home-title').click()
+    assert not state()['labPlaying'];page.locator('.home-version').click()
     page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying')
    page.screenshot(path=str(out/f'{label}-{width}-home.png'))
+   if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
    page.locator('.home-play').click()
    if unsupported or saved==0:assert not state()['gamePlaying']
    else:

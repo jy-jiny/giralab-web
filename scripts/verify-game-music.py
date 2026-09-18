@@ -7,7 +7,7 @@ from threading import Thread
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.6.5'
+VERSION='1.7.0'
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 
 class MediaHandler(SimpleHTTPRequestHandler):
@@ -60,6 +60,7 @@ def verify(base,out):
             assert audio()['track']=='Laboratory Notes'
             assert audio()['musicVolume']==45 and audio()['effectsVolume']==65
             expect(page.locator('.audio-enable')).to_have_count(0)
+            if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
             page.locator('.home-play').click()
             page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying')
             page.wait_for_function('document.querySelector("audio").readyState>=3 && document.querySelector("audio").currentTime>0.1 && Number.isFinite(document.querySelector("audio").duration)')

@@ -4,7 +4,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-COMMIT = '8d4f4345ea5a7a8d6f28718191e5d81df6b13546'
+COMMIT = '21c903a05a17720ee5bce71f38922a25de60756c'
 
 async def main(base, out):
     out.mkdir(parents=True, exist_ok=True)
@@ -66,6 +66,7 @@ async def main(base, out):
         await page.route('**/api/**',api_fixture)
         await page.goto(base,wait_until='domcontentloaded')
         await page.locator('.home-screen').wait_for(state='visible')
+        if await page.locator('[data-theme-select=burger]').count(): await page.locator('[data-theme-select=burger]').click()
         await page.locator('.home-play').click()
         await page.locator('[data-testid=game-board]').wait_for(state='visible')
         await page.wait_for_timeout(250)
