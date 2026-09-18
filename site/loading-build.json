@@ -1,13 +1,13 @@
 {
-  "sourceRun": 35340605704,
-  "sourceCommit": "b50c6b183cef21932bd24637f44d079cff032b34",
+  "sourceRun": 35343270356,
+  "sourceCommit": "b3c8ac5741240343cbbe9adf8e0609c582f59a6c",
   "artworkSHA256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "dimensions": [
     864,
     1536
   ],
   "imageUnchanged": true,
-  "gameVersion": "1.6.2",
+  "gameVersion": "1.6.3",
   "rulesVersion": 3,
   "boardRegenerationMode": "full-new"
 }
