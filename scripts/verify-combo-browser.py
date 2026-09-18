@@ -2,7 +2,7 @@
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='21c903a05a17720ee5bce71f38922a25de60756c'
+EXPECTED='17177bceaeffe3c5b7145c24c1e06d3627b87d90'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -55,7 +55,7 @@ def verify(base,out):
    page.route('**/api/**',fixture)
    page.goto(base+'?balance=2',wait_until='domcontentloaded')
    page.locator('.home-screen').wait_for(state='visible')
-   assert page.locator('.home-version').inner_text()=='GiraLab · 1.7.0'
+   assert page.locator('.home-version').inner_text()=='GiraLab · 1.7.1'
    # Deterministic gameplay RNG, set after boot so unrelated framework setup cannot consume it.
    page.evaluate("()=>{let seed=20260918;Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296)}")
    if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()

@@ -3,7 +3,7 @@ import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 
-VERSION='1.7.0'
+VERSION='1.7.1'
 HOOK='''window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});
 window.__audioContexts=[];const RealAudioContext=window.AudioContext;
 if(RealAudioContext)window.AudioContext=class extends RealAudioContext{constructor(...args){super(...args);window.__audioContexts.push(this)}};
