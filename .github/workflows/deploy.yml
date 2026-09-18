@@ -10,8 +10,11 @@ on:
       - 'scripts/verify-combo-browser.py'
       - 'scripts/verify-recipe-tiers.py'
       - 'scripts/apply-static-update.py'
+      - 'scripts/apply-no-auto-hints.py'
       - 'deploy-assets/combo-v2.delta.b64'
       - 'deploy-assets/approved-web-import.json'
+      - 'deploy-assets/no-auto-hints-web.delta.b64'
+      - 'deploy-assets/no-auto-hints-web.json'
   workflow_dispatch:
 
 permissions:
@@ -35,6 +38,11 @@ jobs:
       - name: Apply the checksum-verified combo build
         if: hashFiles('deploy-assets/combo-v2.delta.b64') != ''
         run: python3 scripts/apply-static-update.py
+      - name: Apply the exact tested no-auto-hints build
+        if: hashFiles('deploy-assets/no-auto-hints-web.delta.b64') != ''
+        run: |
+          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6
+          python3 scripts/apply-no-auto-hints.py
       - name: Import and validate the durable site
         shell: bash
         run: |
@@ -70,6 +78,8 @@ jobs:
           assert not Path('site/loading-fix.js').exists() and not Path('site/loading-fix.css').exists()
           Path('site/.nojekyll').touch()
           meta = json.loads(Path('site/source-build.json').read_text())
+          assert meta['game_version'] == '1.5.2' and meta['recipe_tier_badges'] is True
+          assert meta['automatic_board_hints'] is False and meta['rules_version'] == 2
           revision = meta['source_commit']
           verifier = Path('scripts/verify-live-loading.py')
           source = re.sub(r"^COMMIT = '[0-9a-f]+'$", 'COMMIT = ' + repr(revision), verifier.read_text(), flags=re.M)
@@ -77,8 +87,14 @@ jobs:
           verifier = Path('scripts/verify-combo-browser.py')
           source = re.sub(r"^EXPECTED='[0-9a-f]+'$", 'EXPECTED=' + repr(revision), verifier.read_text(), flags=re.M)
           source = re.sub(r'GiraLab · [0-9]+\.[0-9]+\.[0-9]+', 'GiraLab · ' + meta['game_version'], source)
+          source = source.replace("assert page.locator('.hinted-tile').count()>=3", "assert page.locator('.hinted-tile,.hint-order').count()==0")
+          source = source.replace("f'hints-{width}x{height}.png'", "f'no-hints-{width}x{height}.png'")
+          source = source.replace("assert meta['source_commit']==EXPECTED and meta['rules_version']==2,meta", "assert meta['source_commit']==EXPECTED and meta['rules_version']==2 and meta['automatic_board_hints'] is False,meta")
+          assert "assert page.locator('.hinted-tile,.hint-order').count()==0" in source
           verifier.write_text(source)
-          assert meta['game_version'] == '1.5.1' and meta['recipe_tier_badges'] is True
+          verifier = Path('scripts/verify-recipe-tiers.py')
+          source = verifier.read_text().replace('1.5.1', meta['game_version'])
+          verifier.write_text(source)
           PY
           for file in site/assets/*.js; do node --check "$file"; done
       - name: Install browser verifier and Korean fonts
@@ -86,7 +102,7 @@ jobs:
           python3 -m pip install --disable-pip-version-check playwright==1.55.0
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify the candidate before deployment
+      - name: Verify no hints, scoring, codex and loading before deployment
         run: |
           python3 scripts/verify-live-loading.py --site site --out predeploy-proof
           python3 scripts/verify-combo-browser.py --site site --out predeploy-combo-proof
@@ -98,10 +114,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py
-          git rm --ignore-unmatch deploy-assets/approved-web-import.json deploy-assets/combo-v2.delta.b64
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-recipe-tiers.py
+          git rm --ignore-unmatch deploy-assets/approved-web-import.json deploy-assets/combo-v2.delta.b64 deploy-assets/no-auto-hints-web.delta.b64 deploy-assets/no-auto-hints-web.json
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist verified recipe tier badges v1.5.1 [skip ci]'
+            git commit -m 'deploy: persist verified no-auto-hints v1.5.2 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -123,7 +139,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: recipe-tiers-combo-and-loading-verification
+          name: no-auto-hints-combo-codex-loading-verification
           path: |
             predeploy-proof
             predeploy-combo-proof
