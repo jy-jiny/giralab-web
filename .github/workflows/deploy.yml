@@ -28,7 +28,7 @@ jobs:
 
       - name: Download built web bundle
         run: |
-          curl -fL 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-50b8-8206-a3a6-f939d80cb560/raw?se=2026-09-18T02%3A03%3A49Z&sp=r&sv=2026-02-06&sr=b&scid=8e04a565-b38b-5db7-8408-3b64ac7d9950&skoid=b1bca990-dcac-4c31-8ca1-ac563cf24c54&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-17T18%3A08%3A38Z&ske=2026-09-18T18%3A08%3A38Z&sks=b&skv=2026-02-06&sig=B/EqCQpbJQDF5qU1W94NPrqUpjmbToCJ1wwB%2BZ%2BrITA%3D' -o giralab-web-dist.zip
+          curl -fL 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-fe4c-8206-87aa-7f81cb265cd2/raw?se=2026-09-18T02%3A09%3A23Z&sp=r&sv=2026-02-06&sr=b&scid=ef4359a4-31c1-5287-b744-616d17b32fcd&skoid=b1bca990-dcac-4c31-8ca1-ac563cf24c54&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-18T01%3A02%3A46Z&ske=2026-09-19T01%3A02%3A46Z&sks=b&skv=2026-02-06&sig=s4XJoPhViatufWuK6oZpvrJvHDb87/1uJ%2BpJbaMkUao%3D' -o giralab-web-dist.zip
           mkdir -p site
           unzip -q giralab-web-dist.zip -d site
           touch site/.nojekyll
