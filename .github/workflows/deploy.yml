@@ -52,8 +52,8 @@ jobs:
           from pathlib import Path
           js_file = next(Path("site/assets").glob("*.js"))
           js = js_file.read_text()
-          old_preload = '[\`/ingredients.png\`,\`/giralab-loading-screen.webp\`]'
-          new_preload = '[\`/ingredients.png\`,\`/giraffe-scientist-hq.webp\`]'
+          old_preload = '[`/ingredients.png`,`/giralab-loading-screen.webp`]'
+          new_preload = '[`/ingredients.png`,`/giraffe-scientist-hq.webp`]'
           if old_preload not in js:
               raise SystemExit("expected loading preload not found")
           js = js.replace(old_preload, new_preload, 1)
