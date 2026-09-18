@@ -1,11 +1,12 @@
 {
-  "sourceRun": 35316160509,
-  "sourceCommit": "293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2",
-  "bundleSHA256": "1154716d23f85d418d7cefcb8d011d316a5a8d5481b7a3fa9b6599554f45f62f",
+  "sourceRun": 35319043942,
+  "sourceCommit": "46d38681af6d82a1c0f942d5207e05c9902bfd66",
   "artworkSHA256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "dimensions": [
     864,
     1536
   ],
-  "imageUnchanged": true
+  "imageUnchanged": true,
+  "rulesVersion": 2,
+  "gameVersion": "1.5.0"
 }
