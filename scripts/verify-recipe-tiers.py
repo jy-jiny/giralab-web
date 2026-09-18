@@ -1,9 +1,10 @@
-"""Verify recipe tier labels and responsive layout without production writes."""
+"""Verify recipe badges while preserving the existing web recipe-name/hint UI."""
 import argparse, json, os, re, shutil, subprocess, tempfile, time
 from pathlib import Path
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 IDS = ['classic','cheese','green','bacon','double','bacon-cheese','double-patty','cheese-melt','garden-stack','smoky-green','bacon-first','green-cheese','cheese-bacon-stack','double-bacon','cheese-mad','meat-monster','green-monster','bacon-bomb']
+NAMES = ['클래식 버거','치즈 버거','그린 버거','베이컨 버거','더블 치즈 버거','베이컨 치즈 버거','더블 패티 버거','치즈 멜트 버거','가든 스택 버거','스모키 그린 버거','베이컨 퍼스트 버거','그린 치즈 버거','치즈 베이컨 스택','더블 베이컨 버거','치즈에 미친 햄버거','고기 괴물 버거','초록 괴물 버거','베이컨 폭탄 버거']
 TIERS = ['normal','normal','normal','normal','advanced','advanced','normal','advanced','advanced','advanced','advanced','advanced','advanced','advanced','rare','rare','rare','rare']
 LABELS = {'normal':'일반 조합','advanced':'고급 조합','rare':'레어 조합'}
 
@@ -26,28 +27,32 @@ def verify(base, out):
                 page.route('**/api/**', fixture)
                 page.goto(base+'?recipe-tiers=1.5.1', wait_until='domcontentloaded')
                 page.locator('.home-screen').wait_for(state='visible')
-                assert page.locator('.home-version').inner_text() == 'GiraLab · 1.5.1'
+                expect(page.locator('.home-version')).to_have_text('GiraLab · 1.5.1')
                 page.get_by_role('button', name='옵션', exact=True).click()
                 page.get_by_role('button', name=re.compile('레시피 도감')).click()
                 page.locator('.recipe-grid').wait_for(state='visible')
                 cards = page.locator('.recipe-card')
-                assert cards.count() == 18
-                assert page.locator('.recipe-card.locked').count() == (0 if discovered else 17)
+                expect(cards).to_have_count(18)
+                expect(page.locator('.recipe-card.locked')).to_have_count(0 if discovered else 17)
+                suffix = f'{width}x{height}-' + ('discovered' if discovered else 'undiscovered')
+                # The existing web wrapper intentionally reveals names and optional hints,
+                # but keeps exact ingredient orders hidden until discovery.
                 for i, tier in enumerate(TIERS):
                     card = cards.nth(i)
                     badge = card.locator('.recipe-heading .recipe-tier-badge')
-                    assert badge.count() == 1
-                    assert badge.inner_text() == LABELS[tier]
-                    assert badge.get_attribute('data-recipe-tier') == tier
+                    expect(badge).to_have_count(1)
+                    expect(badge).to_have_text(LABELS[tier])
+                    expect(badge).to_have_attribute('data-recipe-tier', tier)
                     expected_slow = '슬로우 없음' if tier == 'normal' else '슬로우 3초' if tier == 'advanced' else '슬로우 4초'
                     assert expected_slow in badge.get_attribute('aria-label')
+                    expect(card.locator('.recipe-heading h3')).to_have_text(NAMES[i])
                     if not discovered and i > 0:
-                        assert card.locator('h3').inner_text() == '아직 모르는 맛'
-                        assert card.locator('.recipe-order').count() == 0
-                assert cards.nth(0).locator('h3').inner_text() == '클래식 버거'
-                if discovered:
-                    assert cards.nth(7).locator('h3').inner_text() == '치즈 멜트 버거'
-                    assert cards.nth(14).locator('h3').inner_text() == '치즈에 미친 햄버거'
+                        expect(card.locator('.recipe-order')).to_have_count(0)
+                        expect(card.locator('.recipe-hint-toggle')).to_have_count(1)
+                        expect(card.locator('.recipe-hint-panel')).to_be_hidden()
+                    else:
+                        expect(card.locator('.recipe-order')).to_have_count(1)
+                        expect(card.locator('.recipe-hint-toggle')).to_have_count(0)
                 overflow = page.evaluate('''() => [...document.querySelectorAll('.recipe-card')].flatMap(card => {
                     const bounds = card.getBoundingClientRect();
                     return [...card.querySelectorAll('.recipe-heading h3,.recipe-tier-badge')].filter(el => {
@@ -56,12 +61,19 @@ def verify(base, out):
                 })''')
                 assert not overflow, overflow
                 assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1')
-                suffix = f'{width}x{height}-' + ('discovered' if discovered else 'undiscovered')
                 page.screenshot(path=str(out/f'recipe-tiers-{suffix}-top.png'))
+                if not discovered:
+                    toggle = cards.nth(1).locator('.recipe-hint-toggle')
+                    toggle.click()
+                    expect(toggle).to_have_attribute('aria-expanded','true')
+                    expect(cards.nth(1).locator('.recipe-hint-panel')).to_be_visible()
+                    toggle.click()
+                    expect(toggle).to_have_attribute('aria-expanded','false')
+                    expect(cards.nth(1).locator('.recipe-hint-panel')).to_be_hidden()
                 cards.nth(17).scroll_into_view_if_needed()
                 page.screenshot(path=str(out/f'recipe-tiers-{suffix}-rare.png'))
                 assert not errors, errors
-                report['tests'].append({'viewport':[width,height], 'all_discovered':discovered, 'badges':18, 'counts':{'normal':5,'advanced':9,'rare':4}, 'overflow':overflow, 'page_errors':errors})
+                report['tests'].append({'viewport':[width,height], 'all_discovered':discovered, 'badges':18, 'counts':{'normal':5,'advanced':9,'rare':4}, 'existing_names_and_hints_preserved':True, 'overflow':overflow, 'page_errors':errors})
                 ctx.close()
         browser.close()
     (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
