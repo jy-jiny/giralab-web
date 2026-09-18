@@ -1,57 +1,110 @@
-"""Check the deployed site, without mocking its API or replacing its artwork."""
-import asyncio
-import hashlib
-import json
+"""Verify the exact approved artwork and real boot UI without production account writes."""
+import argparse, asyncio, hashlib, json, os, shutil, subprocess, tempfile, time
 from pathlib import Path
-import shutil
-import time
-import urllib.request
 from playwright.async_api import async_playwright
 
-BASE = 'https://jy-jiny.github.io/giralab-web/'
-ART = 'giralab-loading-d52df73017d8.jpg'
-HASH = 'd52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109'
-OUT = Path('live-loading-proof')
-OUT.mkdir(exist_ok=True)
-for attempt in range(24):
-    try:
-        with urllib.request.urlopen(BASE + '?verify=' + str(time.time_ns()), timeout=15) as response:
-            html = response.read().decode()
-        if ART not in html:
-            raise RuntimeError('Previous HTML still cached')
-        with urllib.request.urlopen(BASE + ART, timeout=15) as response:
-            image = response.read()
-        assert hashlib.sha256(image).hexdigest() == HASH
-        break
-    except Exception:
-        if attempt == 23:
-            raise
-        time.sleep(5)
+SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
+COMMIT = '293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2'
 
-async def verify():
+async def main(base, out):
+    out.mkdir(parents=True, exist_ok=True)
+    report = {'base_url':base,'image_sha256':SHA,'source_commit':COMMIT,'tests':[]}
     async with async_playwright() as p:
-        executable = shutil.which('google-chrome') or shutil.which('chromium')
-        browser = await p.chromium.launch(executable_path=executable, args=['--no-sandbox'])
-        page = await browser.new_page(viewport={'width': 390, 'height': 844}, device_scale_factor=2)
-        gate = asyncio.Event()
-        async def hold(route):
-            await gate.wait()
-            await route.continue_()
-        await page.route('**/ingredients.png', hold)
-        try:
-            await page.goto(BASE + '?verify=' + str(time.time_ns()), wait_until='domcontentloaded')
-            await page.wait_for_function("document.querySelector('.giralab-loader-art')?.naturalWidth === 864")
-            await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '80'", timeout=15000)
-            await page.wait_for_timeout(700)
-            assert await page.locator('[role=progressbar]').get_attribute('aria-valuenow') == '80'
-            await page.screenshot(path=str(OUT / 'live-loading-390x844.png'))
-            gate.set()
-            await page.locator('.giralab-approved-loading').wait_for(state='detached', timeout=20000)
-            await page.locator('.home-screen, .nickname-screen').wait_for(timeout=10000)
-            (OUT / 'results.json').write_text(json.dumps({'url': BASE, 'artworkSHA256': HASH, 'originalDimensions': [864,1536], 'pendingResourceProgress': 80, 'gameEntryAfterResourceFinished': True, 'apiMocked': False}, indent=2))
-            print('LIVE_VERIFIED: exact original artwork, measured progress, and successful game entry')
-        finally:
-            gate.set()
-            await browser.close()
+        browser = await p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium') or None,
+            args=['--no-sandbox','--disable-dev-shm-usage'])
+        for width,height in [(360,640),(390,844),(412,915)]:
+            ctx = await browser.new_context(viewport={'width':width,'height':height},device_scale_factor=3,is_mobile=True,has_touch=True)
+            page = await ctx.new_page(); page.set_default_timeout(20000)
+            errors=[]; page.on('pageerror',lambda e:errors.append(str(e)))
+            ingredients_ready,profile_ready=asyncio.Event(),asyncio.Event()
+            async def gate_ingredients(route):
+                await ingredients_ready.wait(); await route.continue_()
+            async def gate_profile(route):
+                await profile_ready.wait()
+                await route.fulfill(status=200,content_type='application/json',body='{"player":null}')
+            await page.route('**/ingredients.png',gate_ingredients)
+            await page.route('**/api/player',gate_profile)
+            await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
+            art=page.locator('.giralab-boot__art')
+            await art.wait_for(state='visible')
+            await page.wait_for_function("document.querySelector('.giralab-boot__art')?.naturalWidth === 864")
+            await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '50'")
+            await page.wait_for_timeout(230)
+            first=await page.locator('.giralab-boot__fill').bounding_box()
+            img_info=await art.evaluate('(e)=>({w:e.naturalWidth,h:e.naturalHeight,url:e.currentSrc,fit:getComputedStyle(e).objectFit})')
+            rect=await art.bounding_box()
+            assert img_info['w']==864 and img_info['h']==1536 and img_info['fit']=='contain',img_info
+            assert rect['x']>=-1 and rect['y']>=-1 and rect['x']+rect['width']<=width+1 and rect['y']+rect['height']<=height+1,rect
+            response=await ctx.request.get(img_info['url']); raw=await response.body()
+            assert response.ok and hashlib.sha256(raw).hexdigest()==SHA,'Not the exact approved attachment'
+            assert len(raw)==195444,len(raw)
+            assert not await page.locator('.giralab-live-loading,.boot-full-image,.boot-mascot-hq').count(),'Old loader remains'
+            await page.screenshot(path=str(out/f'loading-{width}x{height}-50.png'))
+            ingredients_ready.set()
+            await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '70'")
+            await page.wait_for_timeout(230)
+            second=await page.locator('.giralab-boot__fill').bounding_box()
+            assert second['width']>first['width']*1.25,(first,second)
+            await page.screenshot(path=str(out/f'loading-{width}x{height}-70.png'))
+            profile_ready.set()
+            await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '100'")
+            await page.locator('.nickname-screen').wait_for(state='visible')
+            assert await page.locator('.giralab-boot').count()==0,'Boot never closes'
+            assert not errors,errors
+            await page.screenshot(path=str(out/f'ready-{width}x{height}.png'))
+            report['tests'].append({'viewport':[width,height],'device_pixel_ratio':3,'source':img_info,'progress':[50,70,100],
+                'fill_widths':[first['width'],second['width']],'next_screen':'nickname','page_errors':errors,'profile':'isolated fixture'})
+            await ctx.close()
+        ctx=await browser.new_context(viewport={'width':390,'height':844})
+        page=await ctx.new_page(); errors=[]
+        page.on('pageerror',lambda e:errors.append(str(e)))
+        async def api_fixture(route):
+            path=route.request.url.split('/api/')[-1]
+            data={'player':{'id':'loading-qa','nickname':'로딩검증'}} if path=='player' else (
+                {'entries':[],'me':None} if path=='leaderboard' else {'unlocked':['classic'],'bestScore':0})
+            await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
+        await page.route('**/api/**',api_fixture)
+        await page.goto(base,wait_until='domcontentloaded')
+        await page.locator('.home-screen').wait_for(state='visible')
+        await page.locator('.home-play').click()
+        await page.locator('[data-testid=game-board]').wait_for(state='visible')
+        await page.wait_for_timeout(250)
+        assert not errors,errors
+        report['tests'].append({'flow':'returning player -> home -> game','network':'isolated API fixtures','page_errors':errors})
+        await ctx.close()
+        ctx=await browser.new_context(viewport={'width':390,'height':844})
+        page=await ctx.new_page()
+        await page.route('**/api/**',api_fixture)
+        await page.route('**/ingredients.png',lambda route:route.fulfill(status=404,body='missing'))
+        await page.goto(base,wait_until='domcontentloaded')
+        await page.get_by_role('button',name='다시 불러오기').wait_for(state='visible')
+        assert await page.locator('.giralab-boot').is_visible()
+        assert int(await page.get_by_role('progressbar').get_attribute('aria-valuenow'))<100
+        report['tests'].append({'flow':'asset failure','result':'visible retry, no false 100%'})
+        await ctx.close()
+        # A real fresh visit: permit only the real read-only profile call; never register or play.
+        ctx=await browser.new_context(viewport={'width':390,'height':844})
+        page=await ctx.new_page(); errors=[]
+        page.on('pageerror',lambda e:errors.append(str(e)))
+        await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
+        await page.locator('.nickname-screen,.home-screen').wait_for(state='visible',timeout=20000)
+        assert not errors,errors
+        report['normal_open']={'boot_closed':await page.locator('.giralab-boot').count()==0,'page_errors':errors}
+        await ctx.close(); await browser.close()
+    (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+    print(json.dumps(report,ensure_ascii=False,indent=2))
 
-asyncio.run(verify())
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--site',default='site'); parser.add_argument('--url'); parser.add_argument('--out',default='live-loading-proof')
+    args=parser.parse_args()
+    if args.url:
+        asyncio.run(main(args.url.rstrip('/')+'/',Path(args.out)))
+    else:
+        with tempfile.TemporaryDirectory() as root:
+            os.symlink(Path(args.site).resolve(),Path(root)/'giralab-web',target_is_directory=True)
+            server=subprocess.Popen(['python3','-m','http.server','4173','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+            try:
+                time.sleep(.6); asyncio.run(main('http://127.0.0.1:4173/giralab-web/',Path(args.out)))
+            finally:
+                server.terminate(); server.wait(timeout=5)

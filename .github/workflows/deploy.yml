@@ -27,15 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Import the tested source build once
+      - uses: actions/checkout@v4
+      - name: Import the verified source build into the durable site
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib, io, json, urllib.request, zipfile
+          import hashlib, io, json, shutil, urllib.request, zipfile
           from pathlib import Path
           spec = Path('deploy-assets/approved-web-import.json')
           if spec.exists():
@@ -44,58 +42,68 @@ jobs:
                   bundle = response.read()
               assert hashlib.sha256(bundle).hexdigest() == data['sha256'], 'Bundle checksum mismatch'
               destination = Path('site').resolve()
-              destination.mkdir(exist_ok=True)
+              staging = Path('site-import').resolve()
+              staging.mkdir(exist_ok=True)
               with zipfile.ZipFile(io.BytesIO(bundle)) as archive:
                   for name in archive.namelist():
-                      assert (destination / name).resolve().is_relative_to(destination), 'Unsafe archive path'
-                  archive.extractall(destination)
-              (destination / 'loading-build.json').write_text(json.dumps({'sourceRun': data['sourceRun'], 'bundleSHA256': data['sha256'], 'artworkSHA256': 'd52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109', 'dimensions': [864, 1536]}, indent=2))
-          assert Path('site/index.html').is_file(), 'No validated site snapshot'
-          art = Path('site/giralab-loading-d52df73017d8.jpg').read_bytes()
-          assert hashlib.sha256(art).hexdigest() == 'd52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109'
-          assert 'giralab-loading-d52df73017d8.jpg' in Path('site/index.html').read_text()
+                      assert (staging / name).resolve().is_relative_to(staging), 'Unsafe archive path'
+                  archive.extractall(staging)
+              meta = json.loads((staging / 'source-build.json').read_text())
+              assert meta['source_commit'] == data['sourceCommit']
+              assert meta['approved_image_sha256'] == data['artworkSHA256']
+              art = (staging / 'giralab-loading-approved-aecda336.jpg').read_bytes()
+              assert len(art) == 195444 and hashlib.sha256(art).hexdigest() == data['artworkSHA256']
+              # Replace only generated deploy output; previous files remain in git history.
+              if destination.exists(): shutil.rmtree(destination)
+              staging.rename(destination)
+              (destination / 'loading-build.json').write_text(json.dumps({'sourceRun':data['sourceRun'],'sourceCommit':data['sourceCommit'],'bundleSHA256':data['sha256'],'artworkSHA256':data['artworkSHA256'],'dimensions':[864,1536],'imageUnchanged':True},indent=2))
+          assert Path('site/index.html').is_file(), 'Missing validated static build'
+          art = Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
+          assert len(art) == 195444
+          assert hashlib.sha256(art).hexdigest() == 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
+          assert not Path('site/loading-fix.js').exists() and not Path('site/loading-fix.css').exists()
           Path('site/.nojekyll').touch()
           PY
           for file in site/assets/*.js; do node --check "$file"; done
-
-      - name: Keep a durable deployable site snapshot
+      - name: Install browser verifier and Korean fonts
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify the candidate before deployment
+        run: python3 scripts/verify-live-loading.py --site site --out predeploy-proof
+      - name: Persist the verified static build
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add site
+          git add -A site
           git rm --ignore-unmatch deploy-assets/approved-web-import.json
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist tested loading screen and original artwork [skip ci]'
+            git commit -m 'deploy: persist exact uploaded image and verified loading build [skip ci]'
             git push origin HEAD:main
           fi
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v5
         with:
           enablement: true
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: site
-
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Verify the live website and capture proof
+      - name: Verify the actual live website
         run: |
-          python3 -m pip install playwright==1.56.0
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk
-          python3 scripts/verify-live-loading.py
-
-      - name: Upload live verification
+          sleep 5
+          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-proof
+      - name: Upload browser screenshots and results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: giralab-live-loading-proof
-          path: live-loading-proof
+          name: exact-image-live-verification
+          path: |
+            predeploy-proof
+            live-loading-proof
+          if-no-files-found: warn
           retention-days: 7
