@@ -44,79 +44,26 @@ jobs:
           tar -xf previous-pages/artifact.tar -C site
           touch site/.nojekyll
 
-      - name: Fix loading screen and use real progress
+      - name: Patch loading screen to HQ composition
         shell: bash
         run: |
           set -euo pipefail
+          CSS_FILE="$(find site/assets -maxdepth 1 -type f -name '*.css' | head -n1)"
+          cat >> "$CSS_FILE" <<'CSS'
 
-          cat > site/loading-fix.css <<'CSS'
-          .boot-screen.giralab-loading-screen{opacity:0!important;pointer-events:none!important}
-          .giralab-live-loading{position:fixed;inset:0;z-index:2147483000;overflow:hidden;background:#000b1b;color:#fff;display:block}
-          .giralab-live-loading .visual{position:absolute;inset:0 0 20% 0;overflow:hidden;background:#00142b}
-          .giralab-live-loading .visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;image-rendering:auto}
-          .giralab-live-loading .fade{position:absolute;left:0;right:0;bottom:0;height:31%;background:linear-gradient(180deg,rgba(0,11,27,0) 0%,#000b1b 52%,#000b1b 100%);pointer-events:none}
-          .giralab-live-loading .progress-area{position:absolute;left:50%;bottom:max(6.5dvh,34px);transform:translateX(-50%);width:min(74vw,390px);text-align:center}
-          .giralab-live-loading .track{height:16px;padding:2px;border:2px solid #117dff;border-radius:999px;background:#06142b;box-shadow:0 0 14px rgba(0,139,255,.7),inset 0 0 8px rgba(0,0,0,.7);overflow:hidden}
-          .giralab-live-loading .fill{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#1eeaff 0%,#17c6ff 60%,#52f7ff 100%);box-shadow:0 0 14px rgba(24,228,255,.95);transition:width .25s ease}
-          .giralab-live-loading .label{margin:17px 0 0;color:#b9d9ff;font-size:clamp(14px,4vw,18px);font-weight:800;letter-spacing:.2px;text-shadow:0 0 10px rgba(49,155,255,.65)}
-          @media(max-height:700px){.giralab-live-loading .visual{inset:0 0 22% 0}.giralab-live-loading .progress-area{bottom:max(4dvh,24px)}}
+          /* HQ GiraLab boot: use the bundled 560x700 mascot and render the rest crisply in CSS. */
+          .boot-screen.giralab-loading-screen{padding:0!important;display:block!important;overflow:hidden!important;isolation:isolate;background:radial-gradient(circle at 50% 31%,rgba(0,132,255,.38) 0 17%,rgba(0,75,180,.22) 31%,rgba(0,30,76,0) 57%),radial-gradient(circle at 14% 30%,rgba(17,176,255,.9) 0 2px,transparent 3px),radial-gradient(circle at 86% 27%,rgba(17,176,255,.8) 0 2px,transparent 3px),radial-gradient(circle at 77% 45%,rgba(17,176,255,.65) 0 3px,transparent 4px),linear-gradient(180deg,#021630 0%,#00152d 55%,#000a19 100%)!important}
+          .boot-screen.giralab-loading-screen .boot-full-image{content:url('../giraffe-scientist-hq.webp')!important;position:absolute!important;left:50%!important;top:3.5%!important;inset:auto!important;transform:translateX(-50%)!important;width:min(79vw,410px)!important;height:min(57dvh,610px)!important;display:block!important;object-fit:contain!important;object-position:center bottom!important;filter:drop-shadow(0 20px 24px rgba(0,0,0,.32)) drop-shadow(0 0 20px rgba(0,144,255,.28))!important;z-index:2}
+          .boot-screen.giralab-loading-screen::before{content:'⬢\\A⬢ ⬢';white-space:pre;position:absolute;left:50%;top:61%;transform:translateX(-50%);width:100%;text-align:center;color:#21dfff;font-size:clamp(14px,4.2vw,20px);line-height:.7;font-weight:900;text-shadow:0 0 13px rgba(0,211,255,.9);z-index:3}
+          .boot-screen.giralab-loading-screen::after{content:'GiraLab';position:absolute;left:50%;top:67.5%;transform:translateX(-50%);color:#fffdf3;font-size:clamp(48px,14vw,72px);line-height:1;font-weight:900;letter-spacing:-2.7px;text-shadow:0 3px 18px rgba(0,0,0,.28);z-index:3}
+          .boot-screen.giralab-loading-screen .boot-loading-status{clip:auto!important;width:min(74vw,390px)!important;height:54px!important;overflow:visible!important;margin:0!important;white-space:normal!important;border:0!important;position:absolute!important;left:50%!important;bottom:max(7dvh,38px)!important;transform:translateX(-50%)!important;font-size:0!important;z-index:4}
+          .boot-screen.giralab-loading-screen .boot-loading-status::before{content:'';display:block;width:100%;height:15px;border:2px solid #107aff;border-radius:999px;box-sizing:border-box;background:linear-gradient(90deg,#20e8ff 0 72%,rgba(0,0,0,0) 72% 100%),rgba(1,17,45,.82);box-shadow:0 0 13px rgba(0,136,255,.6),inset 0 0 8px rgba(0,0,0,.6)}
+          .boot-screen.giralab-loading-screen .boot-loading-status::after{content:'로딩 중...';display:block;margin-top:17px;color:#b9d9ff;font-size:clamp(14px,4vw,18px);line-height:1;font-weight:800;letter-spacing:.2px;text-align:center;text-shadow:0 0 10px rgba(49,155,255,.6)}
+          .boot-screen.giralab-loading-screen .boot-center,.boot-screen.giralab-loading-screen .boot-bottom{display:none!important}
+          @media(max-height:700px){.boot-screen.giralab-loading-screen .boot-full-image{top:1%!important;height:min(53dvh,500px)!important}.boot-screen.giralab-loading-screen::before{top:57%}.boot-screen.giralab-loading-screen::after{top:64%}.boot-screen.giralab-loading-screen .boot-loading-status{bottom:max(4dvh,24px)!important}}
           CSS
 
-          cat > site/loading-fix.js <<'JS'
-          (() => {
-            let overlay = null;
-            let fill = null;
-            let label = null;
-            const assetUrl = new URL('./giralab-loading-screen.webp', document.baseURI).href;
-
-            function removeOverlay() {
-              if (overlay) overlay.remove();
-              overlay = fill = label = null;
-            }
-
-            function createOverlay() {
-              if (overlay) return;
-              overlay = document.createElement('div');
-              overlay.className = 'giralab-live-loading';
-              overlay.setAttribute('aria-hidden', 'true');
-              overlay.innerHTML = '<div class="visual"><img alt="" draggable="false"><div class="fade"></div></div><div class="progress-area"><div class="track"><span class="fill"></span></div><p class="label">로딩 중...</p></div>';
-              overlay.querySelector('img').src = assetUrl;
-              fill = overlay.querySelector('.fill');
-              label = overlay.querySelector('.label');
-              document.body.appendChild(overlay);
-            }
-
-            function sync() {
-              const boot = document.querySelector('.boot-screen.giralab-loading-screen');
-              if (!boot) {
-                removeOverlay();
-                return;
-              }
-              createOverlay();
-              const status = boot.querySelector('.boot-loading-status');
-              const match = status?.textContent?.match(/(\d{1,3})\s*%/);
-              const value = Math.max(0, Math.min(100, Number(match?.[1] ?? 0)));
-              if (fill) fill.style.width = value + '%';
-              if (label) label.textContent = value >= 100 ? '준비 완료' : '로딩 중...';
-            }
-
-            new MutationObserver(sync).observe(document.documentElement, {subtree:true, childList:true, characterData:true});
-            window.addEventListener('pageshow', sync);
-            sync();
-          })();
-          JS
-
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('site/index.html')
-          s=p.read_text()
-          s=s.replace('</head>','<link rel="stylesheet" href="./loading-fix.css"></head>')
-          s=s.replace('</body>','<script src="./loading-fix.js"></script></body>')
-          p.write_text(s)
-          PY
-
       - name: Configure Pages
-
         uses: actions/configure-pages@v5
         with:
           enablement: true
