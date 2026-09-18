@@ -1,9 +1,11 @@
 {
-  "sourceRun": 35316522132,
-  "bundleSHA256": "46245cdac70107b522bb57ee987cd4f205b47cff2391a99570077fc69bdd7e48",
-  "artworkSHA256": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
+  "sourceRun": 35316160509,
+  "sourceCommit": "293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2",
+  "bundleSHA256": "1154716d23f85d418d7cefcb8d011d316a5a8d5481b7a3fa9b6599554f45f62f",
+  "artworkSHA256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "dimensions": [
     864,
     1536
-  ]
+  ],
+  "imageUnchanged": true
 }
