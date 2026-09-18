@@ -44,24 +44,118 @@ jobs:
           tar -xf previous-pages/artifact.tar -C site
           touch site/.nojekyll
 
-      - name: Patch loading screen to HQ composition
+      - name: Patch compiled loading screen from game source
         shell: bash
         run: |
           set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          js_file = next(Path("site/assets").glob("*.js"))
+          js = js_file.read_text()
+          old_preload = '[\`/ingredients.png\`,\`/giralab-loading-screen.webp\`]'
+          new_preload = '[\`/ingredients.png\`,\`/giraffe-scientist-hq.webp\`]'
+          if old_preload not in js:
+              raise SystemExit("expected loading preload not found")
+          js = js.replace(old_preload, new_preload, 1)
+          start = js.find("return E||!s?")
+          end = js.find(":i?", start)
+          if start < 0 or end < 0:
+              raise SystemExit("expected compiled splash branch not found")
+          new_branch = "return E||!s?(0,F.jsxs)(`main`,{className:`boot-screen giralab-loading-screen`,\"aria-label\":`GiraLab 로딩 중`,children:[(0,F.jsxs)(`div`,{className:`boot-science-bg`,\"aria-hidden\":!0,children:[(0,F.jsx)(`span`,{className:`boot-dna boot-dna-left`}),(0,F.jsx)(`span`,{className:`boot-dna boot-dna-right`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-a`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-b`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-c`})]}),(0,F.jsxs)(`div`,{className:`boot-hero`,children:[(0,F.jsx)(`img`,{className:`boot-mascot-hq`,src:mc(`giraffe-scientist-hq.webp`),alt:``,fetchPriority:`high`,draggable:!1}),(0,F.jsxs)(`div`,{className:`boot-brand-mark`,\"aria-hidden\":!0,children:[(0,F.jsx)(`i`,{}),(0,F.jsx)(`i`,{}),(0,F.jsx)(`i`,{})]}),(0,F.jsx)(`h1`,{children:`GiraLab`})]}),(0,F.jsxs)(`div`,{className:`boot-bottom`,children:[(0,F.jsx)(`div`,{className:`boot-progress-track`,role:`progressbar`,\"aria-label\":`게임 준비 진행`,\"aria-valuemin\":0,\"aria-valuemax\":100,\"aria-valuenow\":_e,children:(0,F.jsx)(`span`,{style:{transform:`scaleX(${Math.max(0,Math.min(100,_e))/100})`}})}),(0,F.jsx)(`p`,{children:_e===100?`준비 완료`:`로딩 중...`})]})]})"
+          js = js[:start] + new_branch + js[end:]
+          js_file.write_text(js)
+          print(js_file)
+          
+          PY
+
           CSS_FILE="$(find site/assets -maxdepth 1 -type f -name '*.css' | head -n1)"
           cat >> "$CSS_FILE" <<'CSS'
-
-          /* HQ GiraLab boot: use the bundled 560x700 mascot and render the rest crisply in CSS. */
-          .boot-screen.giralab-loading-screen{padding:0!important;display:block!important;overflow:hidden!important;isolation:isolate;background:radial-gradient(circle at 50% 31%,rgba(0,132,255,.38) 0 17%,rgba(0,75,180,.22) 31%,rgba(0,30,76,0) 57%),radial-gradient(circle at 14% 30%,rgba(17,176,255,.9) 0 2px,transparent 3px),radial-gradient(circle at 86% 27%,rgba(17,176,255,.8) 0 2px,transparent 3px),radial-gradient(circle at 77% 45%,rgba(17,176,255,.65) 0 3px,transparent 4px),linear-gradient(180deg,#021630 0%,#00152d 55%,#000a19 100%)!important}
-          .boot-screen.giralab-loading-screen .boot-full-image{content:url('../giraffe-scientist-hq.webp')!important;position:absolute!important;left:50%!important;top:3.5%!important;inset:auto!important;transform:translateX(-50%)!important;width:min(79vw,410px)!important;height:min(57dvh,610px)!important;display:block!important;object-fit:contain!important;object-position:center bottom!important;filter:drop-shadow(0 20px 24px rgba(0,0,0,.32)) drop-shadow(0 0 20px rgba(0,144,255,.28))!important;z-index:2}
-          .boot-screen.giralab-loading-screen::before{content:'⬢\\A⬢ ⬢';white-space:pre;position:absolute;left:50%;top:61%;transform:translateX(-50%);width:100%;text-align:center;color:#21dfff;font-size:clamp(14px,4.2vw,20px);line-height:.7;font-weight:900;text-shadow:0 0 13px rgba(0,211,255,.9);z-index:3}
-          .boot-screen.giralab-loading-screen::after{content:'GiraLab';position:absolute;left:50%;top:67.5%;transform:translateX(-50%);color:#fffdf3;font-size:clamp(48px,14vw,72px);line-height:1;font-weight:900;letter-spacing:-2.7px;text-shadow:0 3px 18px rgba(0,0,0,.28);z-index:3}
-          .boot-screen.giralab-loading-screen .boot-loading-status{clip:auto!important;width:min(74vw,390px)!important;height:54px!important;overflow:visible!important;margin:0!important;white-space:normal!important;border:0!important;position:absolute!important;left:50%!important;bottom:max(7dvh,38px)!important;transform:translateX(-50%)!important;font-size:0!important;z-index:4}
-          .boot-screen.giralab-loading-screen .boot-loading-status::before{content:'';display:block;width:100%;height:15px;border:2px solid #107aff;border-radius:999px;box-sizing:border-box;background:linear-gradient(90deg,#20e8ff 0 72%,rgba(0,0,0,0) 72% 100%),rgba(1,17,45,.82);box-shadow:0 0 13px rgba(0,136,255,.6),inset 0 0 8px rgba(0,0,0,.6)}
-          .boot-screen.giralab-loading-screen .boot-loading-status::after{content:'로딩 중...';display:block;margin-top:17px;color:#b9d9ff;font-size:clamp(14px,4vw,18px);line-height:1;font-weight:800;letter-spacing:.2px;text-align:center;text-shadow:0 0 10px rgba(49,155,255,.6)}
-          .boot-screen.giralab-loading-screen .boot-center,.boot-screen.giralab-loading-screen .boot-bottom{display:none!important}
-          @media(max-height:700px){.boot-screen.giralab-loading-screen .boot-full-image{top:1%!important;height:min(53dvh,500px)!important}.boot-screen.giralab-loading-screen::before{top:57%}.boot-screen.giralab-loading-screen::after{top:64%}.boot-screen.giralab-loading-screen .boot-loading-status{bottom:max(4dvh,24px)!important}}
+          /* High-resolution GiraLab loading scene: vector/CSS chrome + HQ mascot. */
+          .boot-screen.giralab-loading-screen{
+            padding:0;
+            display:block;
+            background:
+              radial-gradient(circle at 50% 34%,rgba(0,133,255,.32) 0 18%,rgba(0,74,170,.22) 33%,rgba(0,24,62,0) 58%),
+              linear-gradient(180deg,#02152f 0%,#001630 56%,#000b1b 100%);
+            color:#fff;
+            isolation:isolate;
+          }
+          .giralab-loading-screen::before{
+            content:"";
+            position:absolute;
+            left:50%;top:7.5%;
+            width:min(86vw,470px);aspect-ratio:1;
+            transform:translateX(-50%);
+            border-radius:50%;
+            border:1px solid rgba(31,159,255,.22);
+            box-shadow:0 0 70px rgba(0,130,255,.18),inset 0 0 70px rgba(0,101,255,.1);
+            z-index:-1;
+          }
+          .boot-science-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
+          .boot-science-bg::before{
+            content:"";
+            position:absolute;inset:0;
+            background-image:
+              radial-gradient(circle at 12% 27%,rgba(36,173,255,.95) 0 2px,transparent 3px),
+              radial-gradient(circle at 84% 31%,rgba(36,173,255,.7) 0 2px,transparent 3px),
+              radial-gradient(circle at 77% 45%,rgba(36,173,255,.8) 0 3px,transparent 4px),
+              radial-gradient(circle at 17% 55%,rgba(36,173,255,.55) 0 2px,transparent 3px);
+            filter:drop-shadow(0 0 7px #00a6ff);
+            opacity:.9;
+          }
+          .boot-dna{position:absolute;top:12%;width:76px;height:44%;opacity:.22;filter:drop-shadow(0 0 7px #168cff)}
+          .boot-dna::before,.boot-dna::after{content:"";position:absolute;inset:0;border-left:3px solid #3da9ff;border-right:3px solid #3da9ff;border-radius:50%;transform:skewY(24deg)}
+          .boot-dna::after{transform:skewY(-24deg)}
+          .boot-dna-left{left:-24px}
+          .boot-dna-right{right:-22px;top:5%}
+          .boot-hex{position:absolute;width:74px;height:64px;border:2px solid rgba(37,154,255,.28);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+          .boot-hex-a{left:5%;top:31%}.boot-hex-b{right:7%;top:28%;transform:scale(.82)}.boot-hex-c{right:15%;top:39%;transform:scale(.56)}
+          .boot-hero{position:absolute;left:50%;top:2.5%;transform:translateX(-50%);width:min(96vw,520px);height:74dvh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center}
+          .boot-mascot-hq{display:block;width:min(79vw,405px);height:min(55dvh,610px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 24px rgba(0,0,0,.3)) drop-shadow(0 0 18px rgba(0,130,255,.22));margin-top:1dvh}
+          .boot-brand-mark{display:grid;grid-template-columns:repeat(2,30px);grid-template-rows:repeat(2,27px);gap:3px;margin-top:-1dvh;margin-bottom:9px;filter:drop-shadow(0 0 12px rgba(0,211,255,.75))}
+          .boot-brand-mark i{display:block;width:30px;height:27px;background:linear-gradient(145deg,#1af5ff,#0a73ff);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+          .boot-brand-mark i:first-child{grid-column:1/3;justify-self:center}
+          .boot-brand-mark i:nth-child(2){grid-column:1}.boot-brand-mark i:nth-child(3){grid-column:2}
+          .boot-hero h1{margin:0;font-size:clamp(48px,14vw,72px);line-height:.95;font-weight:900;letter-spacing:-2.7px;color:#fffdf3;text-shadow:0 3px 18px rgba(0,0,0,.28)}
+          .giralab-loading-screen .boot-bottom{position:absolute;left:50%;bottom:max(7dvh,38px);transform:translateX(-50%);width:min(74vw,390px);text-align:center}
+          .boot-progress-track{height:15px;border:2px solid #107aff;border-radius:999px;background:rgba(1,17,45,.8);padding:2px;box-shadow:0 0 13px rgba(0,136,255,.6),inset 0 0 8px rgba(0,0,0,.6);overflow:hidden}
+          .boot-progress-track>span{display:block;width:100%;height:100%;border-radius:999px;transform-origin:left center;background:linear-gradient(90deg,#20e8ff 0%,#15bfff 55%,#4df5ff 100%);box-shadow:0 0 13px rgba(24,228,255,.9);transition:transform .28s ease}
+          .giralab-loading-screen .boot-bottom p{margin:18px 0 0;font-size:clamp(14px,4vw,18px);font-weight:800;letter-spacing:.2px;color:#b9d9ff;text-shadow:0 0 10px rgba(49,155,255,.6)}
+          @media(max-height:700px){
+            .boot-hero{top:0;height:76dvh}
+            .boot-mascot-hq{height:min(50dvh,500px)}
+            .boot-brand-mark{transform:scale(.82);margin-top:-7px;margin-bottom:3px}
+            .boot-hero h1{font-size:clamp(42px,12vw,62px)}
+            .giralab-loading-screen .boot-bottom{bottom:max(4dvh,24px)}
+          }
+          
           CSS
+
+          JS_FILE="$(find site/assets -maxdepth 1 -type f -name '*.js' | head -n1)"
+          node --check "$JS_FILE"
+          grep -q 'boot-mascot-hq' "$JS_FILE"
+          grep -q 'boot-progress-track' "$JS_FILE"
+          test -s site/giraffe-scientist-hq.webp
+
+      - name: Verify loading screen visually
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --directory site >/tmp/giralab-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          sleep 1
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$BROWSER"
+          timeout 20s "$BROWSER" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --window-size=390,844 --virtual-time-budget=650 --screenshot=loading-proof.png http://127.0.0.1:4173/ >/tmp/browser.log 2>&1 || true
+          test -s loading-proof.png
+
+      - name: Upload loading proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: loading-screen-proof
+          path: loading-proof.png
+          retention-days: 2
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
