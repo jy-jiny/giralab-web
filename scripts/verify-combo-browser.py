@@ -2,7 +2,7 @@
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='fc92a788e5274f03461f6054e36cd43148942bd0'
+EXPECTED='a0613d4a851c62a0072caedb71102a97b1b13f77'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -55,13 +55,13 @@ def verify(base,out):
    page.route('**/api/**',fixture)
    page.goto(base+'?balance=2',wait_until='domcontentloaded')
    page.locator('.home-screen').wait_for(state='visible')
-   assert page.locator('.home-version').inner_text()=='GiraLab · 1.5.5'
+   assert page.locator('.home-version').inner_text()=='GiraLab · 1.6.1'
    # Deterministic gameplay RNG, set after boot so unrelated framework setup cannot consume it.
    page.evaluate("()=>{let seed=20260918;Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296)}")
-   page.locator('.home-play').click();page.locator('[data-balance-version="2"]').wait_for(state='visible')
+   page.locator('.home-play').click();page.locator('[data-balance-version="3"]').wait_for(state='visible')
    assert page.locator('button[data-tile-id]').count()==54
    state=lambda:page.evaluate('window.__gameTools.get_game_state.execute({})')
-   assert state()['rulesVersion']==2
+   assert state()['rulesVersion']==3
    played=[];ladder_step=0
    for step in range(5):
     s=state();chosen=None
@@ -92,7 +92,7 @@ def verify(base,out):
    report['tests'].append({'viewport':[width,height],'played':played,'idle_board_unchanged':True,'hint_tiles':page.locator('.hinted-tile').count(),'page_errors':errors})
    page.screenshot(path=str(out/f'no-hints-{width}x{height}.png'))
    meta=ctx.request.get(base+'source-build.json?balance=2').json()
-   assert meta['source_commit']==EXPECTED and meta['rules_version']==2 and meta['automatic_board_hints'] is False,meta
+   assert meta['source_commit']==EXPECTED and meta['rules_version']==3 and meta['automatic_board_hints'] is False,meta
    art=ctx.request.get(base+'giralab-loading-approved-aecda336.jpg').body()
    assert hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
    ctx.close()

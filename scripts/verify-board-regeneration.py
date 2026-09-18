@@ -11,7 +11,7 @@ DRAWS={'L':.85,'B':.1,'P':.5,'A':.95,'C':.7}
 
 def verify(base,out):
  out.mkdir(parents=True,exist_ok=True)
- report={'version':'1.5.5','base_url':base,'isolated_api':True,'tests':[]}
+ report={'version':'1.6.1','base_url':base,'isolated_api':True,'tests':[]}
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium') or None,args=['--no-sandbox','--disable-dev-shm-usage'])
   for width,height in [(360,640),(390,844),(412,915)]:
@@ -19,9 +19,9 @@ def verify(base,out):
    ctx.add_init_script("window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});")
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.set_default_timeout(20000)
    page.route('**/api/**',combo.fixture)
-   page.goto(base+'?regeneration=1.5.5',wait_until='domcontentloaded')
+   page.goto(base+'?regeneration=1.6.1',wait_until='domcontentloaded')
    page.locator('.home-screen').wait_for(state='visible')
-   expect(page.locator('.home-version')).to_have_text('GiraLab · 1.5.5')
+   expect(page.locator('.home-version')).to_have_text('GiraLab · 1.6.1')
    # Unlock optional audio before deterministic RNG; audio noise must not consume fixture draws.
    page.locator('.home-version').click()
    initial=page.evaluate('''draws=>{
@@ -73,9 +73,9 @@ def verify(base,out):
    page.screenshot(path=str(out/f'{width}-help.png'))
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth+1')
    assert not errors,errors
-   meta=ctx.request.get(base+'source-build.json?regeneration=1.5.5').json()
-   assert meta['game_version']=='1.5.5' and meta['board_regeneration_mode']=='full-new'
-   assert meta['regeneration_animation']=='preserved' and meta['recipe_count']==18 and meta['rules_version']==2
+   meta=ctx.request.get(base+'source-build.json?regeneration=1.6.1').json()
+   assert meta['game_version']=='1.6.1' and meta['board_regeneration_mode']=='full-new'
+   assert meta['regeneration_animation']=='preserved' and meta['recipe_count']==19 and meta['rules_version']==3
    report['tests'].append({'viewport':[width,height],'replacedTileIds':54,'recipe':'green','score':300,'combo':1,'clocksProtected':True,'animation':result['styles'],'newBuns':sum(t=='bun' for row in board for t in row),'scriptErrors':errors})
    ctx.close()
   browser.close()

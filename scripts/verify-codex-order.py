@@ -3,7 +3,7 @@ import argparse, json, os, re, shutil, subprocess, tempfile, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.5.5'
+VERSION='1.6.1'
 ROWS=[
  ('classic','클래식 버거','normal','가장 기본적인 버거부터 떠올려보세요.'),
  ('cheese','치즈 버거','normal','노란 재료 하나가 맛의 포인트예요.'),
@@ -23,9 +23,13 @@ ROWS=[
  ('meat-monster','고기 괴물 버거','rare','고기 계열 재료로 속을 꽉 채워보세요.'),
  ('green-monster','초록 괴물 버거','rare','초록 재료 비중이 아주 높아요.'),
  ('bacon-bomb','베이컨 폭탄 버거','rare','베이컨을 아끼면 안 돼요.'),
+ ('forbidden-seven','금단의 7층 버거','mythic','일곱 층의 금단 실험. 빵 사이를 다섯 장의 베이컨으로만 채워보세요.'),
 ]
 LABELS={'normal':'일반 조합','advanced':'고급 조합','rare':'전설 조합'}
 COLORS={'normal':'rgb(226, 232, 240)','advanced':'rgb(29, 78, 216)','rare':'rgb(250, 204, 21)'}
+
+LABELS['mythic']='신화 조합'
+COLORS['mythic']='rgb(107, 33, 168)'
 
 
 def verify(base,out):
@@ -48,17 +52,17 @@ def verify(base,out):
                 expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
                 page.get_by_role('button',name='옵션',exact=True).click()
                 page.get_by_role('button',name=re.compile('레시피 도감')).click()
-                cards=page.locator('.recipe-card');expect(cards).to_have_count(18)
-                expect(page.locator('.recipe-card.locked')).to_have_count(18-len(unlocked))
+                cards=page.locator('.recipe-card');expect(cards).to_have_count(len(ROWS))
+                expect(page.locator('.recipe-card.locked')).to_have_count(len(ROWS)-len(unlocked))
                 ids=cards.evaluate_all('(nodes)=>nodes.map(el=>el.dataset.recipeId)')
                 assert ids==[r[0] for r in ROWS],ids
                 headings=page.locator('.recipe-group-heading')
-                expect(headings).to_have_count(3)
-                expect(headings.locator('span')).to_have_text(['일반','고급','전설'])
-                expect(headings.locator('small')).to_have_text(['5종','9종','4종'])
+                expect(headings).to_have_count(4)
+                expect(headings.locator('span')).to_have_text(['일반','고급','전설','신화'])
+                expect(headings.locator('small')).to_have_text(['5종','9종','4종','1종'])
                 expected_nodes=[]
                 for i,(rid,name,tier,hint) in enumerate(ROWS):
-                    if i in (0,5,14):expected_nodes.append('group:'+tier)
+                    if i in (0,5,14,18):expected_nodes.append('group:'+tier)
                     expected_nodes.append('card:'+rid)
                     card=cards.nth(i)
                     expect(card).to_have_attribute('data-recipe-tier-card',tier)
@@ -67,7 +71,7 @@ def verify(base,out):
                     badge=card.locator('.recipe-heading .recipe-tier-badge')
                     expect(badge).to_have_count(1);expect(badge).to_have_text(LABELS[tier])
                     expect(badge).to_have_attribute('data-recipe-tier',tier)
-                    expected_slow='슬로우 없음' if tier=='normal' else '슬로우 3초' if tier=='advanced' else '슬로우 4초'
+                    expected_slow='슬로우 없음' if tier=='normal' else '슬로우 3초' if tier=='advanced' else '슬로우 6초' if tier=='mythic' else '슬로우 4초'
                     assert expected_slow in badge.get_attribute('aria-label')
                     assert badge.evaluate('(el)=>getComputedStyle(el).backgroundColor')==COLORS[tier]
                     geometry=card.evaluate('''el=>{
@@ -104,8 +108,8 @@ def verify(base,out):
                 # Reopening must not duplicate hints or restore the old index-based order.
                 page.get_by_role('button',name='옵션',exact=True).click()
                 page.get_by_role('button',name=re.compile('레시피 도감')).click()
-                expect(page.locator('.recipe-card')).to_have_count(18)
-                expect(page.locator('.recipe-hint-toggle')).to_have_count(18-len(unlocked))
+                expect(page.locator('.recipe-card')).to_have_count(len(ROWS))
+                expect(page.locator('.recipe-hint-toggle')).to_have_count(len(ROWS)-len(unlocked))
                 expect(page.locator('[data-recipe-id="double-patty"] h3')).to_have_text('더블 패티 버거')
                 assert page.locator('.recipe-card').evaluate_all('(els)=>els.map(el=>el.dataset.recipeId)')==ids
                 meta=ctx.request.get(base+'source-build.json?codex-order='+VERSION).json()
@@ -113,7 +117,7 @@ def verify(base,out):
                 assert meta['recipe_badge_position']=='below-name' and meta['rare_display_name']=='전설'
                 assert meta['board_validity_max_tier']=='advanced' and meta['automatic_board_hints'] is False
                 assert not errors,errors
-                report['tests'].append({'viewport':[width,height],'discovery':state,'ids':ids,'groups':['일반','고급','전설'],'badgesBelowNames':18,'correctNamesAndHints':True,'reopenStable':True,'page_errors':errors})
+                report['tests'].append({'viewport':[width,height],'discovery':state,'ids':ids,'groups':['일반','고급','전설','신화'],'badgesBelowNames':len(ROWS),'correctNamesAndHints':True,'reopenStable':True,'page_errors':errors})
                 ctx.close()
         browser.close()
     (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))

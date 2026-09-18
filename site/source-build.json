@@ -1,8 +1,8 @@
 {
-  "source_commit": "fc92a788e5274f03461f6054e36cd43148942bd0",
+  "source_commit": "a0613d4a851c62a0072caedb71102a97b1b13f77",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
-  "rules_version": 2,
-  "game_version": "1.5.5",
+  "rules_version": 3,
+  "game_version": "1.6.1",
   "recipe_tier_badges": true,
   "automatic_board_hints": false,
   "board_validity_max_tier": "advanced",
@@ -13,5 +13,10 @@
   "rare_display_name": "전설",
   "board_regeneration_mode": "full-new",
   "regeneration_animation": "preserved",
-  "recipe_count": 18
+  "recipe_count": 19,
+  "mythic_recipe": "forbidden-seven",
+  "audio_scene_tracks": true,
+  "autoplay_recovery": true,
+  "mythic_presentation_pause": 0.85,
+  "server_function_version": 2
 }
