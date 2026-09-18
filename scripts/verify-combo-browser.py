@@ -2,7 +2,7 @@
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='0da775c09b2f23ad9401923c2773530604ff83e4'
+EXPECTED='a234e8d417acaf532d5ffe75825a7c46ff4261f8'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -55,7 +55,7 @@ def verify(base,out):
    page.route('**/api/**',fixture)
    page.goto(base+'?balance=2',wait_until='domcontentloaded')
    page.locator('.home-screen').wait_for(state='visible')
-   assert page.locator('.home-version').inner_text()=='GiraLab · 1.5.2'
+   assert page.locator('.home-version').inner_text()=='GiraLab · 1.5.3'
    # Deterministic gameplay RNG, set after boot so unrelated framework setup cannot consume it.
    page.evaluate("()=>{let seed=20260918;Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296)}")
    page.locator('.home-play').click();page.locator('[data-balance-version="2"]').wait_for(state='visible')
@@ -78,6 +78,7 @@ def verify(base,out):
     now=state();expected=round(points*(1+step*.5)*(1.5 if ladder else 1))
     assert now['score']-before==expected,(name,now,before,expected)
     assert now['combo']==step+1,now
+    assert any(find(now['board'],seq) for _,seq,_ in RECIPES if len(seq)<6), 'Normal/advanced safety path missing after refill'
     if len(seq)>=5:assert now['slow']>0
     played.append({'recipe':name,'combo':now['combo'],'earned':now['score']-before,'slow':now['slow']})
     if step==4:
