@@ -7,7 +7,7 @@ from threading import Thread
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.6.3'
+VERSION='1.6.4'
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 
 class MediaHandler(SimpleHTTPRequestHandler):

@@ -1,8 +1,8 @@
 {
-  "source_commit": "b3c8ac5741240343cbbe9adf8e0609c582f59a6c",
+  "source_commit": "b27ea82c148ecaf48272cf505102eccd802931d9",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
-  "game_version": "1.6.3",
+  "game_version": "1.6.4",
   "recipe_tier_badges": true,
   "automatic_board_hints": false,
   "board_validity_max_tier": "advanced",
@@ -12,7 +12,7 @@
   "recipe_badge_position": "below-name",
   "rare_display_name": "전설",
   "board_regeneration_mode": "full-new",
-  "regeneration_animation": "preserved",
+  "regeneration_animation": "burst-rain-v1",
   "recipe_count": 19,
   "mythic_recipe": "forbidden-seven",
   "audio_scene_tracks": true,
@@ -24,5 +24,7 @@
   "persistent_loading_mixer": true,
   "game_music_title": "Lunch Rush",
   "game_music_bpm": 156,
-  "game_music_sha256": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d"
+  "game_music_sha256": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
+  "regeneration_completion": "animation-finished",
+  "regeneration_overlay": false
 }
