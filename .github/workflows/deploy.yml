@@ -6,7 +6,8 @@ on:
       - '.github/workflows/deploy.yml'
       - 'site/**'
       - 'scripts/verify-*.py'
-      - 'deploy-assets/board-regeneration-import.json'
+      - 'release-tools/**'
+      - 'deploy-assets/release-1.6.1*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -20,101 +21,86 @@ defaults:
     shell: bash
 jobs:
   deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url || steps.retry.outputs.page_url }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Import only the checksum-verified live-compatible artifact
+      - name: Require production storage support before publishing the new client
+        run: |
+          python3 - <<'PY'
+          import json,urllib.request
+          req=urllib.request.Request('https://tqqgnrfklhmxwsphjera.supabase.co/functions/v1/giralab-game/api/health',headers={'Origin':'https://jy-jiny.github.io'})
+          with urllib.request.urlopen(req,timeout=30) as response:health=json.load(response)
+          assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
+          print('Live storage server supports all 19 recipes:',health)
+          PY
+      - name: Restore the exact integrated build and bind regression verifiers
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import hashlib,io,json,re,shutil,urllib.request,zipfile
-          spec=Path('deploy-assets/board-regeneration-import.json')
-          if spec.exists():
-              data=json.loads(spec.read_text())
-              with urllib.request.urlopen(data['url'],timeout=60) as response:bundle=response.read()
-              assert hashlib.sha256(bundle).hexdigest()==data['sha256']
-              staging=Path('site-import').resolve();staging.mkdir(exist_ok=True)
-              with zipfile.ZipFile(io.BytesIO(bundle)) as archive:
-                  assert sum(f.file_size for f in archive.infolist())<100_000_000
-                  for name in archive.namelist():assert (staging/name).resolve().is_relative_to(staging)
-                  archive.extractall(staging)
-              meta=json.loads((staging/'source-build.json').read_text())
-              assert meta['source_commit']==data['source_commit']=='fc92a788e5274f03461f6054e36cd43148942bd0'
-              assert meta['game_version']=='1.5.5' and meta['recipe_count']==18 and meta['rules_version']==2
-              assert meta['board_regeneration_mode']=='full-new' and meta['regeneration_animation']=='preserved'
-              for name in ['giralab-loading-approved-aecda336.jpg','giraffe-scientist.webp','ingredients.png','audio/kitchen-rush.ogg']:
-                  assert (Path('site')/name).read_bytes()==(staging/name).read_bytes(),name
-              shutil.rmtree('site');staging.rename('site')
-              Path('site/loading-build.json').write_text(json.dumps({'sourceRun':35334546811,'sourceCommit':meta['source_commit'],'artworkSHA256':meta['approved_image_sha256'],'dimensions':[864,1536],'imageUnchanged':True,'gameVersion':'1.5.5','rulesVersion':2,'boardRegenerationMode':'full-new'},indent=2))
-          meta=json.loads(Path('site/source-build.json').read_text())
-          assert meta['game_version']=='1.5.5' and meta['board_regeneration_mode']=='full-new'
-          assert meta['automatic_board_hints'] is False and meta['board_validity_max_tier']=='advanced'
-          art=Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
-          assert hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-          Path('site/.nojekyll').touch()
-          for name in ['verify-live-loading.py','verify-combo-browser.py','verify-codex-order.py','verify-rules-guide.py']:
-              p=Path('scripts')/name;s=p.read_text().replace('1.5.4','1.5.5').replace('재배치','재생성')
-              s=re.sub(r"^COMMIT = '[0-9a-f]+'$",'COMMIT = '+repr(meta['source_commit']),s,flags=re.M)
-              s=re.sub(r"^EXPECTED='[0-9a-f]+'$",'EXPECTED='+repr(meta['source_commit']),s,flags=re.M)
-              s=s.replace("'최대 32번'","'판 전체 54칸'").replace("'최대 3칸'","'새 재료로 다시 생성'")
-              p.write_text(s)
-          PY
+          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6
+          if compgen -G 'deploy-assets/release-1.6.1.part*.b64' > /dev/null; then
+            cat deploy-assets/release-1.6.1.part*.b64 > deploy-assets/release-1.6.1.delta.b64
+          fi
+          python3 release-tools/prepare-1.6.1.py
           for f in site/assets/*.js; do node --check "$f"; done
-      - name: Install browser verifier
+          python3 -m py_compile release-tools/*.py scripts/verify-*.py
+      - name: Install browser verifier and Korean fonts
         run: |
           python3 -m pip install --disable-pip-version-check playwright==1.55.0
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify regeneration and all existing live behavior before publication
+      - name: Verify music, mythic, fresh boards and existing features before deployment
         run: |
+          set -euo pipefail
+          python3 release-tools/verify-audio-mythic.py --site site --out predeploy-audio-mythic
           python3 scripts/verify-board-regeneration.py --site site --out predeploy-regeneration
-          python3 scripts/verify-live-loading.py --site site --out predeploy-loading
           python3 scripts/verify-combo-browser.py --site site --out predeploy-combo
           python3 scripts/verify-codex-order.py --site site --out predeploy-codex
-          python3 scripts/verify-rules-guide.py --site site --out predeploy-help
-      - name: Persist the tested build so deployment no longer needs an expiring URL
+          python3 scripts/verify-live-loading.py --site site --out predeploy-loading
+      - name: Persist validated static bytes and remove temporary transport files
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-codex-order.py scripts/verify-rules-guide.py
-          git rm --ignore-unmatch deploy-assets/board-regeneration-import.json
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-board-regeneration.py scripts/verify-codex-order.py scripts/verify-rules-guide.py
+          git rm --ignore-unmatch deploy-assets/release-1.6.1.json deploy-assets/release-1.6.1.part1.b64 deploy-assets/release-1.6.1.part2.b64 deploy-assets/release-1.6.1.part3.b64
+          rm -f deploy-assets/release-1.6.1.delta.b64
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist verified full-board regeneration web 1.5.5 [skip ci]'
+            git commit -m 'deploy: persist verified scene audio mythic and full regeneration 1.6.1 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
-      - name: Deploy Pages
-        id: deployment
+      - name: Publish GitHub Pages
+        id: publish
         continue-on-error: true
         uses: actions/deploy-pages@v4
-      - name: Back off on transient Pages failure
-        if: steps.deployment.outcome == 'failure'
+      - name: Backoff for transient publication failure
+        if: steps.publish.outcome == 'failure'
         run: sleep 10
-      - name: Retry same verified artifact
+      - name: Retry the same verified Pages artifact
         id: retry
-        if: steps.deployment.outcome == 'failure'
+        if: steps.publish.outcome == 'failure'
         uses: actions/deploy-pages@v4
-      - name: Verify the actual live website
+      - name: Verify the actual live site with isolated game API fixtures
         run: |
+          set -euo pipefail
           sleep 5
+          python3 release-tools/verify-audio-mythic.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-audio-mythic
           python3 scripts/verify-board-regeneration.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-regeneration
-          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading
           python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo
           python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex
-          python3 scripts/verify-rules-guide.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-help
+          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: full-regeneration-browser-verification
+          name: release-1.6.1-live-and-candidate-verification
           path: |
             predeploy-*
             live-*
