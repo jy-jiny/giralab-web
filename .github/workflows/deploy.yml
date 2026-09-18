@@ -6,8 +6,9 @@ on:
       - '.github/workflows/deploy.yml'
       - 'site/**'
       - 'scripts/verify-*.py'
-      - 'release-tools/**'
-      - 'deploy-assets/release-1.6.1*'
+      - 'scripts/restore-loading-audio.py'
+      - 'release-tools/verify-audio-mythic.py'
+      - 'deploy-assets/loading-audio*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -28,49 +29,43 @@ jobs:
       url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Require production storage support before publishing the new client
+      - name: Verify unchanged storage compatibility
         run: |
           python3 - <<'PY'
           import json,urllib.request
           req=urllib.request.Request('https://tqqgnrfklhmxwsphjera.supabase.co/functions/v1/giralab-game/api/health',headers={'Origin':'https://jy-jiny.github.io'})
           with urllib.request.urlopen(req,timeout=30) as response:health=json.load(response)
           assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
-          print('Live storage server supports all 19 recipes:',health)
+          print('Existing storage server compatible:',health)
           PY
-      - name: Restore the exact integrated build and bind regression verifiers
+      - name: Restore exact tested audio build and browser tests
         run: |
-          set -euo pipefail
-          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6
-          if compgen -G 'deploy-assets/release-1.6.1.part*.b64' > /dev/null; then
-            cat deploy-assets/release-1.6.1.part*.b64 > deploy-assets/release-1.6.1.delta.b64
-          fi
-          python3 release-tools/prepare-1.6.1.py
+          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
+          python3 scripts/restore-loading-audio.py
           for f in site/assets/*.js; do node --check "$f"; done
-          python3 -m py_compile release-tools/*.py scripts/verify-*.py
-      - name: Install browser verifier and Korean fonts
+          python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
+      - name: Install Korean fonts for mobile screenshots
         run: |
-          python3 -m pip install --disable-pip-version-check playwright==1.55.0
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify music, mythic, fresh boards and existing features before deployment
+      - name: Verify loading audio and existing gameplay before publishing
         run: |
           set -euo pipefail
+          python3 scripts/verify-loading-audio.py --site site --out predeploy-loading-audio
           python3 release-tools/verify-audio-mythic.py --site site --out predeploy-audio-mythic
           python3 scripts/verify-board-regeneration.py --site site --out predeploy-regeneration
           python3 scripts/verify-combo-browser.py --site site --out predeploy-combo
           python3 scripts/verify-codex-order.py --site site --out predeploy-codex
           python3 scripts/verify-live-loading.py --site site --out predeploy-loading
-      - name: Persist validated static bytes and remove temporary transport files
+      - name: Persist verified files and remove completed transfer
         run: |
-          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-board-regeneration.py scripts/verify-codex-order.py scripts/verify-rules-guide.py
-          git rm --ignore-unmatch deploy-assets/release-1.6.1.json deploy-assets/release-1.6.1.part1.b64 deploy-assets/release-1.6.1.part2.b64 deploy-assets/release-1.6.1.part3.b64
-          rm -f deploy-assets/release-1.6.1.delta.b64
+          git add scripts/verify-loading-audio.py scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-board-regeneration.py scripts/verify-codex-order.py release-tools/verify-audio-mythic.py
+          git rm --ignore-unmatch deploy-assets/loading-audio.json deploy-assets/loading-audio.delta.b64
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist verified scene audio mythic and full regeneration 1.6.1 [skip ci]'
+            git commit -m 'deploy: persist verified loading audio and gear-only controls web 1.6.2 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -81,17 +76,18 @@ jobs:
         id: publish
         continue-on-error: true
         uses: actions/deploy-pages@v4
-      - name: Backoff for transient publication failure
+      - name: Brief backoff for transient Pages error
         if: steps.publish.outcome == 'failure'
         run: sleep 10
-      - name: Retry the same verified Pages artifact
+      - name: Retry the same verified artifact
         id: retry
         if: steps.publish.outcome == 'failure'
         uses: actions/deploy-pages@v4
-      - name: Verify the actual live site with isolated game API fixtures
+      - name: Verify actual live loading audio and preserved game behavior
         run: |
           set -euo pipefail
           sleep 5
+          python3 scripts/verify-loading-audio.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-audio
           python3 release-tools/verify-audio-mythic.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-audio-mythic
           python3 scripts/verify-board-regeneration.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-regeneration
           python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo
@@ -100,7 +96,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: release-1.6.1-live-and-candidate-verification
+          name: loading-audio-1.6.2-live-verification
           path: |
             predeploy-*
             live-*
