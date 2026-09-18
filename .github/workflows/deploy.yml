@@ -7,6 +7,9 @@ on:
       - '.github/workflows/deploy.yml'
       - 'site/**'
       - 'scripts/verify-live-loading.py'
+      - 'scripts/verify-combo-browser.py'
+      - 'scripts/apply-static-update.py'
+      - 'deploy-assets/combo-v2.delta.b64'
       - 'deploy-assets/approved-web-import.json'
   workflow_dispatch:
 
@@ -28,7 +31,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Import the verified source build into the durable site
+      - name: Apply the checksum-verified combo build
+        if: hashFiles('deploy-assets/combo-v2.delta.b64') != ''
+        run: python3 scripts/apply-static-update.py
+      - name: Import and validate the durable site
         shell: bash
         run: |
           set -euo pipefail
@@ -53,7 +59,6 @@ jobs:
               assert meta['approved_image_sha256'] == data['artworkSHA256']
               art = (staging / 'giralab-loading-approved-aecda336.jpg').read_bytes()
               assert len(art) == 195444 and hashlib.sha256(art).hexdigest() == data['artworkSHA256']
-              # Replace only generated deploy output; previous files remain in git history.
               if destination.exists(): shutil.rmtree(destination)
               staging.rename(destination)
               (destination / 'loading-build.json').write_text(json.dumps({'sourceRun':data['sourceRun'],'sourceCommit':data['sourceCommit'],'bundleSHA256':data['sha256'],'artworkSHA256':data['artworkSHA256'],'dimensions':[864,1536],'imageUnchanged':True},indent=2))
@@ -63,6 +68,13 @@ jobs:
           assert hashlib.sha256(art).hexdigest() == 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
           assert not Path('site/loading-fix.js').exists() and not Path('site/loading-fix.css').exists()
           Path('site/.nojekyll').touch()
+          # Report the actual imported source revision in the existing loader tests.
+          verifier = Path('scripts/verify-live-loading.py')
+          source = verifier.read_text()
+          revision = json.loads(Path('site/source-build.json').read_text())['source_commit']
+          import re
+          source = re.sub(r"^COMMIT = '[0-9a-f]+'$", 'COMMIT = ' + repr(revision), source, flags=re.M)
+          verifier.write_text(source)
           PY
           for file in site/assets/*.js; do node --check "$file"; done
       - name: Install browser verifier and Korean fonts
@@ -71,7 +83,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
       - name: Verify the candidate before deployment
-        run: python3 scripts/verify-live-loading.py --site site --out predeploy-proof
+        run: |
+          python3 scripts/verify-live-loading.py --site site --out predeploy-proof
+          python3 scripts/verify-combo-browser.py --site site --out predeploy-combo-proof
       - name: Persist the verified static build
         shell: bash
         run: |
@@ -79,9 +93,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git rm --ignore-unmatch deploy-assets/approved-web-import.json
+          git add scripts/verify-live-loading.py
+          git rm --ignore-unmatch deploy-assets/approved-web-import.json deploy-assets/combo-v2.delta.b64
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist exact uploaded image and verified loading build [skip ci]'
+            git commit -m 'deploy: persist tested combo balance v2 and unchanged loading artwork [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -97,13 +112,16 @@ jobs:
         run: |
           sleep 5
           python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-proof
+          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo-proof
       - name: Upload browser screenshots and results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: exact-image-live-verification
+          name: combo-and-loading-live-verification
           path: |
             predeploy-proof
+            predeploy-combo-proof
             live-loading-proof
+            live-combo-proof
           if-no-files-found: warn
           retention-days: 7
