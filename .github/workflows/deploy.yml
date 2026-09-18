@@ -1,127 +1,122 @@
 name: Deploy GiraLab Web
-
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/deploy.yml'
       - 'site/**'
-      - 'scripts/verify-live-loading.py'
-      - 'scripts/verify-combo-browser.py'
-      - 'scripts/verify-recipe-tiers.py'
-      - 'scripts/verify-rules-guide.py'
-      - 'scripts/verify-codex-order.py'
-      - 'scripts/apply-codex-order.py'
-      - 'deploy-assets/codex-order-web.delta.b64'
-      - 'deploy-assets/codex-order-web.json'
+      - 'scripts/verify-*.py'
+      - 'deploy-assets/board-regeneration-import.json'
   workflow_dispatch:
-
 permissions:
   contents: write
   pages: write
   id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
-
+defaults:
+  run:
+    shell: bash
 jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.retry.outputs.page_url }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Restore the exact tested grouped-codex build
-        if: hashFiles('deploy-assets/codex-order-web.delta.b64') != ''
-        run: |
-          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6
-          python3 scripts/apply-codex-order.py
-      - name: Validate build metadata and bind existing regression tests
-        shell: bash
+      - name: Import only the checksum-verified live-compatible artifact
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib,json,re
           from pathlib import Path
-          assert Path('site/index.html').is_file()
-          art=Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
-          assert len(art)==195444 and hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-          assert not Path('site/loading-fix.js').exists() and not Path('site/loading-fix.css').exists()
-          Path('site/.nojekyll').touch()
+          import hashlib,io,json,re,shutil,urllib.request,zipfile
+          spec=Path('deploy-assets/board-regeneration-import.json')
+          if spec.exists():
+              data=json.loads(spec.read_text())
+              with urllib.request.urlopen(data['url'],timeout=60) as response:bundle=response.read()
+              assert hashlib.sha256(bundle).hexdigest()==data['sha256']
+              staging=Path('site-import').resolve();staging.mkdir(exist_ok=True)
+              with zipfile.ZipFile(io.BytesIO(bundle)) as archive:
+                  assert sum(f.file_size for f in archive.infolist())<100_000_000
+                  for name in archive.namelist():assert (staging/name).resolve().is_relative_to(staging)
+                  archive.extractall(staging)
+              meta=json.loads((staging/'source-build.json').read_text())
+              assert meta['source_commit']==data['source_commit']=='fc92a788e5274f03461f6054e36cd43148942bd0'
+              assert meta['game_version']=='1.5.5' and meta['recipe_count']==18 and meta['rules_version']==2
+              assert meta['board_regeneration_mode']=='full-new' and meta['regeneration_animation']=='preserved'
+              for name in ['giralab-loading-approved-aecda336.jpg','giraffe-scientist.webp','ingredients.png','audio/kitchen-rush.ogg']:
+                  assert (Path('site')/name).read_bytes()==(staging/name).read_bytes(),name
+              shutil.rmtree('site');staging.rename('site')
+              Path('site/loading-build.json').write_text(json.dumps({'sourceRun':35334546811,'sourceCommit':meta['source_commit'],'artworkSHA256':meta['approved_image_sha256'],'dimensions':[864,1536],'imageUnchanged':True,'gameVersion':'1.5.5','rulesVersion':2,'boardRegenerationMode':'full-new'},indent=2))
           meta=json.loads(Path('site/source-build.json').read_text())
-          assert meta['game_version']=='1.5.4' and meta['recipe_tier_badges'] is True
-          assert meta['automatic_board_hints'] is False and meta['rules_version']==2
-          assert meta['board_validity_max_tier']=='advanced' and meta['rules_guide'] is True and meta['tier_palette_version']==2
-          assert meta['codex_grouped'] is True and meta['recipe_badge_position']=='below-name' and meta['rare_display_name']=='전설'
-          revision=meta['source_commit']
-          verifier=Path('scripts/verify-live-loading.py')
-          verifier.write_text(re.sub(r"^COMMIT = '[0-9a-f]+'$",'COMMIT = '+repr(revision),verifier.read_text(),flags=re.M))
-          verifier=Path('scripts/verify-combo-browser.py')
-          source=re.sub(r"^EXPECTED='[0-9a-f]+'$",'EXPECTED='+repr(revision),verifier.read_text(),flags=re.M)
-          source=re.sub(r'GiraLab · [0-9]+\.[0-9]+\.[0-9]+','GiraLab · '+meta['game_version'],source)
-          verifier.write_text(source)
-          verifier=Path('scripts/verify-rules-guide.py')
-          verifier.write_text(verifier.read_text().replace('1.5.3',meta['game_version']).replace('레어','전설'))
-          # Keep the previous verifier entrypoint working, now with ID-based sorted checks.
-          Path('scripts/verify-recipe-tiers.py').write_text('import runpy\nfrom pathlib import Path\nif __name__ == "__main__":\n    runpy.run_path(str(Path(__file__).with_name("verify-codex-order.py")), run_name="__main__")\n')
+          assert meta['game_version']=='1.5.5' and meta['board_regeneration_mode']=='full-new'
+          assert meta['automatic_board_hints'] is False and meta['board_validity_max_tier']=='advanced'
+          art=Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
+          assert hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
+          Path('site/.nojekyll').touch()
+          for name in ['verify-live-loading.py','verify-combo-browser.py','verify-codex-order.py','verify-rules-guide.py']:
+              p=Path('scripts')/name;s=p.read_text().replace('1.5.4','1.5.5').replace('재배치','재생성')
+              s=re.sub(r"^COMMIT = '[0-9a-f]+'$",'COMMIT = '+repr(meta['source_commit']),s,flags=re.M)
+              s=re.sub(r"^EXPECTED='[0-9a-f]+'$",'EXPECTED='+repr(meta['source_commit']),s,flags=re.M)
+              s=s.replace("'최대 32번'","'판 전체 54칸'").replace("'최대 3칸'","'새 재료로 다시 생성'")
+              p.write_text(s)
           PY
-          for file in site/assets/*.js; do node --check "$file"; done
-      - name: Install browser verifier and Korean fonts
+          for f in site/assets/*.js; do node --check "$f"; done
+      - name: Install browser verifier
         run: |
           python3 -m pip install --disable-pip-version-check playwright==1.55.0
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify the candidate before publishing
+      - name: Verify regeneration and all existing live behavior before publication
         run: |
-          python3 scripts/verify-live-loading.py --site site --out predeploy-proof
-          python3 scripts/verify-combo-browser.py --site site --out predeploy-combo-proof
-          python3 scripts/verify-recipe-tiers.py --site site --out predeploy-codex-order-proof
-          python3 scripts/verify-rules-guide.py --site site --out predeploy-rules-guide-proof
-      - name: Persist the verified static build
-        shell: bash
+          python3 scripts/verify-board-regeneration.py --site site --out predeploy-regeneration
+          python3 scripts/verify-live-loading.py --site site --out predeploy-loading
+          python3 scripts/verify-combo-browser.py --site site --out predeploy-combo
+          python3 scripts/verify-codex-order.py --site site --out predeploy-codex
+          python3 scripts/verify-rules-guide.py --site site --out predeploy-help
+      - name: Persist the tested build so deployment no longer needs an expiring URL
         run: |
-          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-recipe-tiers.py scripts/verify-rules-guide.py
-          git rm --ignore-unmatch deploy-assets/codex-order-web.delta.b64 deploy-assets/codex-order-web.json
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-codex-order.py scripts/verify-rules-guide.py
+          git rm --ignore-unmatch deploy-assets/board-regeneration-import.json
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist verified grouped codex and badge layout v1.5.4 [skip ci]'
+            git commit -m 'deploy: persist verified full-board regeneration web 1.5.5 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
       - name: Deploy Pages
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Back off on transient Pages failure
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 10
+      - name: Retry same verified artifact
+        id: retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
       - name: Verify the actual live website
         run: |
           sleep 5
-          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-proof
-          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo-proof
-          python3 scripts/verify-recipe-tiers.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex-order-proof
-          python3 scripts/verify-rules-guide.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-rules-guide-proof
-      - name: Upload screenshots and verification results
+          python3 scripts/verify-board-regeneration.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-regeneration
+          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading
+          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo
+          python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex
+          python3 scripts/verify-rules-guide.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-help
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: codex-order-badge-layout-verification
+          name: full-regeneration-browser-verification
           path: |
-            predeploy-proof
-            predeploy-combo-proof
-            predeploy-codex-order-proof
-            predeploy-rules-guide-proof
-            live-loading-proof
-            live-combo-proof
-            live-codex-order-proof
-            live-rules-guide-proof
+            predeploy-*
+            live-*
           if-no-files-found: warn
           retention-days: 7
