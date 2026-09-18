@@ -8,6 +8,7 @@ on:
       - 'site/**'
       - 'scripts/verify-live-loading.py'
       - 'scripts/verify-combo-browser.py'
+      - 'scripts/verify-recipe-tiers.py'
       - 'scripts/apply-static-update.py'
       - 'deploy-assets/combo-v2.delta.b64'
       - 'deploy-assets/approved-web-import.json'
@@ -39,7 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib, io, json, shutil, urllib.request, zipfile
+          import hashlib, io, json, re, shutil, urllib.request, zipfile
           from pathlib import Path
           spec = Path('deploy-assets/approved-web-import.json')
           if spec.exists():
@@ -61,20 +62,23 @@ jobs:
               assert len(art) == 195444 and hashlib.sha256(art).hexdigest() == data['artworkSHA256']
               if destination.exists(): shutil.rmtree(destination)
               staging.rename(destination)
-              (destination / 'loading-build.json').write_text(json.dumps({'sourceRun':data['sourceRun'],'sourceCommit':data['sourceCommit'],'bundleSHA256':data['sha256'],'artworkSHA256':data['artworkSHA256'],'dimensions':[864,1536],'imageUnchanged':True},indent=2))
+              (destination / 'loading-build.json').write_text(json.dumps({'sourceRun':data['sourceRun'],'sourceCommit':data['sourceCommit'],'bundleSHA256':data['sha256'],'artworkSHA256':data['artworkSHA256'],'dimensions':[864,1536],'imageUnchanged':True,'gameVersion':meta['game_version']},indent=2))
           assert Path('site/index.html').is_file(), 'Missing validated static build'
           art = Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
           assert len(art) == 195444
           assert hashlib.sha256(art).hexdigest() == 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
           assert not Path('site/loading-fix.js').exists() and not Path('site/loading-fix.css').exists()
           Path('site/.nojekyll').touch()
-          # Report the actual imported source revision in the existing loader tests.
+          meta = json.loads(Path('site/source-build.json').read_text())
+          revision = meta['source_commit']
           verifier = Path('scripts/verify-live-loading.py')
-          source = verifier.read_text()
-          revision = json.loads(Path('site/source-build.json').read_text())['source_commit']
-          import re
-          source = re.sub(r"^COMMIT = '[0-9a-f]+'$", 'COMMIT = ' + repr(revision), source, flags=re.M)
+          source = re.sub(r"^COMMIT = '[0-9a-f]+'$", 'COMMIT = ' + repr(revision), verifier.read_text(), flags=re.M)
           verifier.write_text(source)
+          verifier = Path('scripts/verify-combo-browser.py')
+          source = re.sub(r"^EXPECTED='[0-9a-f]+'$", 'EXPECTED=' + repr(revision), verifier.read_text(), flags=re.M)
+          source = re.sub(r'GiraLab · [0-9]+\.[0-9]+\.[0-9]+', 'GiraLab · ' + meta['game_version'], source)
+          verifier.write_text(source)
+          assert meta['game_version'] == '1.5.1' and meta['recipe_tier_badges'] is True
           PY
           for file in site/assets/*.js; do node --check "$file"; done
       - name: Install browser verifier and Korean fonts
@@ -86,6 +90,7 @@ jobs:
         run: |
           python3 scripts/verify-live-loading.py --site site --out predeploy-proof
           python3 scripts/verify-combo-browser.py --site site --out predeploy-combo-proof
+          python3 scripts/verify-recipe-tiers.py --site site --out predeploy-recipe-tier-proof
       - name: Persist the verified static build
         shell: bash
         run: |
@@ -93,10 +98,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add scripts/verify-live-loading.py
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py
           git rm --ignore-unmatch deploy-assets/approved-web-import.json deploy-assets/combo-v2.delta.b64
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: persist tested combo balance v2 and unchanged loading artwork [skip ci]'
+            git commit -m 'deploy: persist verified recipe tier badges v1.5.1 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -113,15 +118,18 @@ jobs:
           sleep 5
           python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-proof
           python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo-proof
+          python3 scripts/verify-recipe-tiers.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-recipe-tier-proof
       - name: Upload browser screenshots and results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: combo-and-loading-live-verification
+          name: recipe-tiers-combo-and-loading-verification
           path: |
             predeploy-proof
             predeploy-combo-proof
+            predeploy-recipe-tier-proof
             live-loading-proof
             live-combo-proof
+            live-recipe-tier-proof
           if-no-files-found: warn
           retention-days: 7
