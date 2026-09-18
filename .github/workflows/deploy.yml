@@ -6,10 +6,10 @@ on:
       - '.github/workflows/deploy.yml'
       - 'site/**'
       - 'scripts/verify-*.py'
-      - 'scripts/restore-theme-book.py'
+      - 'scripts/restore-dark-lobby.py'
       - 'release-tools/verify-audio-mythic.py'
-      - 'release-tools/theme-book-public.part*'
-      - 'deploy-assets/theme-book*'
+      - 'release-tools/dark-lobby-public.part*'
+      - 'deploy-assets/dark-lobby*'
   workflow_dispatch:
 permissions:
   contents: write
@@ -39,20 +39,21 @@ jobs:
           assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
           print('Existing storage server compatible:',health)
           PY
-      - name: Restore exact tested theme codex and regression verifiers
+      - name: Restore exact tested dark lobby and regression verifiers
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
-          python3 scripts/restore-theme-book.py
+          python3 scripts/restore-dark-lobby.py
           for f in site/assets/*.js; do node --check "$f"; done
           python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
       - name: Install Korean fonts for mobile screenshots
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify theme codex, lobby and preserved game before publication
+      - name: Verify dark carousel, theme codex and preserved game before publication
         run: |
           set -euo pipefail
+          python3 scripts/verify-dark-lobby.py --site site --out predeploy-dark-lobby
           python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
           python3 scripts/verify-theme-lobby.py --site site --out predeploy-theme-lobby
           python3 scripts/verify-game-music.py --site site --out predeploy-game-music
@@ -69,9 +70,10 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
           git add scripts/verify-*.py release-tools/verify-audio-mythic.py
-          git rm --ignore-unmatch deploy-assets/theme-book.json deploy-assets/theme-book.delta.b64
+          git rm --ignore-unmatch deploy-assets/dark-lobby.json deploy-assets/dark-lobby.delta.b64 deploy-assets/dark-lobby-import.json
+          rm -f deploy-assets/dark-lobby.json deploy-assets/dark-lobby.delta.b64
           if ! git diff --cached --quiet; then
-            git commit -m 'deploy: verified theme-specific options codex, preserved burger game web 1.7.1 [skip ci]'
+            git commit -m 'deploy: verified original-dark horizontal theme lobby, preserved game web 1.7.2 [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v5
@@ -89,10 +91,11 @@ jobs:
         id: retry
         if: steps.publish.outcome == 'failure'
         uses: actions/deploy-pages@v4
-      - name: Verify actual live theme codex, lobby and preserved gameplay
+      - name: Verify actual live dark carousel, theme codex and preserved gameplay
         run: |
           set -euo pipefail
           sleep 5
+          python3 scripts/verify-dark-lobby.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-dark-lobby
           python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-book
           python3 scripts/verify-theme-lobby.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-lobby
           python3 scripts/verify-game-music.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-game-music
@@ -105,7 +108,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: theme-book-1.7.1-live-verification
+          name: dark-lobby-1.7.2-live-verification
           path: |
             predeploy-*
             live-*
