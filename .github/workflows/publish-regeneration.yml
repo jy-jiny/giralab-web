@@ -1,0 +1,95 @@
+name: Publish verified full regeneration
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-regeneration.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct and checksum-verify the exact source build
+        run: |
+          python3 scripts/restore-board-regeneration.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          meta=json.loads(Path('site/source-build.json').read_text())
+          for name in ['verify-live-loading.py','verify-combo-browser.py','verify-codex-order.py','verify-rules-guide.py']:
+              p=Path('scripts')/name;s=p.read_text().replace('1.5.4','1.5.5').replace('재배치','재생성')
+              s=re.sub(r"^COMMIT = '[0-9a-f]+'$",'COMMIT = '+repr(meta['source_commit']),s,flags=re.M)
+              s=re.sub(r"^EXPECTED='[0-9a-f]+'$",'EXPECTED='+repr(meta['source_commit']),s,flags=re.M)
+              s=s.replace("'최대 32번'","'판 전체 54칸'").replace("'최대 3칸'","'새 재료로 다시 생성'")
+              p.write_text(s)
+          PY
+          for f in site/assets/*.js; do node --check "$f"; done
+      - name: Install browser verifier
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify candidate regeneration, animation and existing gameplay
+        run: |
+          python3 scripts/verify-board-regeneration.py --site site --out predeploy-regeneration
+          python3 scripts/verify-live-loading.py --site site --out predeploy-loading
+          python3 scripts/verify-combo-browser.py --site site --out predeploy-combo
+          python3 scripts/verify-codex-order.py --site site --out predeploy-codex
+          python3 scripts/verify-rules-guide.py --site site --out predeploy-help
+      - name: Store verified static files and remove temporary transports
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A site
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py scripts/verify-codex-order.py scripts/verify-rules-guide.py
+          git rm --ignore-unmatch deploy-assets/board-regeneration.text.json deploy-assets/board-regeneration-import.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'deploy: persist verified full-board regeneration 1.5.5 [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish Pages
+        id: publish
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Backoff for transient Pages failure
+        if: steps.publish.outcome == 'failure'
+        run: sleep 10
+      - name: Retry the same verified artifact
+        id: retry
+        if: steps.publish.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Verify the actual live game
+        run: |
+          sleep 5
+          python3 scripts/verify-board-regeneration.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-regeneration
+          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading
+          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo
+          python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex
+          python3 scripts/verify-rules-guide.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-help
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-regeneration-browser-proof
+          path: |
+            predeploy-*
+            live-*
+          if-no-files-found: warn
+          retention-days: 7
