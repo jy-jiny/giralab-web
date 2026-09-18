@@ -3,7 +3,7 @@ import argparse, json, os, shutil, subprocess, tempfile, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.6.1'
+VERSION='1.6.2'
 IDS=['classic','cheese','green','bacon','double-patty','double','bacon-cheese','cheese-melt','garden-stack','smoky-green','bacon-first','green-cheese','cheese-bacon-stack','double-bacon','cheese-mad','meat-monster','green-monster','bacon-bomb','forbidden-seven']
 MYTH=['bun','bacon','bacon','bacon','bacon','bacon','bun']
 HOOK="window.__boardDraws=[];const originalRandom=Math.random;Math.random=()=>window.__boardDraws.length?window.__boardDraws.shift():originalRandom();window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t;}}});"
@@ -53,7 +53,7 @@ def verify(base,out):
                 for attempt in range(100):
                     before=untouched('window.__gameTools.get_audio_state?.execute({})')
                     home=untouched('document.querySelector(".home-version")?.textContent')
-                    if before and home=='GiraLab · '+VERSION and (before['labPlaying'] or untouched('!!document.querySelector(".audio-enable")')):break
+                    if before and home=='GiraLab · '+VERSION and (before['labPlaying'] or before['context']=='suspended' or before['musicVolume']==0):break
                     page.wait_for_timeout(100)
                 assert before and home=='GiraLab · '+VERSION,(before,home)
                 activation=untouched('navigator.userActivation.hasBeenActive')
@@ -64,7 +64,7 @@ def verify(base,out):
                     assert not untouched('!!document.querySelector(".audio-enable")')
                 else:
                     assert before['context']=='suspended',before
-                    assert untouched('!!document.querySelector(".audio-enable")')
+                    assert not untouched('!!document.querySelector(".audio-enable")')
                 audio=lambda:untouched('window.__gameTools.get_audio_state.execute({})')
                 game=lambda:untouched('window.__gameTools.get_game_state.execute({})')
                 page.locator('.home-play').click()

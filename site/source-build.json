@@ -1,8 +1,8 @@
 {
-  "source_commit": "a0613d4a851c62a0072caedb71102a97b1b13f77",
+  "source_commit": "b50c6b183cef21932bd24637f44d079cff032b34",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
-  "game_version": "1.6.1",
+  "game_version": "1.6.2",
   "recipe_tier_badges": true,
   "automatic_board_hints": false,
   "board_validity_max_tier": "advanced",
@@ -18,5 +18,8 @@
   "audio_scene_tracks": true,
   "autoplay_recovery": true,
   "mythic_presentation_pause": 0.85,
-  "server_function_version": 2
+  "server_function_version": 2,
+  "loading_lab_music": true,
+  "audio_controls": "settings-only",
+  "persistent_loading_mixer": true
 }
