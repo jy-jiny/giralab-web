@@ -1,0 +1,48 @@
+name: Deploy GiraLab Web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download built web bundle
+        run: |
+          curl -fL 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-50b8-8206-a3a6-f939d80cb560/raw?se=2026-09-18T02%3A03%3A49Z&sp=r&sv=2026-02-06&sr=b&scid=8e04a565-b38b-5db7-8408-3b64ac7d9950&skoid=b1bca990-dcac-4c31-8ca1-ac563cf24c54&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-17T18%3A08%3A38Z&ske=2026-09-18T18%3A08%3A38Z&sks=b&skv=2026-02-06&sig=B/EqCQpbJQDF5qU1W94NPrqUpjmbToCJ1wwB%2BZ%2BrITA%3D' -o giralab-web-dist.zip
+          mkdir -p site
+          unzip -q giralab-web-dist.zip -d site
+          touch site/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
