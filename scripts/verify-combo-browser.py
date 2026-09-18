@@ -2,7 +2,7 @@
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='54622a0f0bdbfb22247ddd2fbcd0af46911b45ed'
+EXPECTED='0da775c09b2f23ad9401923c2773530604ff83e4'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -55,7 +55,7 @@ def verify(base,out):
    page.route('**/api/**',fixture)
    page.goto(base+'?balance=2',wait_until='domcontentloaded')
    page.locator('.home-screen').wait_for(state='visible')
-   assert page.locator('.home-version').inner_text()=='GiraLab · 1.5.1'
+   assert page.locator('.home-version').inner_text()=='GiraLab · 1.5.2'
    # Deterministic gameplay RNG, set after boot so unrelated framework setup cannot consume it.
    page.evaluate("()=>{let seed=20260918;Math.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296)}")
    page.locator('.home-play').click();page.locator('[data-balance-version="2"]').wait_for(state='visible')
@@ -86,12 +86,12 @@ def verify(base,out):
    assert page.locator('.combo-hot,.combo-fever').count()==1
    before=state()['board'];page.wait_for_timeout(8250)
    assert state()['board']==before
-   assert page.locator('.hinted-tile').count()>=3
+   assert page.locator('.hinted-tile,.hint-order').count()==0
    assert not errors,errors
    report['tests'].append({'viewport':[width,height],'played':played,'idle_board_unchanged':True,'hint_tiles':page.locator('.hinted-tile').count(),'page_errors':errors})
-   page.screenshot(path=str(out/f'hints-{width}x{height}.png'))
+   page.screenshot(path=str(out/f'no-hints-{width}x{height}.png'))
    meta=ctx.request.get(base+'source-build.json?balance=2').json()
-   assert meta['source_commit']==EXPECTED and meta['rules_version']==2,meta
+   assert meta['source_commit']==EXPECTED and meta['rules_version']==2 and meta['automatic_board_hints'] is False,meta
    art=ctx.request.get(base+'giralab-loading-approved-aecda336.jpg').body()
    assert hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
    ctx.close()

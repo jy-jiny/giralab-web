@@ -10,7 +10,7 @@ LABELS = {'normal':'일반 조합','advanced':'고급 조합','rare':'레어 조
 
 def verify(base, out):
     out.mkdir(parents=True, exist_ok=True)
-    report = {'base_url':base, 'game_version':'1.5.1', 'network':'Isolated API fixtures; no production writes', 'tests':[]}
+    report = {'base_url':base, 'game_version':'1.5.2', 'network':'Isolated API fixtures; no production writes', 'tests':[]}
     with sync_playwright() as p:
         browser = p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium') or None, args=['--no-sandbox','--disable-dev-shm-usage'])
         for width, height in [(360,640),(390,844),(412,915)]:
@@ -25,9 +25,9 @@ def verify(base, out):
                     data = {'player':{'id':'recipe-tier-qa','nickname':'도감검증'}} if name == 'player' else {'entries':[],'me':None} if name == 'leaderboard' else {'unlocked':IDS if discovered else ['classic'],'bestScore':0}
                     route.fulfill(status=200, content_type='application/json', body=json.dumps(data))
                 page.route('**/api/**', fixture)
-                page.goto(base+'?recipe-tiers=1.5.1', wait_until='domcontentloaded')
+                page.goto(base+'?recipe-tiers=1.5.2', wait_until='domcontentloaded')
                 page.locator('.home-screen').wait_for(state='visible')
-                expect(page.locator('.home-version')).to_have_text('GiraLab · 1.5.1')
+                expect(page.locator('.home-version')).to_have_text('GiraLab · 1.5.2')
                 page.get_by_role('button', name='옵션', exact=True).click()
                 page.get_by_role('button', name=re.compile('레시피 도감')).click()
                 page.locator('.recipe-grid').wait_for(state='visible')
