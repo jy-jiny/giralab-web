@@ -53,7 +53,7 @@ jobs:
           js_file = next(Path("site/assets").glob("*.js"))
           js = js_file.read_text()
           old_preload = '[`/ingredients.png`,`/giralab-loading-screen.webp`]'
-          new_preload = '[`/ingredients.png`,`/giraffe-scientist-hq.webp`]'
+          new_preload = '[`/ingredients.png`,`/giraffe-scientist.webp`]'
           if old_preload not in js:
               raise SystemExit("expected loading preload not found")
           js = js.replace(old_preload, new_preload, 1)
@@ -61,7 +61,7 @@ jobs:
           end = js.find(":i?", start)
           if start < 0 or end < 0:
               raise SystemExit("expected compiled splash branch not found")
-          new_branch = "return E||!s?(0,F.jsxs)(`main`,{className:`boot-screen giralab-loading-screen`,\"aria-label\":`GiraLab 로딩 중`,children:[(0,F.jsxs)(`div`,{className:`boot-science-bg`,\"aria-hidden\":!0,children:[(0,F.jsx)(`span`,{className:`boot-dna boot-dna-left`}),(0,F.jsx)(`span`,{className:`boot-dna boot-dna-right`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-a`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-b`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-c`})]}),(0,F.jsxs)(`div`,{className:`boot-hero`,children:[(0,F.jsx)(`img`,{className:`boot-mascot-hq`,src:mc(`giraffe-scientist-hq.webp`),alt:``,fetchPriority:`high`,draggable:!1}),(0,F.jsxs)(`div`,{className:`boot-brand-mark`,\"aria-hidden\":!0,children:[(0,F.jsx)(`i`,{}),(0,F.jsx)(`i`,{}),(0,F.jsx)(`i`,{})]}),(0,F.jsx)(`h1`,{children:`GiraLab`})]}),(0,F.jsxs)(`div`,{className:`boot-bottom`,children:[(0,F.jsx)(`div`,{className:`boot-progress-track`,role:`progressbar`,\"aria-label\":`게임 준비 진행`,\"aria-valuemin\":0,\"aria-valuemax\":100,\"aria-valuenow\":_e,children:(0,F.jsx)(`span`,{style:{transform:`scaleX(${Math.max(0,Math.min(100,_e))/100})`}})}),(0,F.jsx)(`p`,{children:_e===100?`준비 완료`:`로딩 중...`})]})]})"
+          new_branch = "return E||!s?(0,F.jsxs)(`main`,{className:`boot-screen giralab-loading-screen`,\"aria-label\":`GiraLab 로딩 중`,children:[(0,F.jsxs)(`div`,{className:`boot-science-bg`,\"aria-hidden\":!0,children:[(0,F.jsx)(`span`,{className:`boot-dna boot-dna-left`}),(0,F.jsx)(`span`,{className:`boot-dna boot-dna-right`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-a`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-b`}),(0,F.jsx)(`span`,{className:`boot-hex boot-hex-c`})]}),(0,F.jsxs)(`div`,{className:`boot-hero`,children:[(0,F.jsx)(`img`,{className:`boot-mascot-hq`,src:mc(`giraffe-scientist.webp`),alt:``,fetchPriority:`high`,draggable:!1}),(0,F.jsxs)(`div`,{className:`boot-brand-mark`,\"aria-hidden\":!0,children:[(0,F.jsx)(`i`,{}),(0,F.jsx)(`i`,{}),(0,F.jsx)(`i`,{})]}),(0,F.jsx)(`h1`,{children:`GiraLab`})]}),(0,F.jsxs)(`div`,{className:`boot-bottom`,children:[(0,F.jsx)(`div`,{className:`boot-progress-track`,role:`progressbar`,\"aria-label\":`게임 준비 진행`,\"aria-valuemin\":0,\"aria-valuemax\":100,\"aria-valuenow\":_e,children:(0,F.jsx)(`span`,{style:{transform:`scaleX(${Math.max(0,Math.min(100,_e))/100})`}})}),(0,F.jsx)(`p`,{children:_e===100?`준비 완료`:`로딩 중...`})]})]})"
           js = js[:start] + new_branch + js[end:]
           js_file.write_text(js)
           print(js_file)
@@ -111,7 +111,7 @@ jobs:
           .boot-hex{position:absolute;width:74px;height:64px;border:2px solid rgba(37,154,255,.28);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
           .boot-hex-a{left:5%;top:31%}.boot-hex-b{right:7%;top:28%;transform:scale(.82)}.boot-hex-c{right:15%;top:39%;transform:scale(.56)}
           .boot-hero{position:absolute;left:50%;top:2.5%;transform:translateX(-50%);width:min(96vw,520px);height:74dvh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center}
-          .boot-mascot-hq{display:block;width:min(79vw,405px);height:min(55dvh,610px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 24px rgba(0,0,0,.3)) drop-shadow(0 0 18px rgba(0,130,255,.22));margin-top:1dvh}
+          .boot-mascot-hq{display:block;width:min(62vw,280px);height:min(44dvh,430px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 20px 24px rgba(0,0,0,.3)) drop-shadow(0 0 18px rgba(0,130,255,.22));margin-top:1dvh}
           .boot-brand-mark{display:grid;grid-template-columns:repeat(2,30px);grid-template-rows:repeat(2,27px);gap:3px;margin-top:-1dvh;margin-bottom:9px;filter:drop-shadow(0 0 12px rgba(0,211,255,.75))}
           .boot-brand-mark i{display:block;width:30px;height:27px;background:linear-gradient(145deg,#1af5ff,#0a73ff);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
           .boot-brand-mark i:first-child{grid-column:1/3;justify-self:center}
@@ -135,7 +135,7 @@ jobs:
           node --check "$JS_FILE"
           grep -q 'boot-mascot-hq' "$JS_FILE"
           grep -q 'boot-progress-track' "$JS_FILE"
-          test -s site/giraffe-scientist-hq.webp
+          test -s site/giraffe-scientist.webp
 
       - name: Verify loading screen visually
         shell: bash
