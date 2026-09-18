@@ -3,7 +3,7 @@ import argparse, json, os, re, shutil, subprocess, tempfile, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.5.4'
+VERSION='1.5.5'
 ROWS=[
  ('classic','클래식 버거','normal','가장 기본적인 버거부터 떠올려보세요.'),
  ('cheese','치즈 버거','normal','노란 재료 하나가 맛의 포인트예요.'),
