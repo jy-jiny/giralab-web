@@ -33,6 +33,25 @@ jobs:
           unzip -q giralab-web-dist.zip -d site
           touch site/.nojekyll
 
+      - name: Patch loading screen to HQ composition
+        shell: bash
+        run: |
+          set -euo pipefail
+          CSS_FILE="$(find site/assets -maxdepth 1 -type f -name '*.css' | head -n1)"
+          cat >> "$CSS_FILE" <<'CSS'
+
+          /* HQ GiraLab boot: use the bundled 560x700 mascot and render the rest crisply in CSS. */
+          .boot-screen.giralab-loading-screen{padding:0!important;display:block!important;overflow:hidden!important;isolation:isolate;background:radial-gradient(circle at 50% 31%,rgba(0,132,255,.38) 0 17%,rgba(0,75,180,.22) 31%,rgba(0,30,76,0) 57%),radial-gradient(circle at 14% 30%,rgba(17,176,255,.9) 0 2px,transparent 3px),radial-gradient(circle at 86% 27%,rgba(17,176,255,.8) 0 2px,transparent 3px),radial-gradient(circle at 77% 45%,rgba(17,176,255,.65) 0 3px,transparent 4px),linear-gradient(180deg,#021630 0%,#00152d 55%,#000a19 100%)!important}
+          .boot-screen.giralab-loading-screen .boot-full-image{content:url('../giraffe-scientist-hq.webp')!important;position:absolute!important;left:50%!important;top:3.5%!important;inset:auto!important;transform:translateX(-50%)!important;width:min(79vw,410px)!important;height:min(57dvh,610px)!important;display:block!important;object-fit:contain!important;object-position:center bottom!important;filter:drop-shadow(0 20px 24px rgba(0,0,0,.32)) drop-shadow(0 0 20px rgba(0,144,255,.28))!important;z-index:2}
+          .boot-screen.giralab-loading-screen::before{content:'⬢\\A⬢ ⬢';white-space:pre;position:absolute;left:50%;top:61%;transform:translateX(-50%);width:100%;text-align:center;color:#21dfff;font-size:clamp(14px,4.2vw,20px);line-height:.7;font-weight:900;text-shadow:0 0 13px rgba(0,211,255,.9);z-index:3}
+          .boot-screen.giralab-loading-screen::after{content:'GiraLab';position:absolute;left:50%;top:67.5%;transform:translateX(-50%);color:#fffdf3;font-size:clamp(48px,14vw,72px);line-height:1;font-weight:900;letter-spacing:-2.7px;text-shadow:0 3px 18px rgba(0,0,0,.28);z-index:3}
+          .boot-screen.giralab-loading-screen .boot-loading-status{clip:auto!important;width:min(74vw,390px)!important;height:54px!important;overflow:visible!important;margin:0!important;white-space:normal!important;border:0!important;position:absolute!important;left:50%!important;bottom:max(7dvh,38px)!important;transform:translateX(-50%)!important;font-size:0!important;z-index:4}
+          .boot-screen.giralab-loading-screen .boot-loading-status::before{content:'';display:block;width:100%;height:15px;border:2px solid #107aff;border-radius:999px;box-sizing:border-box;background:linear-gradient(90deg,#20e8ff 0 72%,rgba(0,0,0,0) 72% 100%),rgba(1,17,45,.82);box-shadow:0 0 13px rgba(0,136,255,.6),inset 0 0 8px rgba(0,0,0,.6)}
+          .boot-screen.giralab-loading-screen .boot-loading-status::after{content:'로딩 중...';display:block;margin-top:17px;color:#b9d9ff;font-size:clamp(14px,4vw,18px);line-height:1;font-weight:800;letter-spacing:.2px;text-align:center;text-shadow:0 0 10px rgba(49,155,255,.6)}
+          .boot-screen.giralab-loading-screen .boot-center,.boot-screen.giralab-loading-screen .boot-bottom{display:none!important}
+          @media(max-height:700px){.boot-screen.giralab-loading-screen .boot-full-image{top:1%!important;height:min(53dvh,500px)!important}.boot-screen.giralab-loading-screen::before{top:57%}.boot-screen.giralab-loading-screen::after{top:64%}.boot-screen.giralab-loading-screen .boot-loading-status{bottom:max(4dvh,24px)!important}}
+          CSS
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
