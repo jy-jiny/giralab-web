@@ -3,8 +3,7 @@ name: Deploy GiraLab Web
 on:
   push:
     branches: [main]
-    paths:
-      - '.github/workflows/deploy.yml'
+    paths: ['.github/workflows/deploy.yml']
   workflow_dispatch:
 
 permissions:
@@ -22,166 +21,127 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download last good Pages artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: previous-pages
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: 35309357442
-
-      - name: Unpack previous live site
-        shell: bash
+      - uses: actions/checkout@v4
+      - name: Download the verified fresh source build
         run: |
           set -euo pipefail
-          rm -rf site
-          mkdir -p site
-          tar -xf previous-pages/artifact.tar -C site
-          touch site/.nojekyll
-
-      - name: Build crisp loading screen with real progress
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          # Rebuild the approved high-resolution loading artwork without the baked-in fake bar.
-          cat \
-            deploy-assets/loading.b64.part00 \
-            deploy-assets/loading.b64.part01 \
-            deploy-assets/loading.b64.part02 \
-            deploy-assets/loading.b64.part03 \
-            deploy-assets/loading.b64.part04a \
-            deploy-assets/loading.b64.part04b \
-            deploy-assets/loading.b64.part05 \
-            deploy-assets/loading.b64.part06 \
-            deploy-assets/loading.b64.part07 \
-            deploy-assets/loading.b64.part08 \
-            > /tmp/giralab-loading.b64
-          base64 -d /tmp/giralab-loading.b64 > site/giralab-loading-art.webp
-
+          curl --fail --location --retry 2 --max-time 90 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JNsHXInsB0cN2TvhDobPpxWK8A/5c035bb7-4360-454e-93be-6a268da8626d.zip' -o approved-web.zip
+          echo '1154716d23f85d418d7cefcb8d011d316a5a8d5481b7a3fa9b6599554f45f62f  approved-web.zip' | sha256sum --check --strict
           python3 - <<'PY'
+          import zipfile, hashlib, json
           from pathlib import Path
-          image = Path("site/giralab-loading-art.webp").read_bytes()
-          if len(image) != 61288 or image[:4] != b"RIFF" or image[8:12] != b"WEBP":
-              raise SystemExit("loading artwork reconstruction failed")
-
-          js_file = next(Path("site/assets").glob("*.js"))
-          js = js_file.read_text()
-          old = '(0,F.jsxs)(`main`,{className:`boot-screen giralab-loading-screen`,"aria-label":`GiraLab 로딩 중`,children:[(0,F.jsx)(`img`,{className:`boot-full-image`,src:mc(`giralab-loading-screen.webp`),alt:``,fetchPriority:`high`,draggable:!1}),(0,F.jsxs)(`span`,{className:`boot-loading-status`,"aria-live":`polite`,children:[`게임 준비 `,_e,`%`]})]})'
-          new = '(0,F.jsxs)(`main`,{className:`boot-screen giralab-loading-screen`,"aria-label":`GiraLab 로딩 중`,children:[(0,F.jsx)(`img`,{className:`boot-loading-art`,src:mc(`giralab-loading-art.webp`),alt:``,fetchPriority:`high`,draggable:!1}),(0,F.jsxs)(`div`,{className:`boot-bottom`,children:[(0,F.jsx)(`div`,{className:`boot-progress-track`,role:`progressbar`,"aria-label":`게임 준비 진행`,"aria-valuemin":0,"aria-valuemax":100,"aria-valuenow":_e,children:(0,F.jsx)(`span`,{style:{width:`${Math.max(0,Math.min(100,_e))}%`}})}),(0,F.jsx)(`p`,{children:_e===100?`준비 완료`:`로딩 중...`})]})]})'
-          if js.count(old) != 1:
-              raise SystemExit(f"expected exactly one compiled loading branch, got {js.count(old)}")
-          js = js.replace(old, new, 1)
-          js_file.write_text(js)
-          print(js_file)
+          with zipfile.ZipFile('approved-web.zip') as z:
+              assert all(not Path(n).is_absolute() and '..' not in Path(n).parts for n in z.namelist())
+              z.extractall('site')
+          meta = json.loads(Path('site/source-build.json').read_text())
+          assert meta['source_commit'] == '293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2'
+          data = Path('site/giralab-loading-approved-aecda336.jpg').read_bytes()
+          assert len(data) == 195444
+          assert hashlib.sha256(data).hexdigest() == 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
+          assert not Path('site/loading-fix.js').exists()
+          assert not Path('site/loading-fix.css').exists()
+          Path('site/.nojekyll').touch()
           PY
-
-          CSS_FILE="$(find site/assets -maxdepth 1 -type f -name '*.css' | head -n1)"
-          cat >> "$CSS_FILE" <<'CSS'
-
-          /* GiraLab loading v4: supplied artwork + real React loading progress. */
-          .boot-screen.giralab-loading-screen{
-            padding:0!important;
-            display:block!important;
-            background:#000b1b!important;
-            overflow:hidden!important;
-          }
-          .giralab-loading-screen .boot-loading-art{
-            position:absolute!important;
-            left:50%!important;
-            top:0!important;
-            transform:translateX(-50%)!important;
-            display:block!important;
-            width:100%!important;
-            height:auto!important;
-            max-height:calc(100dvh - 145px)!important;
-            object-fit:contain!important;
-            object-position:top center!important;
-            image-rendering:auto!important;
-            user-select:none;
-            -webkit-user-drag:none;
-          }
-          .giralab-loading-screen .boot-bottom{
-            position:absolute!important;
-            left:50%!important;
-            bottom:max(5.5dvh,28px)!important;
-            transform:translateX(-50%)!important;
-            width:min(74vw,390px)!important;
-            text-align:center!important;
-          }
-          .giralab-loading-screen .boot-progress-track{
-            height:16px!important;
-            padding:2px!important;
-            border:2px solid #107aff!important;
-            border-radius:999px!important;
-            background:#06142b!important;
-            box-shadow:0 0 13px rgba(0,136,255,.6),inset 0 0 8px rgba(0,0,0,.6)!important;
-            overflow:hidden!important;
-            box-sizing:border-box!important;
-          }
-          .giralab-loading-screen .boot-progress-track>span{
-            display:block!important;
-            height:100%!important;
-            border-radius:999px!important;
-            background:linear-gradient(90deg,#20e8ff,#15bfff 55%,#4df5ff)!important;
-            box-shadow:0 0 13px rgba(24,228,255,.9)!important;
-            transition:width .22s ease!important;
-          }
-          .giralab-loading-screen .boot-bottom p{
-            margin:17px 0 0!important;
-            color:#b9d9ff!important;
-            font-size:clamp(14px,4vw,18px)!important;
-            font-weight:800!important;
-            letter-spacing:.2px!important;
-            text-shadow:0 0 10px rgba(49,155,255,.6)!important;
-          }
-          @media(max-height:700px){
-            .giralab-loading-screen .boot-loading-art{max-height:calc(100dvh - 125px)!important}
-            .giralab-loading-screen .boot-bottom{bottom:max(3dvh,18px)!important}
-          }
-          CSS
-
-          JS_FILE="$(find site/assets -maxdepth 1 -type f -name '*.js' | head -n1)"
-          node --check "$JS_FILE"
-          grep -q 'giralab-loading-art.webp' "$JS_FILE"
-          grep -q 'boot-progress-track' "$JS_FILE"
-          test -s site/giralab-loading-art.webp
-
-      - name: Verify loading screen visually
-        shell: bash
+      - name: Install browser verification and Korean fonts
         run: |
-          set -euo pipefail
-          python3 -m http.server 4173 --directory site >/tmp/giralab-http.log 2>&1 &
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Prepare behavioral and screenshot checks
+        run: |
+          cat > verify-published.py <<'PY'
+          import asyncio, hashlib, json, shutil, sys
+          from pathlib import Path
+          from playwright.async_api import async_playwright
+          SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
+          COMMIT = '293cdb6a18394a5d3e74204d30dcdaaf7dcba0c2'
+          async def run(base, output):
+              out = Path(output); out.mkdir(parents=True, exist_ok=True)
+              results = {'url':base, 'source_commit':COMMIT, 'image_sha256':SHA, 'tests':[]}
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'), args=['--no-sandbox','--disable-dev-shm-usage'])
+                  for w,h in [(360,640),(390,844),(412,915)]:
+                      ctx = await browser.new_context(viewport={'width':w,'height':h}, device_scale_factor=3, is_mobile=True, has_touch=True)
+                      page = await ctx.new_page(); page.set_default_timeout(20000)
+                      errors=[]; page.on('pageerror',lambda e:errors.append(str(e)))
+                      ingredient_gate, profile_gate = asyncio.Event(), asyncio.Event()
+                      async def hold_ingredients(route):
+                          await ingredient_gate.wait(); await route.continue_()
+                      async def hold_profile(route):
+                          await profile_gate.wait(); await route.fulfill(status=200,content_type='application/json',body='{"player":null}')
+                      await page.route('**/ingredients.png',hold_ingredients)
+                      await page.route('**/api/player',hold_profile)
+                      await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
+                      await page.wait_for_function("document.querySelector('.giralab-boot__art')?.naturalWidth === 864")
+                      await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '50'")
+                      await page.wait_for_timeout(220)
+                      image=page.locator('.giralab-boot__art')
+                      info=await image.evaluate('(e)=>({width:e.naturalWidth,height:e.naturalHeight,url:e.currentSrc,fit:getComputedStyle(e).objectFit})')
+                      assert info['width']==864 and info['height']==1536 and info['fit']=='contain',info
+                      rect=await image.bounding_box()
+                      assert rect['x']>=-1 and rect['y']>=-1 and rect['x']+rect['width']<=w+1 and rect['y']+rect['height']<=h+1,rect
+                      res=await ctx.request.get(info['url'])
+                      assert res.ok and hashlib.sha256(await res.body()).hexdigest()==SHA
+                      first=(await page.locator('.giralab-boot__fill').bounding_box())['width']
+                      await page.screenshot(path=str(out/f'loading-{w}x{h}-50.png'))
+                      ingredient_gate.set()
+                      await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '70'")
+                      await page.wait_for_timeout(220)
+                      second=(await page.locator('.giralab-boot__fill').bounding_box())['width']
+                      assert second>first*1.25,(first,second)
+                      await page.screenshot(path=str(out/f'loading-{w}x{h}-70.png'))
+                      profile_gate.set()
+                      await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '100'")
+                      await page.locator('.nickname-screen').wait_for(state='visible')
+                      assert await page.locator('.giralab-boot').count()==0
+                      assert not errors,errors
+                      await page.screenshot(path=str(out/f'ready-{w}x{h}.png'))
+                      results['tests'].append({'viewport':[w,h],'dpr':3,'image':info,'progress':[50,70,100],'fill_widths':[first,second],'page_errors':errors,'next_screen':'nickname','profile':'isolated fixture; no account writes'})
+                      await ctx.close()
+                  # Also open the published app normally, with the real read-only player request.
+                  ctx=await browser.new_context(viewport={'width':390,'height':844})
+                  page=await ctx.new_page(); errors=[]
+                  page.on('pageerror',lambda e:errors.append(str(e)))
+                  await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
+                  await page.locator('.nickname-screen, .home-screen').wait_for(state='visible',timeout=20000)
+                  assert not errors,errors
+                  results['normal_open']={'boot_closed':await page.locator('.giralab-boot').count()==0,'page_errors':errors}
+                  await ctx.close(); await browser.close()
+              (out/'verification.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
+              print(json.dumps(results,ensure_ascii=False,indent=2))
+          asyncio.run(run(sys.argv[1].rstrip('/')+'/',sys.argv[2]))
+          PY
+      - name: Verify the exact deploy candidate before publication
+        run: |
+          mkdir -p preview-root
+          ln -s "$GITHUB_WORKSPACE/site" preview-root/giralab-web
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory preview-root >/tmp/loading-server.log 2>&1 &
           SERVER_PID=$!
-          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          trap 'kill "$SERVER_PID"' EXIT
           sleep 1
-          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
-          test -n "$BROWSER"
-          timeout 20s "$BROWSER" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --window-size=390,844 --virtual-time-budget=650 --screenshot=loading-proof.png http://127.0.0.1:4173/ >/tmp/browser.log 2>&1 || true
-          test -s loading-proof.png
-
-      - name: Upload loading proof
-        uses: actions/upload-artifact@v4
-        with:
-          name: loading-screen-proof
-          path: loading-proof.png
-          retention-days: 2
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+          python3 verify-published.py http://127.0.0.1:4173/giralab-web/ predeploy-proof
+      - uses: actions/configure-pages@v5
         with:
           enablement: true
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: site
-
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify the actual published webpage
+        run: |
+          sleep 5
+          python3 verify-published.py 'https://jy-jiny.github.io/giralab-web/' live-proof
+      - name: Upload verification screenshots and results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: approved-loading-web-verification
+          path: |
+            predeploy-proof
+            live-proof
+          if-no-files-found: warn
+          retention-days: 7
