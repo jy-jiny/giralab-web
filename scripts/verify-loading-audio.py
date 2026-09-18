@@ -3,7 +3,7 @@ import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 
-VERSION='1.6.4'
+VERSION='1.6.5'
 HOOK='''window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});
 window.__audioContexts=[];const RealAudioContext=window.AudioContext;
 if(RealAudioContext)window.AudioContext=class extends RealAudioContext{constructor(...args){super(...args);window.__audioContexts.push(this)}};
@@ -76,7 +76,7 @@ def verify(base,out):
    page.locator('.home-play').click()
    if unsupported or saved==0:assert not state()['gamePlaying']
    else:
-    page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying');assert state()['track']=='Lunch Rush'
+    page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying');assert state()['track']=='Kitchen Rush'
    expect(page.locator(FORBIDDEN)).to_have_count(0)
    page.get_by_role('button',name='메인으로',exact=True).click()
    if not unsupported and saved!=0:

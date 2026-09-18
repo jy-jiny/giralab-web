@@ -1,8 +1,8 @@
 {
-  "source_commit": "b27ea82c148ecaf48272cf505102eccd802931d9",
+  "source_commit": "8d4f4345ea5a7a8d6f28718191e5d81df6b13546",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
-  "game_version": "1.6.4",
+  "game_version": "1.6.5",
   "recipe_tier_badges": true,
   "automatic_board_hints": false,
   "board_validity_max_tier": "advanced",
@@ -22,9 +22,9 @@
   "loading_lab_music": true,
   "audio_controls": "settings-only",
   "persistent_loading_mixer": true,
-  "game_music_title": "Lunch Rush",
-  "game_music_bpm": 156,
-  "game_music_sha256": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
+  "game_music_title": "Kitchen Rush",
+  "game_music_sha256": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
   "regeneration_completion": "animation-finished",
-  "regeneration_overlay": false
+  "regeneration_overlay": false,
+  "game_music_asset": "audio/kitchen-rush.ogg"
 }

@@ -3,7 +3,7 @@ import argparse, json, os, shutil, subprocess, tempfile, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.6.4'
+VERSION='1.6.5'
 IDS=['classic','cheese','green','bacon','double-patty','double','bacon-cheese','cheese-melt','garden-stack','smoky-green','bacon-first','green-cheese','cheese-bacon-stack','double-bacon','cheese-mad','meat-monster','green-monster','bacon-bomb','forbidden-seven']
 MYTH=['bun','bacon','bacon','bacon','bacon','bacon','bun']
 HOOK="window.__boardDraws=[];const originalRandom=Math.random;Math.random=()=>window.__boardDraws.length?window.__boardDraws.shift():originalRandom();window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t;}}});"
@@ -70,7 +70,7 @@ def verify(base,out):
                 page.locator('.home-play').click()
                 page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying')
                 page.wait_for_timeout(350)
-                assert audio()['track']=='Lunch Rush' and audio()['gameTime']>0
+                assert audio()['track']=='Kitchen Rush' and audio()['gameTime']>0
                 assert not audio()['labPlaying']
                 expect(page.locator('.audio-enable')).to_have_count(0)
                 page.get_by_role('button',name='메인으로',exact=True).click()

@@ -3,7 +3,7 @@ import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 
-VERSION='1.6.4'
+VERSION='1.6.5'
 ROWS=['LBBPPP','PALCPA','PLALPA','PLLLLC','LLPAAL','LPAALP','APCCLC','ALCPCL','PCPPPP']
 VALUE={'L':.85,'B':.1,'P':.5,'A':.95,'C':.7}
 TYPES={'L':'lettuce','B':'bun','P':'patty','A':'bacon','C':'cheese'}
