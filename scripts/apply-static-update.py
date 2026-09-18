@@ -4,11 +4,10 @@ import base64,hashlib,json,zlib
 root=Path('site').resolve()
 packed_path=Path('deploy-assets/combo-v2.delta.b64')
 packed=packed_path.read_text()
-# Normalize the one known staging transcription typo, then enforce the canonical transport checksum.
+# Normalize the one known staging transcription typo in memory, then enforce the canonical checksum.
 if 'uprwtMI' in packed: packed=packed.replace('uprwtMI','uprwtpMI',1)
 assert hashlib.sha256(packed.encode()).hexdigest()=='93193e585d045e53d2dc1a8156e77ef00be44bcfbe4f9b954e50c6e0ac3e6593', 'Static transport checksum mismatch'
 data=json.loads(zlib.decompress(base64.b64decode(packed,validate=True)))
-packed_path.write_text(packed)
 sha=lambda value:hashlib.sha256(value).hexdigest()
 def inside(name):
  p=(root/name).resolve()
