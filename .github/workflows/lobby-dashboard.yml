@@ -1,0 +1,169 @@
+name: Deploy approved lobby dashboard
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/lobby-dashboard.yml'
+      - 'release-tools/lobby-dashboard-public.part*'
+      - 'release-tools/verify-lobby-dashboard.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Install verification tools
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Restore checksum-verified approved source build and preserve existing art
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          import base64, hashlib, json, re, zlib, bsdiff4
+          sha=lambda b:hashlib.sha256(b).hexdigest()
+          names=['part1','part1-tail','part2']
+          raw=b''.join(b''.join(Path('release-tools/lobby-dashboard-public.'+n).read_bytes().split()) for n in names)
+          assert len(raw)==19104,('Incomplete dashboard transfer',len(raw))
+          assert sha(raw)=='d587e0073a8d120a34eba7e9ff6dee6c434aa34fc42105ecd30558a24d6116e3',('Dashboard checksum mismatch',sha(raw))
+          payload=json.loads(zlib.decompress(base64.b64decode(raw,validate=True)))
+          assert payload['revision']=='dashboard-20260919'
+          assert payload['sourceCommit']=='f25c204bd3378edc9cb36cbc128e16d8399e860b'
+          old_index=Path('site/index.html').read_text()
+          old_meta=json.loads(Path('site/source-build.json').read_text())
+          protected={str(p):sha(p.read_bytes()) for p in Path('site').rglob('*') if p.is_file() and p.suffix in ['.png','.jpg','.webp','.ogg','.mp3','.wav']}
+          if old_meta.get('dashboardRevision')!=payload['revision']:
+              updates={}
+              assert len(payload['files'])==4
+              for item in payload['files']:
+                  name=item['path']; path=PurePosixPath(name)
+                  assert '..' not in path.parts and name.startswith('site/')
+                  assert name in ['site/index.html','site/source-build.json'] or re.fullmatch(r'site/assets/index-[\w-]+\.(js|css)',name),name
+                  if 'delta' in item:
+                      assert re.fullmatch(r'site/assets/index-[\w-]+\.(js|css)',item['base'])
+                      before=Path(item['base']).read_bytes()
+                      assert sha(before)==item['before'],('Base bundle changed; refuse overwrite',item['base'])
+                      data=bsdiff4.patch(before,base64.b64decode(item['delta'],validate=True))
+                  else:data=base64.b64decode(item['content'],validate=True)
+                  assert sha(data)==item['after'],('Output checksum mismatch',name)
+                  updates[name]=data
+              index=updates['site/index.html'].decode()
+              art_links=re.findall(r'<link\b[^>]*data-theme-art=[^>]*>',old_index)
+              assert len(art_links)==1,('Existing approved theme-art link missing',art_links)
+              if 'data-theme-art=' not in index:index=index.replace('</head>','  '+art_links[0]+'\n</head>')
+              updates['site/index.html']=index.encode()
+              meta=dict(old_meta)
+              meta.update({'dashboardRevision':payload['revision'],'dashboardSourceCommit':payload['sourceCommit'],'lobby_revision':payload['revision'],'lobby_dashboard':True,'dashboard_real_player_records':True,'dashboard_summary_follows_carousel':True,'dashboardVerification':'isolated browser verification required before deployment'})
+              updates['site/source-build.json']=json.dumps(meta,ensure_ascii=False,indent=2).encode()+b'\n'
+              for name,data in updates.items():
+                  Path(name).parent.mkdir(parents=True,exist_ok=True);Path(name).write_bytes(data)
+          for name,digest in protected.items():assert sha(Path(name).read_bytes())==digest,('Protected asset changed',name)
+          js=re.search(r'src="\.\/assets\/([^\"]+\.js)"',Path('site/index.html').read_text()).group(1)
+          assert payload['revision'] in Path('site/assets',js).read_text()
+          print('PASS: exact source bundle restored; approved artwork, loading and audio files unchanged')
+          PY
+          for f in site/assets/*.js; do node --check "$f"; done
+      - name: Verify dashboard and preserved features before publication
+        run: |
+          set -euo pipefail
+          python3 release-tools/verify-lobby-dashboard.py --site site --out dashboard-predeploy
+          python3 release-tools/verify-theme-art.py --site site --out dashboard-art-predeploy
+          python3 scripts/verify-theme-book.py --site site --out dashboard-book-predeploy
+          python3 release-tools/verify-theme-help.py --site site --out dashboard-help-predeploy
+          python3 scripts/verify-game-music.py --site site --out dashboard-music-predeploy
+          python3 scripts/verify-burst-refill.py --site site --out dashboard-refill-predeploy
+      - name: Commit only verified public build
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/index.html site/source-build.json site/assets
+          if ! git diff --cached --quiet; then
+            git commit -m 'feat: publish approved balanced lobby and live research overview [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish GitHub Pages
+        id: publish
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Brief backoff for transient Pages errors
+        if: steps.publish.outcome == 'failure'
+        run: sleep 10
+      - name: Retry same verified artifact
+        id: retry
+        if: steps.publish.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Verify actual live website
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,time,urllib.request
+          for attempt in range(18):
+              try:
+                  with urllib.request.urlopen('https://jy-jiny.github.io/giralab-web/source-build.json?dashboard='+str(time.time()),timeout=20) as r:meta=json.load(r)
+                  if meta.get('dashboardRevision')=='dashboard-20260919':break
+              except Exception as e:print(type(e).__name__,str(e))
+              time.sleep(5)
+          else:raise SystemExit('Live site has not received the approved dashboard build')
+          PY
+          python3 release-tools/verify-lobby-dashboard.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-live
+          python3 release-tools/verify-theme-art.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-art-live
+          python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-book-live
+          python3 release-tools/verify-theme-help.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-help-live
+          python3 scripts/verify-game-music.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-music-live
+          python3 scripts/verify-burst-refill.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-refill-live
+      - name: Persist actual live verification evidence
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil,json,os
+          dst=Path('verification/lobby-dashboard');dst.mkdir(parents=True,exist_ok=True)
+          for name in ['main-390x690.png','main-390x844.png','main-412x915.png','verification.json']:
+              shutil.copyfile(Path('dashboard-live')/name,dst/name)
+          report={'revision':'dashboard-20260919','sourceCommit':'f25c204bd3378edc9cb36cbc128e16d8399e860b','deployment':'published and live browser verified','url':'https://jy-jiny.github.io/giralab-web/','workflowRun':os.environ['GITHUB_RUN_ID'],'tests':['dashboard at 6 viewports','glossy theme art','theme codex','theme help','game music','burst refill'],'playerRecords':'isolated fixtures only; zero production record writes','changes':['balanced main lobby spacing','larger research selection','live best score and recipe overview','working codex recommendation links'],'preserved':['game logic','saved records','dark palette','giraffe and burger','theme illustrations','music','main/game viewport fit','dialog scrolling']}
+          (dst/'release.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+          git add verification/lobby-dashboard
+          if ! git diff --cached --quiet; then
+            git commit -m 'test: record successful live approved-dashboard verification [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: approved-lobby-dashboard-proof
+          path: |
+            dashboard-live
+            dashboard-predeploy
+            verification/lobby-dashboard
+          if-no-files-found: warn
+          retention-days: 3
