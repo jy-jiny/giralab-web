@@ -1,5 +1,5 @@
 {
-  "source_commit": "a4a7f7811d075bbac372bd833f09e04a8bd6e936",
+  "source_commit": "e5df00ab0a7077fd846003beeca9f47290aa44ac",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -52,5 +52,7 @@
     "robot"
   ],
   "theme_lobby_style": "original-dark",
-  "theme_selection": "horizontal-scroll"
+  "theme_selection": "horizontal-scroll",
+  "viewport_fit": "main-and-game-only",
+  "dialog_scroll_preserved": true
 }

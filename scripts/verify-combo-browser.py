@@ -2,7 +2,7 @@
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='a4a7f7811d075bbac372bd833f09e04a8bd6e936'
+EXPECTED='e5df00ab0a7077fd846003beeca9f47290aa44ac'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
