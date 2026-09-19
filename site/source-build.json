@@ -68,5 +68,12 @@
   "lobby_play_icons": false,
   "lobby_pagination_bar": false,
   "lobby_helper_copy": false,
-  "theme_art_updated": false
+  "theme_art_updated": true,
+  "theme_art_revision": "glossy-20260919",
+  "theme_art_assets": {
+    "music": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
+    "war": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7",
+    "robot": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989"
+  },
+  "theme_art_delivery": "additive stylesheet; existing JS/CSS and source_commit preserved"
 }
