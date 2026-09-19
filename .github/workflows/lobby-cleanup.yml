@@ -2,7 +2,7 @@ name: Publish verified lobby cleanup
 on:
   push:
     branches: [main]
-    paths: ['deploy-assets/lobby-cleanup-release.json']
+    paths: ['deploy-assets/lobby-cleanup-release.json', '.github/workflows/lobby-cleanup.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -30,10 +30,55 @@ jobs:
           python3 release-tools/apply-lobby-cleanup.py
           for f in site/assets/*.js; do node --check "$f"; done
           python3 -m py_compile release-tools/verify-lobby-cleanup.py
+      - name: Update only the obsolete isolated-test setup, not game behavior
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/verify-burst-refill.py');s=p.read_text()
+          old="""    if not first:
+               page.get_by_role('button',name='옵션',exact=True).click()
+               page.evaluate('(d)=>window.__draws=d',[VALUE[c] for row in ROWS for c in row])
+               page.get_by_role('button',name='새 게임',exact=False).click()
+              else:
+               page.evaluate('(d)=>{window.__draws=d;window.__gameTools.start_game.execute({})}',[VALUE[c] for row in ROWS for c in row])"""
+          # Build the exact four/five-space indentation used by the existing verifier.
+          old='\n'.join([
+              '    if not first:',
+              "     page.get_by_role('button',name='옵션',exact=True).click()",
+              "     page.evaluate('(d)=>window.__draws=d',[VALUE[c] for row in ROWS for c in row])",
+              "     page.get_by_role('button',name='새 게임',exact=False).click()",
+              '    else:',
+              "     page.evaluate('(d)=>{window.__draws=d;window.__gameTools.start_game.execute({})}',[VALUE[c] for row in ROWS for c in row])",
+          ])
+          new='\n'.join([
+              '    # A fresh isolated document replaces the intentionally removed settings restart.',
+              '    if not first:',
+              "     page.reload(wait_until='domcontentloaded')",
+              "     expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)",
+              "     page.locator('.home-version').click()",
+              "    page.evaluate('(d)=>{window.__draws=d;window.__gameTools.start_game.execute({})}',[VALUE[c] for row in ROWS for c in row])",
+          ])
+          if old in s:
+              assert s.count(old)==1
+              s=s.replace(old,new,1)
+              assert s.count('ctx.add_init_script(HOOK+')==1
+              s=s.replace('ctx.add_init_script(HOOK+',"ctx.add_init_script('localStorage.clear();sessionStorage.clear();'+HOOK+",1)
+              s=s.replace("'pauseResumeAndRestart':not reduced","'pauseResumeAndFreshReload':not reduced",1)
+              compile(s,str(p),'exec');p.write_text(s)
+          else:
+              assert new in s and 'localStorage.clear();sessionStorage.clear();' in s,'Unexpected verifier changes'
+          assert "page.get_by_role('button',name='새 게임'" not in s
+          assert "assert game()['board']==held['board'] and game()['score']==300" in s
+          assert "page.route('**/api/**',fixture)" in s
+          print('Only isolated test setup changed; every animation and gameplay assertion retained.')
+          PY
       - name: Install Korean screenshot fonts
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify regeneration against the current UI
+        run: python3 scripts/verify-burst-refill.py --site site --out predeploy-burst-refill
       - name: Verify UI, all help tabs, codex, scrolling and game resume before publishing
         run: |
           set -euo pipefail
@@ -41,7 +86,6 @@ jobs:
           python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
           python3 scripts/verify-theme-lobby.py --site site --out predeploy-theme-lobby
           python3 scripts/verify-game-music.py --site site --out predeploy-game-music
-          python3 scripts/verify-burst-refill.py --site site --out predeploy-burst-refill
       - name: Persist verified build and keep the default deployment verifier current
         run: |
           set -euo pipefail
@@ -56,7 +100,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A site
-          git add release-tools/verify-lobby-cleanup.py .github/workflows/deploy.yml
+          git add release-tools/verify-lobby-cleanup.py scripts/verify-burst-refill.py .github/workflows/deploy.yml
           git rm --ignore-unmatch deploy-assets/lobby-cleanup-release.b64
           if ! git diff --cached --quiet; then
             git commit -m 'deploy: verified lobby button and spacing cleanup; preserve gameplay and art [skip ci]'
@@ -107,5 +151,6 @@ jobs:
             predeploy-*
             live-*
             site/source-build.json
+            scripts/verify-burst-refill.py
           if-no-files-found: warn
           retention-days: 7
