@@ -1,0 +1,13 @@
+{
+  "source_commit": "75fd1a5feb8baed95fe34a1b3c568d86c376f9ca",
+  "base_source_commit": "96840fe73ff43539db5db634ce7a7f6cdc2226ce",
+  "payload_sha256": "86bcd17b15970f7cd00e8af88e9d1ea664c5875c81db6f3cc6ea7254de29f845",
+  "encoded_sha256": "070da4df2c48074f12480f13e4f95fadec12d7bd8f18550b9d2641009eb16f93",
+  "encoded_bytes": 21172,
+  "changed_files": [
+    "assets/index-DoE1hLok.js",
+    "assets/index-NKpGWHRQ.css",
+    "index.html",
+    "source-build.json"
+  ]
+}
