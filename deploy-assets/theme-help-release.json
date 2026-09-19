@@ -1,0 +1,13 @@
+{
+  "source_commit": "96840fe73ff43539db5db634ce7a7f6cdc2226ce",
+  "base_source_commit": "e5df00ab0a7077fd846003beeca9f47290aa44ac",
+  "payload_sha256": "d8e861fd91d9727b89c4a5c26a36cccae51b5c773bc6dce80652f32bdfb4c52e",
+  "encoded_sha256": "518e730ddb4316cf8c671dfa18328bf421b988d20c5647c5ae0f77506bd8c64a",
+  "encoded_bytes": 13436,
+  "changed_files": [
+    "assets/index-Di_0N9ao.js",
+    "assets/index-2MfXasp8.css",
+    "index.html",
+    "source-build.json"
+  ]
+}
