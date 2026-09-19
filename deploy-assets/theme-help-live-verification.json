@@ -1,0 +1,129 @@
+{
+  "verified_at": "2026-09-19T01:31:08.993958+00:00",
+  "source_commit": "96840fe73ff43539db5db634ce7a7f6cdc2226ce",
+  "settings_new_game_removed": true,
+  "help_themes": [
+    "burger",
+    "music",
+    "war",
+    "robot"
+  ],
+  "existing_burger_help_unchanged": true,
+  "upcoming_themes_labeled": true,
+  "main_game_fit_preserved": true,
+  "dialog_scrolling_preserved": true,
+  "art_audio_game_rules_and_storage_unchanged": true,
+  "live_assets": {
+    "source_commit": "96840fe73ff43539db5db634ce7a7f6cdc2226ce",
+    "live_hashes": {
+      "assets/index-Di_0N9ao.js": "2c3bbc714b376ca7a3cba0d9b83a078e27453d9d3ef769dac74dd902e12cf98d",
+      "assets/index-2MfXasp8.css": "16b8e67f0a626a42be2abb6a52797146f9c1b584a13b8313d90681b4344c1dfb",
+      "index.html": "d0e78ce8f62e4aaa2d487471fc633d93e6f312adb55b1d7cad2f92f4ae655046",
+      "source-build.json": "0bc12f7dbd4b9512b724305eaaba5193d579a3411b039aa6d97198dc0b89e779",
+      "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
+      "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647"
+    },
+    "untargeted_assets_preserved": true
+  },
+  "live_browser": {
+    "api": "isolated fixture; no production writes",
+    "tests": [
+      {
+        "viewport": [
+          320,
+          568
+        ],
+        "settingsRestartRemoved": true,
+        "helpTabs": 4,
+        "burgerGuidePreserved": true,
+        "upcomingLabels": true,
+        "scrollAndClose": true,
+        "keyboard": true,
+        "contextAndRecordIsolation": true,
+        "pauseResume": true,
+        "mainGameFit": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          390,
+          664
+        ],
+        "settingsRestartRemoved": true,
+        "helpTabs": 4,
+        "burgerGuidePreserved": true,
+        "upcomingLabels": true,
+        "scrollAndClose": true,
+        "keyboard": true,
+        "contextAndRecordIsolation": true,
+        "pauseResume": true,
+        "mainGameFit": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "settingsRestartRemoved": true,
+        "helpTabs": 4,
+        "burgerGuidePreserved": true,
+        "upcomingLabels": true,
+        "scrollAndClose": true,
+        "keyboard": true,
+        "contextAndRecordIsolation": true,
+        "pauseResume": true,
+        "mainGameFit": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          412,
+          915
+        ],
+        "settingsRestartRemoved": true,
+        "helpTabs": 4,
+        "burgerGuidePreserved": true,
+        "upcomingLabels": true,
+        "scrollAndClose": true,
+        "keyboard": true,
+        "contextAndRecordIsolation": true,
+        "pauseResume": true,
+        "mainGameFit": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          844,
+          390
+        ],
+        "settingsRestartRemoved": true,
+        "helpTabs": 4,
+        "burgerGuidePreserved": true,
+        "upcomingLabels": true,
+        "scrollAndClose": true,
+        "keyboard": true,
+        "contextAndRecordIsolation": true,
+        "pauseResume": true,
+        "mainGameFit": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          1024,
+          768
+        ],
+        "settingsRestartRemoved": true,
+        "helpTabs": 4,
+        "burgerGuidePreserved": true,
+        "upcomingLabels": true,
+        "scrollAndClose": true,
+        "keyboard": true,
+        "contextAndRecordIsolation": true,
+        "pauseResume": true,
+        "mainGameFit": true,
+        "errors": []
+      }
+    ]
+  }
+}
