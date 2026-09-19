@@ -6,6 +6,7 @@ on:
       - '.github/workflows/lobby-dashboard.yml'
       - 'release-tools/lobby-dashboard-public.part*'
       - 'release-tools/verify-lobby-dashboard.py'
+      - 'release-tools/verify-dashboard-refill.py'
   workflow_dispatch:
 permissions:
   contents: write
@@ -93,7 +94,8 @@ jobs:
           python3 scripts/verify-theme-book.py --site site --out dashboard-book-predeploy
           python3 release-tools/verify-theme-help.py --site site --out dashboard-help-predeploy
           python3 scripts/verify-game-music.py --site site --out dashboard-music-predeploy
-          python3 scripts/verify-burst-refill.py --site site --out dashboard-refill-predeploy
+      - name: Verify unchanged refill after asynchronous pause settles
+        run: python3 release-tools/verify-dashboard-refill.py --site site --out dashboard-refill-predeploy
       - name: Commit only verified public build
         run: |
           set -euo pipefail
@@ -137,7 +139,8 @@ jobs:
           python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-book-live
           python3 release-tools/verify-theme-help.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-help-live
           python3 scripts/verify-game-music.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-music-live
-          python3 scripts/verify-burst-refill.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-refill-live
+      - name: Verify actual live refill and pause resume
+        run: python3 release-tools/verify-dashboard-refill.py --url 'https://jy-jiny.github.io/giralab-web/' --out dashboard-refill-live
       - name: Persist actual live verification evidence
         run: |
           set -euo pipefail
@@ -147,7 +150,7 @@ jobs:
           dst=Path('verification/lobby-dashboard');dst.mkdir(parents=True,exist_ok=True)
           for name in ['main-390x690.png','main-390x844.png','main-412x915.png','verification.json']:
               shutil.copyfile(Path('dashboard-live')/name,dst/name)
-          report={'revision':'dashboard-20260919','sourceCommit':'f25c204bd3378edc9cb36cbc128e16d8399e860b','deployment':'published and live browser verified','url':'https://jy-jiny.github.io/giralab-web/','workflowRun':os.environ['GITHUB_RUN_ID'],'tests':['dashboard at 6 viewports','glossy theme art','theme codex','theme help','game music','burst refill'],'playerRecords':'isolated fixtures only; zero production record writes','changes':['balanced main lobby spacing','larger research selection','live best score and recipe overview','working codex recommendation links'],'preserved':['game logic','saved records','dark palette','giraffe and burger','theme illustrations','music','main/game viewport fit','dialog scrolling']}
+          report={'revision':'dashboard-20260919','sourceCommit':'f25c204bd3378edc9cb36cbc128e16d8399e860b','deployment':'published and live browser verified','url':'https://jy-jiny.github.io/giralab-web/','workflowRun':os.environ['GITHUB_RUN_ID'],'tests':['dashboard at 6 viewports','glossy theme art','theme codex','theme help','game music','burst refill'],'playerRecords':'isolated fixtures only; zero production record writes','changes':['balanced main lobby spacing','larger research selection','live best score and recipe overview','working codex recommendation links'],'preserved':['game logic','saved records','dark palette','giraffe and burger','theme illustrations','music','main/game viewport fit','dialog scrolling'],'testSynchronization':'wait for Animation.pending=false before comparing paused currentTime; all assertions preserved'}
           (dst/'release.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:f.write(json.dumps(report,ensure_ascii=False,indent=2))
           PY
@@ -162,8 +165,7 @@ jobs:
         with:
           name: approved-lobby-dashboard-proof
           path: |
-            dashboard-live
-            dashboard-predeploy
+            dashboard-*
             verification/lobby-dashboard
           if-no-files-found: warn
           retention-days: 3
