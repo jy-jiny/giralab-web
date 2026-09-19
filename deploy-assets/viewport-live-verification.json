@@ -1,0 +1,637 @@
+{
+  "verified_at": "2026-09-19T00:56:37.659536+00:00",
+  "source_commit": "e5df00ab0a7077fd846003beeca9f47290aa44ac",
+  "change": "main/game viewport only",
+  "artwork_and_game_javascript_unchanged": true,
+  "options_codex_help_scroll_preserved": true,
+  "horizontal_theme_selection_preserved": true,
+  "live_assets": {
+    "source_commit": "e5df00ab0a7077fd846003beeca9f47290aa44ac",
+    "hashes": {
+      "assets/index-DRXwrBB8.css": "f6e0b0a8e07d85264ced5dca1ff76f9816c0ef425e5540f8fd886e2f7ff2eb26",
+      "assets/index-W8BXlSwt.js": "92f35fdb89dbbc4266ffbe54fdd03c7f6ead8039d3dfade2495df4fe9230ad37",
+      "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
+      "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647"
+    },
+    "storage_health": {
+      "ok": true,
+      "backend": "supabase-v1",
+      "recipeCount": 19,
+      "rulesVersion": 3
+    },
+    "api_writes": false
+  },
+  "live_browser": {
+    "base_url": "https://jy-jiny.github.io/giralab-web/",
+    "change": "main/game viewport only",
+    "api": "isolated; no production writes",
+    "tests": [
+      {
+        "viewport": [
+          320,
+          568
+        ],
+        "layouts": {
+          "main": {
+            "y": 5,
+            "h": 558,
+            "client": 558,
+            "scroll": 558,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 568,
+            "page": [
+              0,
+              568,
+              568
+            ]
+          },
+          "music": {
+            "y": 5,
+            "h": 558,
+            "client": 558,
+            "scroll": 558,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 568,
+            "page": [
+              0,
+              568,
+              568
+            ]
+          },
+          "war": {
+            "y": 5,
+            "h": 558,
+            "client": 558,
+            "scroll": 558,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 568,
+            "page": [
+              0,
+              568,
+              568
+            ]
+          },
+          "robot": {
+            "y": 5,
+            "h": 558,
+            "client": 558,
+            "scroll": 558,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 568,
+            "page": [
+              0,
+              568,
+              568
+            ]
+          },
+          "burger": {
+            "y": 5,
+            "h": 558,
+            "client": 558,
+            "scroll": 558,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 568,
+            "page": [
+              0,
+              568,
+              568
+            ]
+          },
+          "game": {
+            "y": 5,
+            "h": 558,
+            "client": 558,
+            "scroll": 558,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 568,
+            "page": [
+              0,
+              568,
+              568
+            ]
+          }
+        },
+        "verticalTouchLocked": true,
+        "horizontalThemes": true,
+        "codexTouchScroll": true,
+        "helpTouchScroll": true,
+        "all19Recipes": true,
+        "top5Preserved": true,
+        "all54TilesVisible": true,
+        "continueGame": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          360,
+          640
+        ],
+        "layouts": {
+          "main": {
+            "y": 5,
+            "h": 630,
+            "client": 630,
+            "scroll": 630,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 640,
+            "page": [
+              0,
+              640,
+              640
+            ]
+          },
+          "music": {
+            "y": 5,
+            "h": 630,
+            "client": 630,
+            "scroll": 630,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 640,
+            "page": [
+              0,
+              640,
+              640
+            ]
+          },
+          "war": {
+            "y": 5,
+            "h": 630,
+            "client": 630,
+            "scroll": 630,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 640,
+            "page": [
+              0,
+              640,
+              640
+            ]
+          },
+          "robot": {
+            "y": 5,
+            "h": 630,
+            "client": 630,
+            "scroll": 630,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 640,
+            "page": [
+              0,
+              640,
+              640
+            ]
+          },
+          "burger": {
+            "y": 5,
+            "h": 630,
+            "client": 630,
+            "scroll": 630,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 640,
+            "page": [
+              0,
+              640,
+              640
+            ]
+          },
+          "game": {
+            "y": 5,
+            "h": 630,
+            "client": 630,
+            "scroll": 630,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 640,
+            "page": [
+              0,
+              640,
+              640
+            ]
+          }
+        },
+        "verticalTouchLocked": true,
+        "horizontalThemes": true,
+        "codexTouchScroll": true,
+        "helpTouchScroll": true,
+        "all19Recipes": true,
+        "top5Preserved": true,
+        "all54TilesVisible": true,
+        "continueGame": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          390,
+          667
+        ],
+        "layouts": {
+          "main": {
+            "y": 10,
+            "h": 647,
+            "client": 647,
+            "scroll": 647,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 667,
+            "page": [
+              0,
+              667,
+              667
+            ]
+          },
+          "music": {
+            "y": 10,
+            "h": 647,
+            "client": 647,
+            "scroll": 647,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 667,
+            "page": [
+              0,
+              667,
+              667
+            ]
+          },
+          "war": {
+            "y": 10,
+            "h": 647,
+            "client": 647,
+            "scroll": 647,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 667,
+            "page": [
+              0,
+              667,
+              667
+            ]
+          },
+          "robot": {
+            "y": 10,
+            "h": 647,
+            "client": 647,
+            "scroll": 647,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 667,
+            "page": [
+              0,
+              667,
+              667
+            ]
+          },
+          "burger": {
+            "y": 10,
+            "h": 647,
+            "client": 647,
+            "scroll": 647,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 667,
+            "page": [
+              0,
+              667,
+              667
+            ]
+          },
+          "game": {
+            "y": 10,
+            "h": 647,
+            "client": 647,
+            "scroll": 647,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 667,
+            "page": [
+              0,
+              667,
+              667
+            ]
+          }
+        },
+        "verticalTouchLocked": true,
+        "horizontalThemes": true,
+        "codexTouchScroll": true,
+        "helpTouchScroll": true,
+        "all19Recipes": true,
+        "top5Preserved": true,
+        "all54TilesVisible": true,
+        "continueGame": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "layouts": {
+          "main": {
+            "y": 10,
+            "h": 824,
+            "client": 824,
+            "scroll": 824,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 844,
+            "page": [
+              0,
+              844,
+              844
+            ]
+          },
+          "music": {
+            "y": 10,
+            "h": 824,
+            "client": 824,
+            "scroll": 824,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 844,
+            "page": [
+              0,
+              844,
+              844
+            ]
+          },
+          "war": {
+            "y": 10,
+            "h": 824,
+            "client": 824,
+            "scroll": 824,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 844,
+            "page": [
+              0,
+              844,
+              844
+            ]
+          },
+          "robot": {
+            "y": 10,
+            "h": 824,
+            "client": 824,
+            "scroll": 824,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 844,
+            "page": [
+              0,
+              844,
+              844
+            ]
+          },
+          "burger": {
+            "y": 10,
+            "h": 824,
+            "client": 824,
+            "scroll": 824,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 844,
+            "page": [
+              0,
+              844,
+              844
+            ]
+          },
+          "game": {
+            "y": 10,
+            "h": 824,
+            "client": 824,
+            "scroll": 824,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 844,
+            "page": [
+              0,
+              844,
+              844
+            ]
+          }
+        },
+        "verticalTouchLocked": true,
+        "horizontalThemes": true,
+        "codexTouchScroll": true,
+        "helpTouchScroll": true,
+        "all19Recipes": true,
+        "top5Preserved": true,
+        "all54TilesVisible": true,
+        "continueGame": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          412,
+          915
+        ],
+        "layouts": {
+          "main": {
+            "y": 10,
+            "h": 895,
+            "client": 895,
+            "scroll": 895,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 915,
+            "page": [
+              0,
+              915,
+              915
+            ]
+          },
+          "music": {
+            "y": 10,
+            "h": 895,
+            "client": 895,
+            "scroll": 895,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 915,
+            "page": [
+              0,
+              915,
+              915
+            ]
+          },
+          "war": {
+            "y": 10,
+            "h": 895,
+            "client": 895,
+            "scroll": 895,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 915,
+            "page": [
+              0,
+              915,
+              915
+            ]
+          },
+          "robot": {
+            "y": 10,
+            "h": 895,
+            "client": 895,
+            "scroll": 895,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 915,
+            "page": [
+              0,
+              915,
+              915
+            ]
+          },
+          "burger": {
+            "y": 10,
+            "h": 895,
+            "client": 895,
+            "scroll": 895,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 915,
+            "page": [
+              0,
+              915,
+              915
+            ]
+          },
+          "game": {
+            "y": 10,
+            "h": 895,
+            "client": 895,
+            "scroll": 895,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 915,
+            "page": [
+              0,
+              915,
+              915
+            ]
+          }
+        },
+        "verticalTouchLocked": true,
+        "horizontalThemes": true,
+        "codexTouchScroll": true,
+        "helpTouchScroll": true,
+        "all19Recipes": true,
+        "top5Preserved": true,
+        "all54TilesVisible": true,
+        "continueGame": true,
+        "errors": []
+      },
+      {
+        "viewport": [
+          1024,
+          768
+        ],
+        "layouts": {
+          "main": {
+            "y": 10,
+            "h": 748,
+            "client": 748,
+            "scroll": 748,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 768,
+            "page": [
+              0,
+              768,
+              768
+            ]
+          },
+          "music": {
+            "y": 10,
+            "h": 748,
+            "client": 748,
+            "scroll": 748,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 768,
+            "page": [
+              0,
+              768,
+              768
+            ]
+          },
+          "war": {
+            "y": 10,
+            "h": 748,
+            "client": 748,
+            "scroll": 748,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 768,
+            "page": [
+              0,
+              768,
+              768
+            ]
+          },
+          "robot": {
+            "y": 10,
+            "h": 748,
+            "client": 748,
+            "scroll": 748,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 768,
+            "page": [
+              0,
+              768,
+              768
+            ]
+          },
+          "burger": {
+            "y": 10,
+            "h": 748,
+            "client": 748,
+            "scroll": 748,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 768,
+            "page": [
+              0,
+              768,
+              768
+            ]
+          },
+          "game": {
+            "y": 10,
+            "h": 748,
+            "client": 748,
+            "scroll": 748,
+            "top": 0,
+            "overflow": "hidden",
+            "vh": 768,
+            "page": [
+              0,
+              768,
+              768
+            ]
+          }
+        },
+        "verticalTouchLocked": true,
+        "horizontalThemes": true,
+        "codexTouchScroll": true,
+        "helpTouchScroll": true,
+        "all19Recipes": true,
+        "top5Preserved": true,
+        "all54TilesVisible": true,
+        "continueGame": true,
+        "errors": []
+      }
+    ]
+  }
+}
