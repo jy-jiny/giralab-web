@@ -1,0 +1,20 @@
+{
+  "source_commit": "e5df00ab0a7077fd846003beeca9f47290aa44ac",
+  "source_run": 35410470336,
+  "css_file": "index-DRXwrBB8.css",
+  "css_sha": "f6e0b0a8e07d85264ced5dca1ff76f9816c0ef425e5540f8fd886e2f7ff2eb26",
+  "js_file": "index-W8BXlSwt.js",
+  "js_sha": "92f35fdb89dbbc4266ffbe54fdd03c7f6ead8039d3dfade2495df4fe9230ad37",
+  "css_changes_after_v1": [
+    {
+      "offset": 20034,
+      "remove": 0,
+      "text": "@container theme-viewport (height<=650px){.app-page .theme-lobby .theme-card>.theme-art{height:118px}}@container theme-viewport (height<=560px){.app-page .theme-lobby .theme-welcome{min-height:86px}.app-page .theme-lobby .theme-scientist{height:86px}.app-page .theme-lobby .theme-welcome h1{font-size:23px;line-height:1.2}.app-page .theme-lobby .theme-detail-hero{min-height:72px}.app-page .theme-lobby .theme-detail-hero>.theme-art{height:72px;transform:scale(.7)}.app-page .theme-lobby .theme-records strong,.app-page .theme-lobby .theme-detail-copy{line-height:1.1}.app-page .theme-lobby .theme-records>div,.app-page .theme-lobby .theme-records>button{padding-block-start:6px;padding-block-end:6px}.app-page .theme-lobby .theme-collection-progress{padding-top:6px;padding-bottom:6px}}"
+    },
+    {
+      "offset": 47268,
+      "remove": 0,
+      "text": "\\@container{container-type:inline-size}."
+    }
+  ]
+}
