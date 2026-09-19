@@ -1,0 +1,33 @@
+{
+  "revision": "dashboard-20260919",
+  "sourceCommit": "f25c204bd3378edc9cb36cbc128e16d8399e860b",
+  "deployment": "published and live browser verified",
+  "url": "https://jy-jiny.github.io/giralab-web/",
+  "workflowRun": "35431538156",
+  "tests": [
+    "dashboard at 6 viewports",
+    "glossy theme art",
+    "theme codex",
+    "theme help",
+    "game music",
+    "burst refill"
+  ],
+  "playerRecords": "isolated fixtures only; zero production record writes",
+  "changes": [
+    "balanced main lobby spacing",
+    "larger research selection",
+    "live best score and recipe overview",
+    "working codex recommendation links"
+  ],
+  "preserved": [
+    "game logic",
+    "saved records",
+    "dark palette",
+    "giraffe and burger",
+    "theme illustrations",
+    "music",
+    "main/game viewport fit",
+    "dialog scrolling"
+  ],
+  "testSynchronization": "wait for Animation.pending=false before comparing paused currentTime; all assertions preserved"
+}

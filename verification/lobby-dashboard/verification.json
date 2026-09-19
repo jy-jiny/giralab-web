@@ -1,0 +1,276 @@
+{
+  "revision": "dashboard-20260919",
+  "api": "isolated fixtures; zero production writes",
+  "screens": [
+    {
+      "viewport": [
+        320,
+        568
+      ],
+      "metrics": {
+        "height": 568,
+        "scroll": 558,
+        "client": 558,
+        "body": 568,
+        "boxes": {
+          ".theme-topbar": {
+            "top": 15,
+            "bottom": 51,
+            "height": 36
+          },
+          ".theme-welcome": {
+            "top": 59,
+            "bottom": 172.390625,
+            "height": 113.390625
+          },
+          ".theme-section-heading": {
+            "top": 182.390625,
+            "bottom": 206.390625,
+            "height": 24
+          },
+          ".theme-grid": {
+            "top": 210.390625,
+            "bottom": 421,
+            "height": 210.609375
+          },
+          ".research-summary": {
+            "top": 423,
+            "bottom": 532.5,
+            "height": 109.5
+          },
+          ".theme-version": {
+            "top": 532.5,
+            "bottom": 555,
+            "height": 22.5
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "viewport": [
+        360,
+        640
+      ],
+      "metrics": {
+        "height": 640,
+        "scroll": 630,
+        "client": 630,
+        "body": 640,
+        "boxes": {
+          ".theme-topbar": {
+            "top": 23,
+            "bottom": 59,
+            "height": 36
+          },
+          ".theme-welcome": {
+            "top": 67,
+            "bottom": 193,
+            "height": 126
+          },
+          ".theme-section-heading": {
+            "top": 203,
+            "bottom": 227,
+            "height": 24
+          },
+          ".theme-grid": {
+            "top": 231,
+            "bottom": 489,
+            "height": 258
+          },
+          ".research-summary": {
+            "top": 491,
+            "bottom": 600.5,
+            "height": 109.5
+          },
+          ".theme-version": {
+            "top": 600.5,
+            "bottom": 623,
+            "height": 22.5
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "viewport": [
+        390,
+        690
+      ],
+      "metrics": {
+        "height": 690,
+        "scroll": 670,
+        "client": 670,
+        "body": 690,
+        "boxes": {
+          ".theme-topbar": {
+            "top": 28,
+            "bottom": 64,
+            "height": 36
+          },
+          ".theme-welcome": {
+            "top": 76.796875,
+            "bottom": 211.1875,
+            "height": 134.390625
+          },
+          ".theme-section-heading": {
+            "top": 223.984375,
+            "bottom": 247.984375,
+            "height": 24
+          },
+          ".theme-grid": {
+            "top": 251.984375,
+            "bottom": 513,
+            "height": 261.015625
+          },
+          ".research-summary": {
+            "top": 515,
+            "bottom": 642.5,
+            "height": 127.5
+          },
+          ".theme-version": {
+            "top": 642.5,
+            "bottom": 668,
+            "height": 25.5
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "metrics": {
+        "height": 844,
+        "scroll": 824,
+        "client": 824,
+        "body": 844,
+        "boxes": {
+          ".theme-topbar": {
+            "top": 28.01252555847168,
+            "bottom": 64.01252555847168,
+            "height": 36
+          },
+          ".theme-welcome": {
+            "top": 79.88752746582031,
+            "bottom": 246.6219024658203,
+            "height": 166.734375
+          },
+          ".theme-section-heading": {
+            "top": 262.49688720703125,
+            "bottom": 286.49688720703125,
+            "height": 24
+          },
+          ".theme-grid": {
+            "top": 290.49688720703125,
+            "bottom": 661.0125122070312,
+            "height": 370.515625
+          },
+          ".research-summary": {
+            "top": 663.0125122070312,
+            "bottom": 796.5125122070312,
+            "height": 133.5
+          },
+          ".theme-version": {
+            "top": 796.5125122070312,
+            "bottom": 822.0125122070312,
+            "height": 25.5
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "viewport": [
+        412,
+        915
+      ],
+      "metrics": {
+        "height": 915,
+        "scroll": 895,
+        "client": 895,
+        "body": 915,
+        "boxes": {
+          ".theme-topbar": {
+            "top": 28,
+            "bottom": 64,
+            "height": 36
+          },
+          ".theme-welcome": {
+            "top": 81.296875,
+            "bottom": 257.296875,
+            "height": 176
+          },
+          ".theme-section-heading": {
+            "top": 274.59375,
+            "bottom": 298.59375,
+            "height": 24
+          },
+          ".theme-grid": {
+            "top": 302.59375,
+            "bottom": 732,
+            "height": 429.40625
+          },
+          ".research-summary": {
+            "top": 734,
+            "bottom": 867.5,
+            "height": 133.5
+          },
+          ".theme-version": {
+            "top": 867.5,
+            "bottom": 893,
+            "height": 25.5
+          }
+        }
+      },
+      "errors": []
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "metrics": {
+        "height": 390,
+        "scroll": 380,
+        "client": 380,
+        "body": 390,
+        "boxes": {
+          ".theme-topbar": {
+            "top": 15,
+            "bottom": 51,
+            "height": 36
+          },
+          ".theme-welcome": {
+            "top": 55,
+            "bottom": 121,
+            "height": 66
+          },
+          ".theme-section-heading": {
+            "top": 129,
+            "bottom": 147,
+            "height": 18
+          },
+          ".theme-grid": {
+            "top": 147,
+            "bottom": 268.5,
+            "height": 121.5
+          },
+          ".research-summary": {
+            "top": 270.5,
+            "bottom": 359,
+            "height": 88.5
+          },
+          ".theme-version": {
+            "top": 359,
+            "bottom": 377,
+            "height": 18
+          }
+        }
+      },
+      "errors": []
+    }
+  ]
+}
