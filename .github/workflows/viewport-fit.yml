@@ -1,0 +1,117 @@
+name: Deploy scoped main and game viewport
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/viewport-fit.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore the exact source-tested layout without changing game code or artwork
+        run: |
+          set -euo pipefail
+          python3 release-tools/restore-viewport-fit.py
+          for f in site/assets/*.js; do node --check "$f"; done
+          python3 -m py_compile release-tools/verify-viewport-fit.py
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify six viewport sizes and preserve dialog touch scrolling before publication
+        run: |
+          set -euo pipefail
+          python3 release-tools/verify-viewport-fit.py --site site --out predeploy-viewport
+      - name: Persist verified files and remove temporary transfer payloads
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A site
+          git add scripts/verify-live-loading.py scripts/verify-combo-browser.py
+          git rm --ignore-unmatch deploy-assets/viewport-fit.b64 deploy-assets/viewport-fit-v2.b64
+          if ! git diff --cached --quiet; then
+            git commit -m 'fix: publish main/game viewport fit, retain codex/help scrolling and all game assets [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish GitHub Pages
+        id: publish
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Brief backoff for transient Pages error
+        if: steps.publish.outcome == 'failure'
+        run: sleep 10
+      - name: Retry the same verified artifact
+        id: retry
+        if: steps.publish.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Confirm the actual live source and unchanged artwork and game code
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,time,urllib.request
+          from pathlib import Path
+          base='https://jy-jiny.github.io/giralab-web/'
+          plan=json.loads(Path('deploy-assets/viewport-final.json').read_text())
+          def get(path):
+              req=urllib.request.Request(base+path+'?viewport='+plan['source_commit'],headers={'Cache-Control':'no-cache'})
+              with urllib.request.urlopen(req,timeout=30) as r:return r.read()
+          for attempt in range(18):
+              try:
+                  meta=json.loads(get('source-build.json'))
+                  if meta['source_commit']==plan['source_commit']:break
+              except Exception as e:print(type(e).__name__)
+              time.sleep(5)
+          else:raise AssertionError('The expected source build is not live')
+          assert meta['viewport_fit']=='main-and-game-only' and meta['dialog_scroll_preserved']
+          files={'assets/'+plan['css_file']:plan['css_sha'],'assets/'+plan['js_file']:plan['js_sha'],'giralab-loading-approved-aecda336.jpg':meta['approved_image_sha256'],'audio/kitchen-rush.ogg':meta['game_music_sha256']}
+          for path,digest in files.items():assert hashlib.sha256(get(path)).hexdigest()==digest,path
+          req=urllib.request.Request('https://tqqgnrfklhmxwsphjera.supabase.co/functions/v1/giralab-game/api/health',headers={'Origin':'https://jy-jiny.github.io'})
+          with urllib.request.urlopen(req,timeout=30) as r:health=json.load(r)
+          assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
+          Path('live-asset-verification.json').write_text(json.dumps({'source_commit':plan['source_commit'],'hashes':files,'storage_health':health,'api_writes':False},ensure_ascii=False,indent=2))
+          PY
+      - name: Verify actual live main/game fit and codex/help touch scrolling at all six sizes
+        run: |
+          set -euo pipefail
+          python3 release-tools/verify-viewport-fit.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-viewport
+          python3 - <<'PY'
+          import json,datetime
+          from pathlib import Path
+          result=json.loads(Path('live-viewport/verification.json').read_text())
+          assert len(result['tests'])==6
+          assets=json.loads(Path('live-asset-verification.json').read_text())
+          proof={'verified_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source_commit':assets['source_commit'],'change':'main/game viewport only','artwork_and_game_javascript_unchanged':True,'options_codex_help_scroll_preserved':True,'horizontal_theme_selection_preserved':True,'live_assets':assets,'live_browser':result}
+          Path('deploy-assets/viewport-live-verification.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n')
+          PY
+          git add deploy-assets/viewport-live-verification.json
+          git commit -m 'test: record actual live viewport and preserved dialog-scrolling verification [skip ci]'
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: viewport-fit-live-verification
+          path: |
+            predeploy-viewport
+            live-viewport
+            live-asset-verification.json
+            deploy-assets/viewport-live-verification.json
+          retention-days: 7
