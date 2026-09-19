@@ -8,6 +8,7 @@ from playwright.sync_api import sync_playwright, expect
 
 REVISION = 'glossy-20260919'
 RANKS = {'entries': [{'rank': 1, 'nickname': '테스트연구원', 'score': 21350, 'isMe': True}], 'me': {'nickname': '테스트연구원', 'score': 21350, 'rank': 1}, 'updatedAt': 0}
+NEUTRAL = '.theme-lobby .theme-art:is(.theme-art-music,.theme-art-war,.theme-art-robot)::after{display:none!important}.theme-lobby .theme-art:is(.theme-art-music,.theme-art-war,.theme-art-robot)>:not(.theme-orbit){visibility:visible!important}'
 class Handler(SimpleHTTPRequestHandler):
     def log_message(self, *args): pass
 
@@ -37,19 +38,20 @@ def verify(base, out):
             assert '옆으로 넘겨보세요' not in page.locator('.theme-lobby').inner_text()
             assert page.evaluate('document.scrollingElement.scrollHeight <= innerHeight + 1')
             assert page.locator('.theme-lobby').evaluate('(e)=>e.scrollHeight<=e.clientHeight+1')
-            # A temporary test-only style neutralizes just the new artwork.
-            # Verify it has not changed existing card geometry or burger art.
             selectors = ['.theme-welcome', '.theme-section-heading', '.theme-grid', '.theme-card', '.theme-art']
-            def geometry():
-                return page.evaluate('(ss)=>ss.flatMap(s=>Array.from(document.querySelectorAll(s),e=>{const r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height]}))', selectors)
-            before = geometry()
+            def geometry(ss):
+                return page.evaluate('(ss)=>ss.flatMap(s=>Array.from(document.querySelectorAll(s),e=>{const r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height]}))', ss)
+            # Screenshot waits for the existing slide-in animation to settle.
+            # Measure after that wait, not while the whole lobby is still moving.
             burger = page.locator('.theme-burger-sprite').screenshot()
-            neutral = page.add_style_tag(content='.theme-lobby .theme-art:is(.theme-art-music,.theme-art-war,.theme-art-robot)::after{display:none!important}.theme-lobby .theme-art:is(.theme-art-music,.theme-art-war,.theme-art-robot)>:not(.theme-orbit){visibility:visible!important}')
-            assert before == geometry(), 'Artwork affected layout geometry'
+            before = geometry(selectors)
+            neutral = page.add_style_tag(content=NEUTRAL)
+            assert before == geometry(selectors), ('Artwork affected layout geometry', before, geometry(selectors))
             assert burger == page.locator('.theme-burger-sprite').screenshot(), 'Burger artwork changed'
             neutral.evaluate('(e)=>e.remove()')
             initial_writes = len(writes)
             page.screenshot(path=str(out/f'main-burger-{width}x{height}.png'))
+            detail_metrics = {}
             for theme in ['music', 'war', 'robot']:
                 card = page.locator('[data-theme-select=' + theme + ']')
                 card.scroll_into_view_if_needed(); page.wait_for_timeout(300)
@@ -69,9 +71,20 @@ def verify(base, out):
                 expect(page.locator('.theme-lobby')).to_contain_text('1,000원')
                 detail = page.locator('.theme-detail-hero .theme-art-' + theme)
                 assert theme + '-' + REVISION + '.webp' in detail.evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
-                assert page.evaluate('document.scrollingElement.scrollHeight<=innerHeight+1')
-                assert page.locator('.theme-lobby').evaluate('(e)=>e.scrollHeight<=e.clientHeight+1')
                 page.screenshot(path=str(out/f'{theme}-detail-{width}x{height}.png'))
+                assert page.evaluate('document.scrollingElement.scrollHeight<=innerHeight+1')
+                # Preserve the existing detail geometry, including any baseline
+                # short-screen clipping, rather than changing unrelated layout.
+                ds=['.theme-topbar','.theme-detail-hero','.theme-records','.theme-preview','.theme-empty-ranking','.theme-cta','.theme-version']
+                old_geometry=geometry(ds)
+                metrics=page.locator('.theme-lobby').evaluate('(e)=>({h:e.clientHeight,sh:e.scrollHeight,w:e.clientWidth,sw:e.scrollWidth,overflow:getComputedStyle(e).overflowY})')
+                neutral=page.add_style_tag(content=NEUTRAL)
+                baseline=page.locator('.theme-lobby').evaluate('(e)=>({h:e.clientHeight,sh:e.scrollHeight,w:e.clientWidth,sw:e.scrollWidth,overflow:getComputedStyle(e).overflowY})')
+                assert metrics==baseline,(width,height,theme,'New overflow',metrics,baseline)
+                assert old_geometry==geometry(ds),(width,height,theme,'Detail layout changed')
+                assert metrics['overflow']=='hidden',metrics
+                neutral.evaluate('(e)=>e.remove()')
+                detail_metrics[theme]=metrics
                 page.get_by_role('button', name='테마 선택으로', exact=True).click()
             assert len(writes) == initial_writes, 'Browsing themes wrote progress'
             page.get_by_role('button', name='햄버거 테마 선택', exact=True).click()
@@ -79,7 +92,7 @@ def verify(base, out):
             expect(page.locator('[data-theme-collection=burger]')).to_have_text('5 / 19')
             expect(page.locator('.home-play svg')).to_have_count(0)
             assert not errors, errors
-            report['tests'].append({'viewport': [width, height], 'threeImagesLoaded': True, 'geometryUnchanged': True, 'burgerPixelsUnchanged': True, 'mainAndDetailFit': True, 'noFakeUpcomingRecords': True, 'noProgressWrites': True, 'errors': errors})
+            report['tests'].append({'viewport': [width, height], 'threeImagesLoaded': True, 'geometryUnchanged': True, 'burgerPixelsUnchanged': True, 'mainFitAndDetailGeometryPreserved': True, 'detailMetrics':detail_metrics, 'noFakeUpcomingRecords': True, 'noProgressWrites': True, 'errors': errors})
             ctx.close()
         browser.close()
     (out/'verification.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
