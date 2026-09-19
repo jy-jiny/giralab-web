@@ -53,7 +53,7 @@ jobs:
       - name: Verify dark carousel, theme codex and preserved game before publication
         run: |
           set -euo pipefail
-          python3 scripts/verify-dark-lobby.py --site site --out predeploy-dark-lobby
+          python3 release-tools/verify-lobby-cleanup.py --site site --out predeploy-dark-lobby
           python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
           python3 scripts/verify-theme-lobby.py --site site --out predeploy-theme-lobby
           python3 scripts/verify-game-music.py --site site --out predeploy-game-music
@@ -95,7 +95,7 @@ jobs:
         run: |
           set -euo pipefail
           sleep 5
-          python3 scripts/verify-dark-lobby.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-dark-lobby
+          python3 release-tools/verify-lobby-cleanup.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-dark-lobby
           python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-book
           python3 scripts/verify-theme-lobby.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-lobby
           python3 scripts/verify-game-music.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-game-music
