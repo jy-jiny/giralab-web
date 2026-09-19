@@ -1,0 +1,91 @@
+name: Deploy three theme illustrations
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/theme-art.yml'
+      - 'release-tools/install-theme-art.py'
+      - 'release-tools/verify-theme-art.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Add three checksum-verified images and art-only CSS
+        run: |
+          set -euo pipefail
+          python3 release-tools/install-theme-art.py --site site | tee theme-art-change-manifest.json
+          python3 -m py_compile release-tools/install-theme-art.py release-tools/verify-theme-art.py
+          for f in site/assets/*.js; do node --check "$f"; done
+      - name: Install browser verification requirements
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify art, geometry, scrolling, options, codex and game
+        run: |
+          set -euo pipefail
+          python3 release-tools/verify-theme-art.py --site site --out predeploy-theme-art
+          python3 release-tools/verify-lobby-cleanup.py --site site --out predeploy-lobby-cleanup
+          python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
+      - name: Persist verified artwork without rewriting original bundles
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/index.html site/source-build.json site/theme-art
+          if ! git diff --cached --quiet; then
+            git commit -m 'art: publish cohesive music, war and robot illustrations only [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish verified GitHub Pages artifact
+        id: publish
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Brief backoff for transient Pages error
+        if: steps.publish.outcome == 'failure'
+        run: sleep 10
+      - name: Retry same verified artifact
+        id: retry
+        if: steps.publish.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Verify artwork on the actual live site using isolated records
+        run: |
+          set -euo pipefail
+          sleep 8
+          python3 release-tools/verify-theme-art.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-art
+          python3 release-tools/verify-lobby-cleanup.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-lobby-cleanup
+          python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-book
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: theme-art-live-verification
+          path: |
+            theme-art-change-manifest.json
+            predeploy-*
+            live-*
+          if-no-files-found: warn
+          retention-days: 7
