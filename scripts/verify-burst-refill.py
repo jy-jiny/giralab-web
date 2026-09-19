@@ -34,19 +34,19 @@ def verify(base,out):
   for width,height,reduced,unsupported in cases:
    print('CHECK',width,height,'reduced',reduced,'unsupported',unsupported,flush=True)
    ctx=browser.new_context(viewport={'width':width,'height':height},is_mobile=True,has_touch=True,reduced_motion='reduce' if reduced else 'no-preference')
-   ctx.add_init_script(HOOK+('Element.prototype.animate=undefined;' if unsupported else ''))
+   ctx.add_init_script('localStorage.clear();sessionStorage.clear();'+HOOK+('Element.prototype.animate=undefined;' if unsupported else ''))
    page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('**/api/**',fixture)
    page.goto(base+'?burst-refill='+VERSION,wait_until='domcontentloaded')
    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
    page.locator('.home-version').click()
    game=lambda:page.evaluate('window.__gameTools.get_game_state.execute({})')
    def seed_start(first=False):
+    # A fresh isolated document replaces the intentionally removed settings restart.
     if not first:
-     page.get_by_role('button',name='옵션',exact=True).click()
-     page.evaluate('(d)=>window.__draws=d',[VALUE[c] for row in ROWS for c in row])
-     page.get_by_role('button',name='새 게임',exact=False).click()
-    else:
-     page.evaluate('(d)=>{window.__draws=d;window.__gameTools.start_game.execute({})}',[VALUE[c] for row in ROWS for c in row])
+     page.reload(wait_until='domcontentloaded')
+     expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
+     page.locator('.home-version').click()
+    page.evaluate('(d)=>{window.__draws=d;window.__gameTools.start_game.execute({})}',[VALUE[c] for row in ROWS for c in row])
     assert game()['board']==[[TYPES[c] for c in row] for row in ROWS]
     expect(page.locator('button[data-tile-id]')).to_have_count(54)
    def trigger(freeze=False):
@@ -137,7 +137,7 @@ def verify(base,out):
    help=page.locator('.game-help').inner_text();assert '재료가 팡 터지고 위에서 새 재료가 쏟아져요' in help
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
    assert not errors,errors
-   report['cases'].append({'viewport':[width,height],'reduced':reduced,'frames':frames,'finishToInputMs':completion['ms'],'realTimeMs':realtime,'clocksProtected':True,'all54IdsNew':True,'pauseResumeAndRestart':not reduced,'errors':errors})
+   report['cases'].append({'viewport':[width,height],'reduced':reduced,'frames':frames,'finishToInputMs':completion['ms'],'realTimeMs':realtime,'clocksProtected':True,'all54IdsNew':True,'pauseResumeAndFreshReload':not reduced,'errors':errors})
    print('PASS',suffix,'frames',frames,'resume',completion['ms'],'actual duration',realtime,flush=True)
    ctx.close()
   browser.close()

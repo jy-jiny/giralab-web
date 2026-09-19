@@ -1,5 +1,5 @@
 {
-  "source_commit": "96840fe73ff43539db5db634ce7a7f6cdc2226ce",
+  "source_commit": "75fd1a5feb8baed95fe34a1b3c568d86c376f9ca",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -63,5 +63,10 @@
     "war",
     "robot"
   ],
-  "theme_help_scroll_preserved": true
+  "theme_help_scroll_preserved": true,
+  "lobby_revision": "clean-20260919",
+  "lobby_play_icons": false,
+  "lobby_pagination_bar": false,
+  "lobby_helper_copy": false,
+  "theme_art_updated": false
 }
