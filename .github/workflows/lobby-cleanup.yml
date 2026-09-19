@@ -1,0 +1,111 @@
+name: Publish verified lobby cleanup
+on:
+  push:
+    branches: [main]
+    paths: ['deploy-assets/lobby-cleanup-release.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import exact tested UI delta and preserve all other assets
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
+          python3 release-tools/apply-lobby-cleanup.py
+          for f in site/assets/*.js; do node --check "$f"; done
+          python3 -m py_compile release-tools/verify-lobby-cleanup.py
+      - name: Install Korean screenshot fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify UI, all help tabs, codex, scrolling and game resume before publishing
+        run: |
+          set -euo pipefail
+          python3 release-tools/verify-lobby-cleanup.py --site site --out predeploy-lobby-cleanup
+          python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
+          python3 scripts/verify-theme-lobby.py --site site --out predeploy-theme-lobby
+          python3 scripts/verify-game-music.py --site site --out predeploy-game-music
+          python3 scripts/verify-burst-refill.py --site site --out predeploy-burst-refill
+      - name: Persist verified build and keep the default deployment verifier current
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/deploy.yml');s=p.read_text()
+          old='python3 scripts/verify-dark-lobby.py --'
+          if old in s:
+              assert s.count(old)==2
+              p.write_text(s.replace(old,'python3 release-tools/verify-lobby-cleanup.py --'))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A site
+          git add release-tools/verify-lobby-cleanup.py .github/workflows/deploy.yml
+          git rm --ignore-unmatch deploy-assets/lobby-cleanup-release.b64
+          if ! git diff --cached --quiet; then
+            git commit -m 'deploy: verified lobby button and spacing cleanup; preserve gameplay and art [skip ci]'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publish the verified artifact
+        id: publish
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Backoff for transient Pages failure
+        if: steps.publish.outcome == 'failure'
+        run: sleep 10
+      - name: Retry the same artifact
+        id: retry
+        if: steps.publish.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+      - name: Confirm live metadata and verify the actual deployed UI with isolated API fixtures
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,time,urllib.request
+          from pathlib import Path
+          expected=json.loads(Path('site/source-build.json').read_text())
+          for attempt in range(12):
+              try:
+                  req=urllib.request.Request('https://jy-jiny.github.io/giralab-web/source-build.json?verify='+str(time.time_ns()),headers={'Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(req,timeout=20) as response:live=json.load(response)
+                  if live.get('source_commit')==expected['source_commit'] and live.get('lobby_revision')=='clean-20260919':break
+              except Exception as error:print('Waiting for Pages metadata:',error)
+              time.sleep(10)
+          else:raise RuntimeError('The expected live build was not confirmed')
+          print('Live source confirmed:',live['source_commit'])
+          PY
+          python3 release-tools/verify-lobby-cleanup.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-lobby-cleanup
+          python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-book
+          python3 scripts/verify-theme-lobby.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-lobby
+          python3 scripts/verify-game-music.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-game-music
+          python3 scripts/verify-burst-refill.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-burst-refill
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lobby-cleanup-live-verification
+          path: |
+            predeploy-*
+            live-*
+            site/source-build.json
+          if-no-files-found: warn
+          retention-days: 7
