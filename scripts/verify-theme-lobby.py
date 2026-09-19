@@ -6,7 +6,7 @@ from http.server import ThreadingHTTPServer
 from threading import Thread
 from playwright.sync_api import sync_playwright, expect
 
-VERSION='1.7.1'
+VERSION='1.7.2'
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 PROGRESS={'unlocked':['classic','cheese','green','bacon','double'],'bestScore':21350}
 RANKS={'entries':[{'rank':1,'nickname':'기린연구원','score':21350,'isMe':True},{'rank':2,'nickname':'버거박사','score':16450,'isMe':False}],'me':{'nickname':'기린연구원','score':21350,'rank':1},'updatedAt':0}

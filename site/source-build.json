@@ -1,8 +1,8 @@
 {
-  "source_commit": "17177bceaeffe3c5b7145c24c1e06d3627b87d90",
+  "source_commit": "a4a7f7811d075bbac372bd833f09e04a8bd6e936",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
-  "game_version": "1.7.1",
+  "game_version": "1.7.2",
   "recipe_tier_badges": true,
   "automatic_board_hints": false,
   "board_validity_max_tier": "advanced",
@@ -50,5 +50,7 @@
     "music",
     "war",
     "robot"
-  ]
+  ],
+  "theme_lobby_style": "original-dark",
+  "theme_selection": "horizontal-scroll"
 }
