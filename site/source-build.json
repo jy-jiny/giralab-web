@@ -64,7 +64,7 @@
     "robot"
   ],
   "theme_help_scroll_preserved": true,
-  "lobby_revision": "clean-20260919",
+  "lobby_revision": "dashboard-20260919",
   "lobby_play_icons": false,
   "lobby_pagination_bar": false,
   "lobby_helper_copy": false,
@@ -75,5 +75,11 @@
     "war": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7",
     "robot": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989"
   },
-  "theme_art_delivery": "additive stylesheet; existing JS/CSS and source_commit preserved"
+  "theme_art_delivery": "additive stylesheet; existing JS/CSS and source_commit preserved",
+  "dashboardRevision": "dashboard-20260919",
+  "dashboardSourceCommit": "f25c204bd3378edc9cb36cbc128e16d8399e860b",
+  "lobby_dashboard": true,
+  "dashboard_real_player_records": true,
+  "dashboard_summary_follows_carousel": true,
+  "dashboardVerification": "isolated browser verification required before deployment"
 }
