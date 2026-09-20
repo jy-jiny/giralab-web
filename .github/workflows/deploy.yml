@@ -8,6 +8,7 @@ on:
       - 'scripts/verify-*.py'
       - 'scripts/restore-dark-lobby.py'
       - 'release-tools/verify-audio-mythic.py'
+      - 'release-tools/verify-lobby-cleanup.py'
       - 'release-tools/dark-lobby-public.part*'
       - 'deploy-assets/dark-lobby*'
   workflow_dispatch:
