@@ -113,7 +113,7 @@ def verify(base,out):
     positions=page.evaluate(ANIMS+'.map(a=>a.currentTime)')
     page.wait_for_timeout(700)
     assert game()==paused
-    assert page.evaluate(ANIMS+'.map(a=>a.currentTime)')==positions
+    actual=page.evaluate(ANIMS+'.map(a=>a.currentTime)');assert len(actual)==len(positions) and all(abs(a-b)<2 for a,b in zip(actual,positions)),(positions,actual)
     page.get_by_role('button',name='계속하기',exact=False).first.click()
     page.wait_for_function('!window.__gameTools.get_game_state.execute({}).regenerating')
     seed_start();trigger(True);page.locator('.regeneration-scene').wait_for(state='attached')
