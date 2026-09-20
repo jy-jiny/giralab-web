@@ -36,7 +36,7 @@ def verify(base,out):
             page.route('**/api/**',fixture)
             page.goto(base+'?theme-help-check=1',wait_until='domcontentloaded')
             expect(page.locator('.home-version')).to_have_text('GiraLab · 1.7.2')
-            expect(page.locator('.theme-lobby')).to_have_attribute('data-lobby-revision','clean-20260919')
+            expect(page.locator('.theme-lobby')).to_have_attribute('data-lobby-revision','dashboard-20260919')
             expect(page.locator('.theme-carousel-controls, .theme-lobby-note')).to_have_count(0)
             assert '옆으로 넘겨보세요' not in page.locator('.theme-lobby').inner_text()
             assert '같은 연결' not in page.locator('.theme-lobby').inner_text()
