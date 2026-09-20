@@ -107,13 +107,11 @@ def verify(base,out):
                     page.get_by_role('button',name='닫기',exact=True).click()
                     if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
                     page.locator('.home-play').click()
-                    page.get_by_role('button',name='옵션',exact=True).click()
                     board=[['lettuce']*6 for _ in range(9)];board[0][0:3]=['bun','patty','bun']
                     cells=[(8,0),(8,1),(8,2),(8,3),(8,4),(8,5),(7,4)]
                     for (r,c),ingredient in zip(cells,MYTH):board[r][c]=ingredient
                     draws=[{'bun':.1,'patty':.5,'cheese':.7,'lettuce':.85,'bacon':.95}[item] for row in board for item in row]
-                    page.evaluate('(values)=>{window.__boardDraws=values}',draws)
-                    page.get_by_role('button',name='새 게임',exact=False).click()
+                    page.evaluate('(values)=>{window.__boardDraws=values;window.__gameTools.start_game.execute({})}',draws)
                     assert game()['board']==board
                     path=find(game()['board'],MYTH);assert path
                     result=page.evaluate('(cells)=>window.__gameTools.submit_ingredient_path.execute({cells})',path)
