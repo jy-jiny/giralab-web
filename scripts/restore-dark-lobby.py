@@ -81,6 +81,7 @@ if audio_verify.is_file():
     text=audio_verify.read_text()
     text=text.replace("                    page.locator('.home-play').click()\n                    page.get_by_role('button',name='옵션',exact=True).click()","                    page.locator('.home-play').click()")
     text=text.replace("                    page.evaluate('(values)=>{window.__boardDraws=values}',draws)\n                    page.get_by_role('button',name='새 게임',exact=False).click()","                    page.evaluate('(values)=>{window.__boardDraws=values;window.__gameTools.start_game.execute({})}',draws)")
+    text=text.replace("                    page.get_by_role('button',name='닫기',exact=True).click()\n                    if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()\n                    page.locator('.home-play').click()\n                    board=[['lettuce']*6 for _ in range(9)]","                    page.get_by_role('button',name='닫기',exact=True).click()\n                    page.reload(wait_until='domcontentloaded')\n                    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)\n                    page.locator('.home-version').click()\n                    board=[['lettuce']*6 for _ in range(9)]")
     audio_verify.write_text(text)
 
 meta=json.loads(Path('site/source-build.json').read_text())
