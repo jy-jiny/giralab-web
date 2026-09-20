@@ -84,6 +84,12 @@ if audio_verify.is_file():
     text=text.replace("                    page.get_by_role('button',name='닫기',exact=True).click()\n                    if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()\n                    page.locator('.home-play').click()\n                    board=[['lettuce']*6 for _ in range(9)]","                    page.get_by_role('button',name='닫기',exact=True).click()\n                    page.reload(wait_until='domcontentloaded')\n                    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)\n                    page.locator('.home-version').click()\n                    board=[['lettuce']*6 for _ in range(9)]")
     audio_verify.write_text(text)
 
+burst_verify=Path('scripts/verify-burst-refill.py')
+if burst_verify.is_file():
+    text=burst_verify.read_text()
+    text=text.replace("assert page.evaluate(ANIMS+'.map(a=>a.currentTime)')==positions","actual=page.evaluate(ANIMS+'.map(a=>a.currentTime)');assert len(actual)==len(positions) and all(abs(a-b)<2 for a,b in zip(actual,positions)),(positions,actual)")
+    burst_verify.write_text(text)
+
 meta=json.loads(Path('site/source-build.json').read_text())
 assert meta['game_version']=='1.7.2' and meta['game_music_title']=='Kitchen Rush'
 assert meta['theme_book'] and meta['theme_book_ids']==['burger','music','war','robot']
