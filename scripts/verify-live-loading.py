@@ -4,7 +4,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-COMMIT = 'e5df00ab0a7077fd846003beeca9f47290aa44ac'
+COMMIT = '75fd1a5feb8baed95fe34a1b3c568d86c376f9ca'
 
 async def main(base, out):
     out.mkdir(parents=True, exist_ok=True)
