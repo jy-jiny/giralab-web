@@ -66,7 +66,7 @@ if SPEC.exists() or PACKED.exists():
         for _,p,b in outputs:p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(b)
         for p,_,_ in outputs:
             if p is not None and p not in targets:p.unlink()
-meta=json.loads(Path('site/source-build.json').read_text())
+# UI-only release-state migration: hide planned locked-theme pricing until launch.\nfor bundle in Path('site/assets').glob('index-*.js'):\n    if not bundle.is_file(): continue\n    text=bundle.read_text()\n    if '1,000원' in text: bundle.write_text(text.replace('1,000원','출시예정'))\nbook_verify=Path('scripts/verify-theme-book.py')\nif book_verify.is_file():\n    text=book_verify.read_text()\n    if '1,000원' in text: book_verify.write_text(text.replace('1,000원','출시예정'))\n\nmeta=json.loads(Path('site/source-build.json').read_text())
 assert meta['game_version']=='1.7.2' and meta['game_music_title']=='Kitchen Rush'
 assert meta['theme_book'] and meta['theme_book_ids']==['burger','music','war','robot']
 assert meta['theme_lobby_style']=='original-dark' and meta['theme_selection']=='horizontal-scroll'
