@@ -56,7 +56,7 @@ def verify(base,out):
                 expect(page.locator('[data-book-tab='+theme+']')).to_have_attribute('aria-selected','true')
                 expect(page.locator('.book-dialog [data-slot=dialog-title]')).to_have_text(title+' '+collection+' 도감')
                 expect(page.locator('.theme-book-preview')).to_contain_text('출시 준비 중')
-                expect(page.locator('.theme-book-preview')).to_contain_text('1,000원')
+                expect(page.locator('.theme-book-preview')).to_contain_text('출시예정')
                 expect(page.locator('.recipe-card')).to_have_count(0)
                 expect(page.locator('.recipe-hint-toggle')).to_have_count(0)
                 expect(page.locator('.book-save-status')).to_have_count(0)
