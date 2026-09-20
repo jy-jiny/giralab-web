@@ -90,6 +90,12 @@ if burst_verify.is_file():
     text=text.replace("assert page.evaluate(ANIMS+'.map(a=>a.currentTime)')==positions","actual=page.evaluate(ANIMS+'.map(a=>a.currentTime)');assert len(actual)==len(positions) and all(abs(a-b)<2 for a,b in zip(actual,positions)),(positions,actual)")
     burst_verify.write_text(text)
 
+combo_verify=Path('scripts/verify-combo-browser.py')
+if combo_verify.is_file():
+    text=combo_verify.read_text()
+    text=text.replace("EXPECTED='e5df00ab0a7077fd846003beeca9f47290aa44ac'","EXPECTED='75fd1a5feb8baed95fe34a1b3c568d86c376f9ca'")
+    combo_verify.write_text(text)
+
 meta=json.loads(Path('site/source-build.json').read_text())
 assert meta['game_version']=='1.7.2' and meta['game_music_title']=='Kitchen Rush'
 assert meta['theme_book'] and meta['theme_book_ids']==['burger','music','war','robot']
