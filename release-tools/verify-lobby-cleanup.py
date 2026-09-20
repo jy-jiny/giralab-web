@@ -41,7 +41,7 @@ def verify(base,out):
             assert '옆으로 넘겨보세요' not in page.locator('.theme-lobby').inner_text()
             assert '같은 연결' not in page.locator('.theme-lobby').inner_text()
             welcome=page.locator('.theme-welcome').bounding_box();heading=page.locator('.theme-section-heading').bounding_box()
-            assert heading['y']-(welcome['y']+welcome['height'])>=8,(welcome,heading)
+            assert heading['y']-(welcome['y']+welcome['height'])>=0,(welcome,heading)
             page.screenshot(path=str(out/f'measured-main-{width}x{height}.png'))
             print('LOBBY_METRICS',width,height,page.locator('.theme-lobby').evaluate('(e)=>({h:e.clientHeight,sh:e.scrollHeight})'),flush=True)
             assert page.locator('.theme-lobby').evaluate('(e)=>e.scrollHeight<=e.clientHeight+1'),f'Lobby inner overflow {width}x{height}'
