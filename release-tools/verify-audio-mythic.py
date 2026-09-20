@@ -105,8 +105,9 @@ def verify(base,out):
                     page.screenshot(path=str(out/f'mythic-help-{width}.png'))
                     help.get_by_role('button',name='알겠어요',exact=True).click()
                     page.get_by_role('button',name='닫기',exact=True).click()
-                    if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
-                    page.locator('.home-play').click()
+                    page.reload(wait_until='domcontentloaded')
+                    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
+                    page.locator('.home-version').click()
                     board=[['lettuce']*6 for _ in range(9)];board[0][0:3]=['bun','patty','bun']
                     cells=[(8,0),(8,1),(8,2),(8,3),(8,4),(8,5),(7,4)]
                     for (r,c),ingredient in zip(cells,MYTH):board[r][c]=ingredient
