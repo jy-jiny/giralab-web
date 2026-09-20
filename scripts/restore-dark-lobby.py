@@ -96,6 +96,12 @@ if combo_verify.is_file():
     text=text.replace("EXPECTED='e5df00ab0a7077fd846003beeca9f47290aa44ac'","EXPECTED='75fd1a5feb8baed95fe34a1b3c568d86c376f9ca'")
     combo_verify.write_text(text)
 
+loading_verify=Path('scripts/verify-live-loading.py')
+if loading_verify.is_file():
+    text=loading_verify.read_text()
+    text=text.replace("COMMIT = 'e5df00ab0a7077fd846003beeca9f47290aa44ac'","COMMIT = '75fd1a5feb8baed95fe34a1b3c568d86c376f9ca'")
+    loading_verify.write_text(text)
+
 meta=json.loads(Path('site/source-build.json').read_text())
 assert meta['game_version']=='1.7.2' and meta['game_music_title']=='Kitchen Rush'
 assert meta['theme_book'] and meta['theme_book_ids']==['burger','music','war','robot']
