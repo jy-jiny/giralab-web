@@ -76,6 +76,13 @@ if book_verify.is_file():
     text=book_verify.read_text()
     if '1,000원' in text: book_verify.write_text(text.replace('1,000원','출시예정'))
 
+audio_verify=Path('release-tools/verify-audio-mythic.py')
+if audio_verify.is_file():
+    text=audio_verify.read_text()
+    text=text.replace("                    page.locator('.home-play').click()\n                    page.get_by_role('button',name='옵션',exact=True).click()","                    page.locator('.home-play').click()")
+    text=text.replace("                    page.evaluate('(values)=>{window.__boardDraws=values}',draws)\n                    page.get_by_role('button',name='새 게임',exact=False).click()","                    page.evaluate('(values)=>{window.__boardDraws=values;window.__gameTools.start_game.execute({})}',draws)")
+    audio_verify.write_text(text)
+
 meta=json.loads(Path('site/source-build.json').read_text())
 assert meta['game_version']=='1.7.2' and meta['game_music_title']=='Kitchen Rush'
 assert meta['theme_book'] and meta['theme_book_ids']==['burger','music','war','robot']
