@@ -50,7 +50,7 @@ def verify(base,out):
                 assert page.locator('[data-recipe-group-tier]').evaluate_all('(els)=>els.map(e=>e.dataset.recipeGroupTier)')==['normal','advanced','rare','mythic']
             open_book();burger()
             page.screenshot(path=str(out/f'book-burger-{width}.png'))
-            for theme,title,collection in [('music','음악','리프'),('war','전쟁','설계도'),('robot','로봇','설계도')]:
+            for theme,title,collection in [('music','음악','화음'),('war','전쟁','전략'),('robot','로봇','설계도')]:
                 page.locator('[data-book-tab='+theme+']').click()
                 expect(page.locator('[data-book-theme]')).to_have_attribute('data-book-theme',theme)
                 expect(page.locator('[data-book-tab='+theme+']')).to_have_attribute('aria-selected','true')

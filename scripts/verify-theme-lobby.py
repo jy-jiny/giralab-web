@@ -73,7 +73,7 @@ def verify(base,out,site=None,memory=False):
             expect(page.locator('.audio-enable')).to_have_count(0)
             page.wait_for_timeout(400);page.screenshot(path=str(out/f'select-{width}.png'))
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'), 'horizontal overflow'
-            for theme,title,collection in [('music','음악','리프'),('war','전쟁','설계도'),('robot','로봇','설계도')]:
+            for theme,title,collection in [('music','음악','화음'),('war','전쟁','전략'),('robot','로봇','설계도')]:
                 page.get_by_role('button',name=title+' 테마 선택',exact=True).click()
                 expect(page.locator('.theme-lobby')).to_have_attribute('data-theme',theme)
                 expect(page.locator('[data-theme-best]')).to_have_text('—')

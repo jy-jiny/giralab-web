@@ -81,5 +81,14 @@
   "lobby_dashboard": true,
   "dashboard_real_player_records": true,
   "dashboard_summary_follows_carousel": true,
-  "dashboardVerification": "isolated browser verification required before deployment"
+  "dashboardVerification": "isolated browser verification required before deployment",
+  "theme_collection_labels": {
+    "burger": "레시피",
+    "music": "화음",
+    "war": "전략",
+    "robot": "설계도"
+  },
+  "theme_terminology_revision": "20260921",
+  "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
+  "theme_price_display": "출시예정"
 }
