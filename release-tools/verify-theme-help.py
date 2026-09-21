@@ -1,3 +1,5 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Verify help/options against an isolated API on both the candidate and live site."""
 import argparse,importlib.util,json,os,re,shutil,tempfile
 from pathlib import Path
@@ -18,7 +20,7 @@ def verify(base,out):
         browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--disable-dev-shm-usage','--autoplay-policy=no-user-gesture-required'])
         for w,h in [(320,568),(390,664),(390,844),(412,915),(844,390),(1024,768)]:
             ctx=browser.new_context(viewport={'width':w,'height':h},is_mobile=w<900,has_touch=w<900)
-            ctx.add_init_script(book.HOOK);page=ctx.new_page();page.set_default_timeout(20000)
+            ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(book.HOOK);page=ctx.new_page();page.set_default_timeout(20000)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             state={'writes':0,'progress':dict(book.PROGRESS)}
             def fixture(route):

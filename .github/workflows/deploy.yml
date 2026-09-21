@@ -7,6 +7,7 @@ on:
       - 'site/**'
       - 'scripts/verify-*.py'
       - 'scripts/restore-dark-lobby.py'
+      - 'scripts/browser-game-driver.js'
       - 'release-tools/verify-audio-mythic.py'
       - 'release-tools/verify-lobby-cleanup.py'
       - 'release-tools/dark-lobby-public.part*'
@@ -64,6 +65,7 @@ jobs:
           python3 scripts/verify-combo-browser.py --site site --out predeploy-combo
           python3 scripts/verify-codex-order.py --site site --out predeploy-codex
           python3 scripts/verify-live-loading.py --site site --out predeploy-loading
+          python3 scripts/verify-run-result.py --site site --out predeploy-run-result
       - name: Persist verified files and remove completed transfer
         run: |
           set -euo pipefail
@@ -106,6 +108,7 @@ jobs:
           python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo
           python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex
           python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading
+          python3 scripts/verify-run-result.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-run-result
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,3 +1,5 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Observe loading audio without synthetic activation. All game APIs use fixtures."""
 import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
@@ -22,7 +24,7 @@ def verify(base,out):
    init=HOOK
    if saved is not None:init+=f"localStorage.setItem('burger-lab-music-volume','{saved}');"
    if unsupported:init+='window.AudioContext=undefined;'
-   ctx.add_init_script(init)
+   ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(init)
    page=ctx.new_page();page.set_default_timeout(15000);pending=[];errors=[];page.on('pageerror',lambda e:errors.append(str(e)));first=[True]
    def fixture(route):
     name=route.request.url.split('/api/')[-1].split('?')[0]

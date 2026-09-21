@@ -1,3 +1,5 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Read-only audio smoke tests; local media uses production-like byte-range responses."""
 import argparse, hashlib, json, os, re, shutil, tempfile, time
 from functools import partial
@@ -45,7 +47,7 @@ def verify(base,out):
         browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--disable-dev-shm-usage','--autoplay-policy=no-user-gesture-required'])
         for width,height in [(360,640),(390,844),(412,915)]:
             ctx=browser.new_context(viewport={'width':width,'height':height},is_mobile=True,has_touch=True)
-            ctx.add_init_script(HOOK)
+            ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK)
             page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             def fixture(route):
                 name=route.request.url.split('/api/')[-1].split('?')[0]

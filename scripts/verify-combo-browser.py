@@ -1,8 +1,10 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Exercise the published game with isolated API fixtures, never real ranking writes."""
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='75fd1a5feb8baed95fe34a1b3c568d86c376f9ca'
+EXPECTED='7286b1ff064f1fd9e0e0629c2792859d686e6136'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -50,7 +52,7 @@ def verify(base,out):
   browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium') or None,args=['--no-sandbox','--disable-dev-shm-usage'])
   for width,height in [(360,640),(390,844),(412,915)]:
    ctx=browser.new_context(viewport={'width':width,'height':height},device_scale_factor=2,is_mobile=True,has_touch=True)
-   ctx.add_init_script("window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});")
+   ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script("window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});")
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.set_default_timeout(20000)
    page.route('**/api/**',fixture)
    page.goto(base+'?balance=2',wait_until='domcontentloaded')
