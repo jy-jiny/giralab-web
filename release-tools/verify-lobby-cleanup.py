@@ -84,7 +84,7 @@ def verify(base,out):
             expect(page.locator('[data-guide-section]')).to_have_count(6)
             expect(page.locator('[data-guide-section=score]')).to_contain_text('5초')
             page.screenshot(path=str(out/f'help-burger-{width}x{height}.png'))
-            for theme,text in [('burger','점수 계산과 콤보'),('music','리프'),('war','핵의 화면 전체 효과'),('robot','서로 다른 로봇')]:
+            for theme,text in [('burger','점수 계산과 콤보'),('music','화음'),('war','핵의 화면 전체 효과'),('robot','서로 다른 로봇')]:
                 page.locator('[data-help-tab='+theme+']').click()
                 expect(page.locator('[data-help-theme]')).to_have_attribute('data-help-theme',theme)
                 expect(page.locator('[data-help-tab='+theme+']')).to_have_attribute('aria-selected','true')
