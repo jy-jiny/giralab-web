@@ -109,7 +109,7 @@ def verify(base,out):
     seed_start();trigger();page.locator('.regeneration-scene').wait_for(state='attached')
     page.get_by_role('button',name='일시정지',exact=True).click()
     paused=game();assert paused['status']=='paused'
-    page.wait_for_function(ANIMS+".every(a=>a.playState==='paused')")
+    page.wait_for_function(ANIMS+".every(a=>a.playState==='paused' && !a.pending)")
     positions=page.evaluate(ANIMS+'.map(a=>a.currentTime)')
     page.wait_for_timeout(700)
     assert game()==paused
