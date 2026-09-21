@@ -1,3 +1,5 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Actual-browser checks; all game API writes are intercepted, never sent to production."""
 import argparse, json, os, shutil, subprocess, tempfile, time
 from pathlib import Path
@@ -33,7 +35,7 @@ def verify(base,out):
             sizes=[(360,640),(390,844),(412,915)] if policy=='no-user-gesture-required' else [(390,844)]
             for width,height in sizes:
                 ctx=browser.new_context(viewport={'width':width,'height':height},is_mobile=True,has_touch=True,device_scale_factor=1)
-                ctx.add_init_script(HOOK)
+                ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK)
                 page=ctx.new_page();page.set_default_timeout(20000);errors=[];saved=[]
                 page.on('pageerror',lambda e:errors.append(str(e)))
                 def fixture(route):
@@ -135,7 +137,7 @@ def verify(base,out):
                 ctx.close()
             browser.close()
         browser=p.chromium.launch(executable_path=executable,args=['--no-sandbox','--autoplay-policy=no-user-gesture-required'])
-        ctx=browser.new_context();ctx.add_init_script(HOOK+"localStorage.setItem('burger-lab-music-volume','0');")
+        ctx=browser.new_context();ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK+"localStorage.setItem('burger-lab-music-volume','0');")
         page=ctx.new_page()
         page.route('**/api/**',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps({'player':{'id':'mute-qa','nickname':'무음'}} if '/api/player' in route.request.url else {'entries':[],'me':None} if '/api/leaderboard' in route.request.url else {'unlocked':['classic'],'bestScore':0})))
         page.goto(base);expect(page.locator('.home-screen')).to_be_visible()

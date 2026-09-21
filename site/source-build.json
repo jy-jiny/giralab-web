@@ -1,5 +1,5 @@
 {
-  "source_commit": "75fd1a5feb8baed95fe34a1b3c568d86c376f9ca",
+  "source_commit": "7286b1ff064f1fd9e0e0629c2792859d686e6136",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -75,7 +75,7 @@
     "war": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7",
     "robot": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989"
   },
-  "theme_art_delivery": "additive stylesheet; existing JS/CSS and source_commit preserved",
+  "theme_art_delivery": "full shared Vite build; approved glossy theme assets preserved",
   "dashboardRevision": "dashboard-20260919",
   "dashboardSourceCommit": "f25c204bd3378edc9cb36cbc128e16d8399e860b",
   "lobby_dashboard": true,
@@ -90,5 +90,34 @@
   },
   "theme_terminology_revision": "20260921",
   "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
-  "theme_price_display": "출시예정"
+  "theme_price_display": "출시예정",
+  "previous_source_commit": "75fd1a5feb8baed95fe34a1b3c568d86c376f9ca",
+  "release_revision": "results-capture-20260921",
+  "run_result_dialog": true,
+  "run_result_tiers": [
+    "normal",
+    "advanced",
+    "legendary",
+    "mythic"
+  ],
+  "run_result_chart": "cumulative-score",
+  "release_ai_tools": false,
+  "build_files_sha256": {
+    "assets/index-5uUMChBg.js": "849dd49155111386208b0b8fdc5868d7019785d816b9a0e1d63ff22d0b69242a",
+    "assets/index-CgNCqMf2.css": "4a1006015088ca49b1824459cc98a71ec6fbac4e17e1a228a463a7ecc4258158",
+    "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
+    "audio/lunch-rush-v1.json": "b7d87ddeef3b2cb25f5b5f4345a8f2856d94baceb0a9eaa9c81c725dd3a50e66",
+    "audio/lunch-rush-v1.ogg": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
+    "giraffe-chef.png": "a51899962824ff9fc631251fe1a9e1e0a874955e72adeccc870a822edc7d1691",
+    "giraffe-scientist-hq.webp": "f5d295cb3dbca80fb033c4a665d5edd172585129c025044372c636d705a8bc93",
+    "giraffe-scientist.webp": "e2b4eae943a16023b8c13533027a34202ea01de63975eb4604e08b6ebd8a2d86",
+    "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
+    "giralab-loading-d52df73017d8.jpg": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
+    "giralab-loading-screen.webp": "85609073c18c7ef7dd46a2226a985becbfd128ced575ba6675e54864f2533f7c",
+    "index.html": "fa82da56bae4e061d0906da422da81e4f2b1787958accee48233a30bb2b7c8ea",
+    "ingredients.png": "fa6d9ce38fbb1efb4913fd4df9d577b045f49ed01709a6facaae6c1433357a7e",
+    "theme-art/music-glossy-20260919.webp": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
+    "theme-art/robot-glossy-20260919.webp": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989",
+    "theme-art/war-glossy-20260919.webp": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7"
+  }
 }

@@ -1,3 +1,5 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Real browser verification with isolated API fixtures; no production player writes."""
 import argparse,json,os,shutil,subprocess,tempfile,time
 from pathlib import Path
@@ -34,7 +36,7 @@ def verify(base,out):
   for width,height,reduced,unsupported in cases:
    print('CHECK',width,height,'reduced',reduced,'unsupported',unsupported,flush=True)
    ctx=browser.new_context(viewport={'width':width,'height':height},is_mobile=True,has_touch=True,reduced_motion='reduce' if reduced else 'no-preference')
-   ctx.add_init_script('localStorage.clear();sessionStorage.clear();'+HOOK+('Element.prototype.animate=undefined;' if unsupported else ''))
+   ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script('localStorage.clear();sessionStorage.clear();'+HOOK+('Element.prototype.animate=undefined;' if unsupported else ''))
    page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('**/api/**',fixture)
    page.goto(base+'?burst-refill='+VERSION,wait_until='domcontentloaded')
    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)

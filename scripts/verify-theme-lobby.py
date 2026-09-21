@@ -1,3 +1,5 @@
+from pathlib import Path as _DriverPath
+_TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Theme navigation/regression proof. All API traffic is isolated; never write test scores live."""
 import argparse, base64, hashlib, importlib.util, json, mimetypes, os, re, shutil, tempfile
 from pathlib import Path
@@ -49,7 +51,7 @@ def verify(base,out,site=None,memory=False):
         browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--disable-dev-shm-usage','--autoplay-policy=no-user-gesture-required'])
         for width,height in [(320,568),(360,640),(390,844),(412,915)]:
             ctx=browser.new_context(viewport={'width':width,'height':height},is_mobile=True,has_touch=True)
-            ctx.add_init_script(HOOK);page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+            ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK);page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             fixture_state={'progress':dict(PROGRESS),'rankFail':False,'writes':0}
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0];status=200

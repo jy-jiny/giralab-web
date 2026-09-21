@@ -8,6 +8,23 @@ IMPORT=Path('deploy-assets/dark-lobby-import.json')
 sha=lambda b:hashlib.sha256(b).hexdigest()
 ART='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
 MUSIC='e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647'
+# Complete Vite releases are already materialized. Verify every build byte;
+# legacy delta migration below must not rewrite a newer source or its verifiers.
+current=json.loads(Path('site/source-build.json').read_text())
+if current.get('release_revision')=='results-capture-20260921':
+    assert re.fullmatch('[0-9a-f]{40}',current['source_commit'])
+    assert current['run_result_dialog'] and current['release_ai_tools'] is False
+    assert current['run_result_tiers']==['normal','advanced','legendary','mythic']
+    hashes=current['build_files_sha256'];assert 'index.html' in hashes and len(hashes)>=10
+    for name,expected in hashes.items():
+        path=(ROOT/'site'/name).resolve();assert path.is_relative_to(ROOT/'site')
+        assert re.fullmatch('[0-9a-f]{64}',expected) and sha(path.read_bytes())==expected,name
+    html=Path('site/index.html').read_text()
+    for name in re.findall(r'(?:src|href)="/giralab-web/([^"]+)"',html):assert name in hashes,name
+    assert sha(Path('site/audio/kitchen-rush.ogg').read_bytes())==MUSIC
+    assert sha(Path('site/giralab-loading-approved-aecda336.jpg').read_bytes())==ART
+    print('Verified complete results build, approved art/music and production tools boundary.')
+    raise SystemExit(0)
 ALLOWED={'site/index.html','site/source-build.json','site/loading-build.json','scripts/verify-game-music.py','scripts/verify-loading-audio.py','scripts/verify-live-loading.py','scripts/verify-combo-browser.py','scripts/verify-burst-refill.py','scripts/verify-codex-order.py','scripts/verify-theme-lobby.py','scripts/verify-theme-book.py','scripts/verify-dark-lobby.py','release-tools/verify-audio-mythic.py'}
 def inside(name):
     assert name in ALLOWED or re.fullmatch(r'site/assets/index-[A-Za-z0-9_-]+\.(js|css)',name),name
