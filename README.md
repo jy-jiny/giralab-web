@@ -13,3 +13,8 @@ requests in browser checks use isolated fixtures; no production scores are writt
 The old regression suites inject `scripts/browser-game-driver.js` in the test
 runner only. It is never shipped in `site/`; the new result test uses actual DOM
 controls and verifies that the release registers no AI game-control tools.
+
+The first publication succeeded, but the live mythic-effect check exposed a test
+observer race: React's previous render can still have a null animation object.
+The driver now reads the stable presentation timer ref and validates its hook
+anchor. Gameplay assertions remain unchanged; the published build is unchanged.

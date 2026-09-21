@@ -41,8 +41,15 @@
     get_game_state: { execute() {
       const list = hooks(), g = game();
       const progress = list.find(v => Array.isArray(v?.current?.unlocked))?.current;
-      const motion = list.findIndex(v => v && Array.isArray(v.removed) && v.falls);
-      const settling = motion >= 0 ? list[motion + 1]?.current || 0 : 0;
+      // React can still expose the previous render's null clearMotion immediately
+      // after submission. Read the stable mutable ref instead, including reduced
+      // motion mythic effects which intentionally have no clearMotion object.
+      // This adapter is pinned to the shared component's hook layout; fail loudly
+      // if the audio/ref anchor changes instead of reporting a false idle state.
+      const audioIndex = list.findIndex(v => typeof v?.current?.getState === 'function');
+      if (audioIndex < 9 || list[audioIndex + 1]?.current?.tagName !== 'AUDIO' ||
+          typeof list[audioIndex - 9]?.current !== 'number') throw Error('Presentation ref layout changed');
+      const settling = list[audioIndex - 9].current;
       return { status: g.status, elapsed: g.elapsed, presenting: performance.now() < settling,
         score: g.score, danger: g.danger, combo: g.chain, slow: g.freeze,
         multiplier: Math.min(8, 1 + Math.max(0, g.chain - 1) * .5),
