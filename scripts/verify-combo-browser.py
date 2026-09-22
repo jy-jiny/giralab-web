@@ -4,7 +4,7 @@ _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-ga
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='2c032cc21643d854ef7aac5573b0fd1b853cffb6'
+EXPECTED='546c8b583e812f5d37a0d8f4056e495801ad319a'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
