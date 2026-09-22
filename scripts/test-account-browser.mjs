@@ -114,8 +114,8 @@ try{
   await cancelled.page.getByRole('button',{name:'Google로 계속하기',exact:true}).click();
   await cancelled.page.getByRole('dialog').getByRole('button',{name:'취소',exact:true}).click();
   await expect(cancelled.page.locator('.login-screen')).toBeVisible();await expect(cancelled.page.locator('#nickname')).toHaveCount(0);
-  assert(!cancelled.state.calls.some(c=>c.endpoint==='account/confirm'||c.endpoint==='account/social-verify'||(c.endpoint==='player'&&c.method==='POST')));
-  cases.push('cancelled Google selection creates no anonymous nickname/player');await cancelled.context.close();
+  assert(!cancelled.state.calls.some(c=>c.endpoint==='account/social-challenge'||c.endpoint==='account/confirm'||c.endpoint==='account/social-verify'||(c.endpoint==='player'&&c.method==='POST')));
+  cases.push('cancelled Google selection consumes no server challenge and creates no anonymous nickname/player');await cancelled.context.close();
   const first=await setup({fresh:true,newGoogle:true,loseSignin:true});await first.page.goto(base);await googleLogin(first.page);
   await expect(first.page.locator('#nickname')).toBeVisible();assert.equal(first.state.player,null,'Google proof alone creates no player');
   await first.page.locator('#nickname').fill('처음로그인');await first.page.getByRole('button',{name:'이 이름으로 시작',exact:true}).click();
