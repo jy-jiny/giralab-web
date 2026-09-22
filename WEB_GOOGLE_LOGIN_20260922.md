@@ -1,5 +1,11 @@
 # Web Google login rollout — 2026-09-22
 
+## GiraLab dialog style
+
+Source `f88d30750e3498bcea2192e2bf5f041f69140c9e`, tree `c4aebb7a554b3916a64dd41e6d4676e11c7fb3ec`. The app-owned intermediate dialog now uses a navy card, muted gold accents, clearer instructions and a secondary cancel button. The official Google button uses the supported `filled_black`, `pill` and responsive width options. Google account selection remains provider-controlled; no credential, nonce, request order, automatic login, server or record behavior changed.
+
+Local web SDK 63, first-login 45, TypeScript, docs and Vite checks passed. Existing pre/post deployment account and game suites remain required. These fixtures do not verify actual Google account authentication or the personalized Google iframe. Approved art/audio hashes are unchanged. No server reset or store submission.
+
 ## Cancellation and retry fix
 
 Source `ea1d8262f82ff64170e5ed7780aae212578d51e2`, tree `989f8855323ca5d9167ed15db758577edbedd678`. The web now obtains the Google credential before creating the server challenge. Cancelling, SDK load failure and provider timeout do not consume a server login attempt. First login and account management use the same ordering, while native SDK ordering and all server limits are preserved. The intermediate button dialog now explains that the Google button must be clicked.

@@ -27,7 +27,7 @@ defaults:
   run:
     shell: bash
 env:
-  GIRALAB_EXPECTED_SOURCE_COMMIT: 'ea1d8262f82ff64170e5ed7780aae212578d51e2'
+  GIRALAB_EXPECTED_SOURCE_COMMIT: 'f88d30750e3498bcea2192e2bf5f041f69140c9e'
 jobs:
   verify:
     if: github.event_name == 'pull_request'
