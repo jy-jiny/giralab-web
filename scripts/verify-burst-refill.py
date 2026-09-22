@@ -126,7 +126,9 @@ def verify(base,out):
     page.wait_for_function('!window.__gameTools.get_game_state.execute({}).regenerating')
     seed_start();trigger(True);page.locator('.regeneration-scene').wait_for(state='attached')
     page.evaluate(ANIMS+'.forEach(a=>{a.pause();a.currentTime=240})')
-    page.get_by_role('button',name='메인으로',exact=True).click();held=game()
+    page.get_by_role('button',name='메인으로',exact=True).click()
+    expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+    page.get_by_role('button',name='돌아가기',exact=True).click();held=game()
     page.wait_for_timeout(700);assert game()['board']==held['board'] and game()['elapsed']==held['elapsed']
     if page.locator('[data-theme-select=burger]').count(): page.locator('[data-theme-select=burger]').click()
     page.locator('.home-play').click();page.locator('.regeneration-scene').wait_for(state='attached')
@@ -160,3 +162,4 @@ if __name__=='__main__':
    server=subprocess.Popen(['python3','-m','http.server','4182','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    try:time.sleep(.3);verify('http://127.0.0.1:4182/giralab-web/',Path(a.out))
    finally:server.terminate();server.wait(timeout=5)
+

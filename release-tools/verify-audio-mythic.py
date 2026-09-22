@@ -88,6 +88,8 @@ def verify(base,out):
                 assert not audio()['labPlaying']
                 expect(page.locator('.audio-enable')).to_have_count(0)
                 page.get_by_role('button',name='메인으로',exact=True).click()
+                expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+                page.get_by_role('button',name='돌아가기',exact=True).click()
                 page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying')
                 assert not audio()['gamePlaying']
                 if policy=='no-user-gesture-required':
@@ -188,3 +190,4 @@ if __name__=='__main__':
             server=subprocess.Popen(['python3','-m','http.server','4179','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             try:time.sleep(.4);verify('http://127.0.0.1:4179/giralab-web/',Path(args.out))
             finally:server.terminate();server.wait(timeout=5)
+

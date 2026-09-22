@@ -88,6 +88,8 @@ def verify(base,out):
             page.get_by_role('button',name='닫기',exact=True).click()
             page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying')
             page.get_by_role('button',name='메인으로',exact=True).click()
+            expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+            page.get_by_role('button',name='돌아가기',exact=True).click()
             page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying')
             assert audio()['track']=='Laboratory Notes' and not audio()['gamePlaying']
             response=ctx.request.get(base+'audio/kitchen-rush.ogg')
@@ -109,3 +111,4 @@ if __name__=='__main__':
             Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4181/giralab-web/',Path(a.out))
             finally:server.shutdown();server.server_close()
+

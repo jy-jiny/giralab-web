@@ -133,6 +133,8 @@ def verify(base,out):
     page.wait_for_function('window.__gameTools.get_audio_state.execute({}).gamePlaying');assert state()['track']=='Kitchen Rush'
    expect(page.locator(FORBIDDEN)).to_have_count(0)
    page.get_by_role('button',name='메인으로',exact=True).click()
+   expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+   page.get_by_role('button',name='돌아가기',exact=True).click()
    if not unsupported and saved!=0:
     page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying');assert not state()['gamePlaying']
     page.evaluate('window.dispatchEvent(new Event("burger-native-pause"))');assert not state()['labPlaying']
@@ -169,3 +171,4 @@ if __name__=='__main__':
    server=subprocess.Popen(['python3','-m','http.server','4180','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    try:time.sleep(.3);verify('http://127.0.0.1:4180/giralab-web/',Path(args.out))
    finally:server.terminate();server.wait(timeout=5)
+

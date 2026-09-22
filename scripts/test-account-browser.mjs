@@ -105,8 +105,8 @@ try{
         const dialog=document.querySelector('.game-dialog');
         if(dialog)frames.push({state:dialog.dataset.state,title:dialog.querySelector('[data-slot="dialog-title"]')?.textContent,
           description:dialog.querySelector('[data-slot="dialog-description"]')?.textContent,
-          panelClass:[...dialog.classList].find(name=>/^(account|settings|book|help)-dialog$/.test(name)),
-          account:!!dialog.querySelector('.account-panel'),settings:!!dialog.querySelector('.settings-content'),book:!!dialog.querySelector('.theme-book-panel')});
+          panelClass:[...dialog.classList].find(name=>/^(account|settings|book|help|leave)-dialog$/.test(name)),
+          account:!!dialog.querySelector('.account-panel'),settings:!!dialog.querySelector('.settings-content'),book:!!dialog.querySelector('.theme-book-panel'),leave:!!dialog.querySelector('.leave-actions')});
       };
       const observer=new MutationObserver(sample);observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true});
       sample();window.__panelCloseProbe={frames,observer};
@@ -190,6 +190,48 @@ try{
   await closeWithoutChangingContent(closing.page,()=>closing.page.getByRole('button',{name:'닫기',exact:true}).click());
   await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','paused');
   cases.push('closing options resumes only a game it paused; an already paused game remains paused and account changes stay disabled during play');
+  const gameSnapshot=()=>closing.page.locator('.game-shell').evaluate(game=>({
+    status:game.dataset.gameStatus,score:game.querySelector('.score-main strong')?.textContent,
+    elapsed:game.querySelector('.score-secondary time')?.textContent,danger:game.querySelector('.bomb-track')?.getAttribute('aria-valuenow'),
+    board:[...game.querySelectorAll('button[data-tile-id]')].map(tile=>({id:tile.dataset.tileId,row:tile.dataset.row,col:tile.dataset.col,ingredient:tile.dataset.ingredient})),
+  }));
+  const openLeave=async()=>{
+    await closing.page.locator('.topbar').getByRole('button',{name:'메인으로',exact:true}).click();
+    await expect(closing.page.getByRole('heading',{name:'메인으로 돌아갈까요?',exact:true})).toBeVisible();
+    await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','paused');
+    await expect(closing.page.locator('.home-play')).toHaveCount(0);
+  };
+  const alreadyPaused=await gameSnapshot();
+  await openLeave();
+  for(const width of [320,390]){
+    await closing.page.setViewportSize({width,height:844});
+    const bounds=await closing.page.locator('.leave-dialog').evaluate(dialog=>({left:dialog.getBoundingClientRect().left,right:dialog.getBoundingClientRect().right,
+      buttons:[...dialog.querySelectorAll('.leave-actions button')].map(button=>{const rect=button.getBoundingClientRect();return {left:rect.left,right:rect.right,height:rect.height};})}));
+    assert(bounds.left>=0&&bounds.right<=width,'Exit confirmation fits the mobile viewport');assert.equal(bounds.buttons.length,2);
+    for(const button of bounds.buttons){assert(button.left>=bounds.left&&button.right<=bounds.right,'Exit actions fit inside the dialog');assert(button.height>=44,'Exit actions remain usable touch targets');}
+    if(screenshots){await mkdir(screenshots,{recursive:true});await closing.page.screenshot({path:path.join(screenshots,`game-back-confirm-${width}.png`)});}
+  }
+  await closeWithoutChangingContent(closing.page,()=>closing.page.locator('.game-dialog').getByRole('button',{name:'계속하기',exact:true}).click());
+  assert.deepEqual(await gameSnapshot(),alreadyPaused,'Cancelling exit preserves a manually paused game, score and board');
+  cases.push('game back opens confirmation; cancellation keeps an already paused game paused and intact');
+  await closing.page.locator('.board-controls').getByRole('button',{name:'계속하기',exact:true}).click();
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  await openLeave();
+  const held=await gameSnapshot();
+  await closing.page.waitForTimeout(1200);
+  assert.deepEqual(await gameSnapshot(),held,'The confirmation freezes the visible game clock, danger, score and board');
+  await closeWithoutChangingContent(closing.page,()=>closing.page.locator('.game-dialog').getByRole('button',{name:'계속하기',exact:true}).click());
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  const continued=await gameSnapshot();assert.deepEqual(continued.board,held.board);assert.equal(continued.score,held.score);
+  await openLeave();
+  const leaving=await gameSnapshot();
+  await closing.page.locator('.game-dialog').getByRole('button',{name:'돌아가기',exact:true}).click();
+  await expect(closing.page.locator('.game-shell')).toHaveCount(0);
+  await expect(closing.page.locator('.home-play')).toHaveText('계속하기');
+  await closing.page.locator('.home-play').click();
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  const returned=await gameSnapshot();assert.deepEqual(returned.board,leaving.board);assert.equal(returned.score,leaving.score);
+  cases.push('exit confirmation freezes play; cancel resumes it and confirmed return keeps the same game available to continue');
   await closing.context.close();
   const saved=await setup();await saved.page.goto(base);await expect(saved.page.locator('.home-version')).toBeVisible();
   await saved.page.reload();await expect(saved.page.locator('.home-version')).toBeVisible();

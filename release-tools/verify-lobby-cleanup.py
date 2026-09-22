@@ -200,6 +200,8 @@ def verify(base,out):
             assert page.evaluate('window.__gameTools.get_game_state.execute({}).status')=='playing'
             expect(page.locator('[data-tile-id]')).to_have_count(54)
             page.get_by_role('button',name='메인으로',exact=True).click()
+            expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+            page.get_by_role('button',name='돌아가기',exact=True).click()
             expect(page.locator('.home-play')).to_have_text('계속하기')
             expect(page.locator('.home-play svg')).to_have_count(0)
             page.screenshot(path=str(out/f'clean-continue-{width}x{height}.png'))

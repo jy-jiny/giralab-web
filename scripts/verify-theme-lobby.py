@@ -114,6 +114,8 @@ def verify(base,out,site=None,memory=False):
             page.locator('.home-play').click();expect(page.locator('.phone-game')).to_be_visible()
             expect(page.locator('[data-tile-id]')).to_have_count(54)
             page.get_by_role('button',name='메인으로',exact=True).click()
+            expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+            page.get_by_role('button',name='돌아가기',exact=True).click()
             expect(page.locator('.home-play')).to_have_text('계속하기')
             expect(page.locator('[data-theme-best="burger"]')).to_have_text('21,350')
             page.evaluate('window.dispatchEvent(new Event("burger-native-back"))')
@@ -127,6 +129,8 @@ def verify(base,out,site=None,memory=False):
             state=page.evaluate('window.__gameTools.get_game_state.execute({})')
             assert state['status']=='playing' and state['rulesVersion']==3,state
             page.get_by_role('button',name='메인으로',exact=True).click()
+            expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
+            page.get_by_role('button',name='돌아가기',exact=True).click()
             if not memory:
                 page.reload(wait_until='domcontentloaded');expect(page.locator('.theme-grid')).to_be_visible()
                 page.get_by_role('button',name='햄버거 테마 선택',exact=True).click()
@@ -150,3 +154,4 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',4183),partial(media.MediaHandler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4183/giralab-web/',Path(a.out),site)
             finally:server.shutdown();server.server_close()
+
