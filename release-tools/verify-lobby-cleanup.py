@@ -6,6 +6,7 @@ from pathlib import Path
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
+from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright, expect
 
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
@@ -26,6 +27,12 @@ def verify(base,out):
             ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK)
             page=ctx.new_page();page.set_default_timeout(20000)
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+            request_failures=[];response_errors=[]
+            def resource_url(url):
+                parsed=urlsplit(url)
+                return f'{parsed.scheme}://{parsed.hostname or ""}{parsed.path}'
+            page.on('requestfailed',lambda request:request_failures.append({'url':resource_url(request.url),'error':str(request.failure)[:300]}) if len(request_failures)<30 else None)
+            page.on('response',lambda response:response_errors.append({'url':resource_url(response.url),'status':response.status}) if response.status>=400 and len(response_errors)<30 else None)
             state={'progress':dict(PROGRESS),'writes':0}
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0]
@@ -42,8 +49,27 @@ def verify(base,out):
                 else:raise AssertionError('Unexpected API endpoint: '+path)
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
             page.route('**/api/**',fixture)
-            page.goto(base+'?theme-help-check=1',wait_until='domcontentloaded')
-            expect(page.locator('.home-version')).to_have_text('GiraLab · 1.7.2')
+            try:
+                page.goto(base+'?theme-help-check=1',wait_until='domcontentloaded')
+                # The app allows image loading for 15s; expect has its own 5s default.
+                expect(page.locator('.home-version')).to_have_text('GiraLab · 1.7.2',timeout=20000)
+            except Exception as error:
+                diagnostic={'viewport':[width,height],'url':resource_url(page.url),'error':str(error)[:3000],
+                    'pageErrors':errors[:30],'requestFailures':request_failures,'responseErrors':response_errors}
+                try:
+                    diagnostic.update(page.evaluate('''() => {
+                        const splash=document.querySelector('.giralab-boot');
+                        return {bodyText:document.body?.innerText.slice(0,8000) ?? '',
+                            splash:splash ? {text:splash.innerText.slice(0,2000),busy:splash.getAttribute('aria-busy'),
+                                progress:splash.querySelector('[role="progressbar"]')?.getAttribute('aria-valuenow')} : null};
+                    }'''))
+                except Exception as capture_error:diagnostic['snapshotError']=str(capture_error)[:500]
+                try:page.screenshot(path=str(out/f'boot-failure-{width}x{height}.png'),timeout=5000)
+                except Exception as capture_error:diagnostic['screenshotError']=str(capture_error)[:500]
+                failure_path=out/f'boot-failure-{width}x{height}.json'
+                failure_path.write_text(json.dumps(diagnostic,ensure_ascii=False,indent=2)+'\n')
+                print('BOOT_FAILURE',failure_path,flush=True)
+                raise
             expect(page.locator('.theme-lobby')).to_have_attribute('data-lobby-revision','dashboard-20260919')
             expect(page.locator('.theme-carousel-controls, .theme-lobby-note')).to_have_count(0)
             assert '옆으로 넘겨보세요' not in page.locator('.theme-lobby').inner_text()
