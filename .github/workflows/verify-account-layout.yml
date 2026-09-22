@@ -1,0 +1,60 @@
+name: Verify published account layout
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-account-layout.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: verify-account-layout
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install isolated verification tools
+        run: |
+          python3 -m pip install --disable-pip-version-check playwright==1.55.0
+          npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify the published source and exact UI files
+        run: |
+          python3 - <<'PY'
+          import json,hashlib,urllib.request,os
+          from pathlib import Path
+          expected=json.loads(Path('site/source-build.json').read_text())
+          base='https://jy-jiny.github.io/giralab-web/'
+          def fetch(name):
+            with urllib.request.urlopen(base+name+'?verify=account-layout-'+expected['source_commit'],timeout=30) as response:return response.read()
+          live=json.loads(fetch('source-build.json'))
+          assert live['source_commit']==expected['source_commit']
+          assert live['release_revision']==expected['release_revision']
+          for name,wanted in expected['build_files_sha256'].items():
+            if name.endswith(('.html','.js','.css')):assert hashlib.sha256(fetch(name)).hexdigest()==wanted,name
+          with open(os.environ['GITHUB_ENV'],'a') as out:out.write('GIRALAB_EXPECTED_SOURCE_COMMIT='+expected['source_commit']+'\n')
+          print('Published UI bytes match the tested source',expected['source_commit'])
+          PY
+      - name: Verify live account overview and preserved account operations
+        env:
+          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
+        run: node scripts/test-account-browser.mjs --url https://jy-jiny.github.io/giralab-web/ --out live-account
+      - name: Repeat the unchanged loading audio check and finish skipped live checks
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-loading-audio.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-audio
+          python3 release-tools/verify-audio-mythic.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-audio-mythic
+          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
+          python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex
+          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
+          python3 scripts/verify-run-result.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-run-result
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: account-layout-live-verification
+          path: live-*
+          retention-days: 1
