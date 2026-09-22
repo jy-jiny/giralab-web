@@ -27,7 +27,7 @@ defaults:
   run:
     shell: bash
 env:
-  GIRALAB_EXPECTED_SOURCE_COMMIT: 'ae2b86a572087a68023082566f0c98a2a2b79be3'
+  GIRALAB_EXPECTED_SOURCE_COMMIT: '1c8300a0cd71bfb67467dec0869012a4f136c0bb'
 jobs:
   verify:
     if: github.event_name == 'pull_request'
@@ -68,14 +68,14 @@ jobs:
           python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
       - name: Install account screen verification tools
         run: npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
-      - name: Verify Google-first login, automatic entry, logout, recovery and deletion
-        env:
-          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-account-browser.mjs --site site
       - name: Install Korean fonts for mobile screenshots
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify Google-first login, automatic entry, logout, recovery and deletion
+        env:
+          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
+        run: node scripts/test-account-browser.mjs --site site --out predeploy-account
       - name: Verify dark carousel, theme codex and preserved game before publication
         run: |
           set -euo pipefail
@@ -129,14 +129,14 @@ jobs:
           python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
       - name: Install account screen verification tools
         run: npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
-      - name: Verify Google-first login, automatic entry, logout, recovery and deletion
-        env:
-          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-account-browser.mjs --site site
       - name: Install Korean fonts for mobile screenshots
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq fonts-noto-cjk
+      - name: Verify Google-first login, automatic entry, logout, recovery and deletion
+        env:
+          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
+        run: node scripts/test-account-browser.mjs --site site --out predeploy-account
       - name: Verify dark carousel, theme codex and preserved game before publication
         run: |
           set -euo pipefail
@@ -203,7 +203,7 @@ jobs:
         if: github.event_name != 'pull_request'
         env:
           GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-account-browser.mjs --url https://jy-jiny.github.io/giralab-web/
+        run: node scripts/test-account-browser.mjs --url https://jy-jiny.github.io/giralab-web/ --out live-account
       - uses: actions/upload-artifact@v4
         continue-on-error: true
         if: always()

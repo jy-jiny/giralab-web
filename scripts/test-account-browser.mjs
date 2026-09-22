@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { once } from 'node:events';
 import path from 'node:path';
@@ -10,6 +10,7 @@ const require=createRequire(process.env.GIRALAB_BROWSER_TOOLS ? path.join(proces
 const {chromium,expect}=require('playwright/test');
 const args=process.argv.slice(2),value=flag=>args.includes(flag)?args[args.indexOf(flag)+1]:null;
 const root=path.resolve(value('--site')||'pages-dist');let server,browser;
+const screenshots=value('--out');
 let base=value('--url');
 if(!base){
   server=createServer(async(req,res)=>{
@@ -105,6 +106,35 @@ try{
     await page.getByRole('button',{name:'테스트 Google 계정 선택',exact:true}).click();
   }
   async function fit(page){for(const width of [320,390]){await page.setViewportSize({width,height:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Account UI fits phone');}}
+  async function accountFits(page,{provider=false}={}){
+    for(const width of [320,390]){
+      await page.setViewportSize({width,height:740});
+      const bounds=await page.locator('.account-panel').evaluate(panel=>{
+        const rect=element=>{const r=element.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height};};
+        const social=panel.querySelector('.account-social-actions');
+        return {width:innerWidth,pageWidth:document.documentElement.scrollWidth,panel:rect(panel),buttons:[...panel.querySelectorAll('button')].map(rect),social:social?{buttons:[...social.querySelectorAll('button')].map(rect),hint:social.querySelector('.account-auth-hint')?rect(social.querySelector('.account-auth-hint')):null}:null};
+      });
+      assert(bounds.pageWidth<=bounds.width,'Account content never widens the mobile page');
+      assert(bounds.panel.left>=0&&bounds.panel.right<=width,'Account panel fits the mobile viewport');
+      for(const button of bounds.buttons){assert(button.left>=bounds.panel.left-1&&button.right<=bounds.panel.right+1,'Account buttons stay inside the panel');assert(button.height>=44,'Account actions retain a usable touch target');}
+      if(provider){assert(bounds.social?.buttons.length,'Selected action has its provider button');assert(bounds.social.hint,'Selected action explains which account to use');for(const button of bounds.social.buttons)assert(bounds.social.hint.bottom<=button.top+1,'Provider explanation stays above the button, never beside or behind it');}
+      if(screenshots){await mkdir(screenshots,{recursive:true});await page.screenshot({path:path.join(screenshots,`account-${provider?'recovery':'overview'}-${width}.png`),fullPage:true});}
+    }
+  }
+  const overview=await setup();await overview.page.goto(base);await openAccount(overview.page);
+  await expect(overview.page.locator('.account-overview')).toBeVisible();await expect(overview.page.locator('.account-profile-name')).toHaveText(owner.nickname);
+  await expect(overview.page.locator('.account-social-actions')).toHaveCount(0);await expect(overview.page.locator('.account-operation')).toHaveCount(0);
+  await accountFits(overview.page);
+  for(const action of ['로그인으로 기록 복구','다른 기기 연결 해제','계정과 기록 삭제']){
+    await overview.page.getByRole('button',{name:action,exact:true}).click();
+    await expect(overview.page.locator('.account-operation').getByRole('heading',{name:action,exact:true})).toBeVisible();
+    await expect(overview.page.locator('.account-overview')).toHaveCount(0);
+    if(action==='로그인으로 기록 복구')await accountFits(overview.page,{provider:true});
+    await overview.page.getByRole('button',{name:'계정 관리로 돌아가기',exact:true}).click();
+    await expect(overview.page.locator('.account-overview')).toBeVisible();
+  }
+  assert(!overview.state.calls.some(c=>['account/social-challenge','account/social-verify','account/confirm','account/logout','account/guest-delete'].includes(c.endpoint)),'Opening or backing out of actions never starts an account mutation');
+  cases.push('linked overview opens without a recovery form; action navigation is read-only and fits 320/390px');await overview.context.close();
   const saved=await setup();await saved.page.goto(base);await expect(saved.page.locator('.home-version')).toBeVisible();
   await saved.page.reload();await expect(saved.page.locator('.home-version')).toBeVisible();
   assert.equal(await saved.page.evaluate(()=>localStorage.getItem('fixture-google-opens')),null);
