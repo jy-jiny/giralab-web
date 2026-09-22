@@ -27,8 +27,8 @@ const errors=[],cases=[];
 try{
   const systemChrome=process.env.GIRALAB_CHROMIUM || ['/usr/bin/google-chrome','/usr/bin/chromium'].find(existsSync);
   browser=await chromium.launch({headless:true,...(systemChrome?{executablePath:systemChrome}:{}),args:['--no-sandbox']});
-  async function setup({fresh=false,enabled=true,loseDelete=false,loseSignin=false,loseLogout=false,newGoogle=false,linked=true,ranking=false}={}){
-    const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+  async function setup({fresh=false,enabled=true,loseDelete=false,loseSignin=false,loseLogout=false,newGoogle=false,linked=true,ranking=false,reducedMotion='reduce'}={}){
+    const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion});
     await context.addInitScript(({fresh,ranking})=>{
       if(!localStorage.getItem('fixture-init')){
         localStorage.setItem('fixture-init','1');localStorage.setItem('giralab-player-token-v2','A'.repeat(43));
@@ -98,6 +98,26 @@ try{
     return {context,page,state};
   }
   async function openAccount(page){await page.getByRole('button',{name:'옵션',exact:true}).click();await page.getByRole('button',{name:/계정 관리/}).click();await expect(page.locator('.account-panel')).toBeVisible();}
+  async function closeWithoutChangingContent(page,close){
+    await page.evaluate(()=>{
+      const frames=[];
+      const sample=()=>{
+        const dialog=document.querySelector('.game-dialog');
+        if(dialog)frames.push({state:dialog.dataset.state,title:dialog.querySelector('[data-slot="dialog-title"]')?.textContent,
+          description:dialog.querySelector('[data-slot="dialog-description"]')?.textContent,
+          panelClass:[...dialog.classList].find(name=>/^(account|settings|book|help)-dialog$/.test(name)),
+          account:!!dialog.querySelector('.account-panel'),settings:!!dialog.querySelector('.settings-content'),book:!!dialog.querySelector('.theme-book-panel')});
+      };
+      const observer=new MutationObserver(sample);observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true});
+      sample();window.__panelCloseProbe={frames,observer};
+    });
+    await close();
+    await expect(page.locator('.game-dialog')).toHaveCount(0);
+    const frames=await page.evaluate(()=>{const probe=window.__panelCloseProbe;probe.observer.disconnect();delete window.__panelCloseProbe;return probe.frames;});
+    assert(frames.some(frame=>frame.state==='closed'),'The normal-motion exit animation was observed');
+    const content=({state,...frame})=>frame;
+    for(const frame of frames)assert.deepEqual(content(frame),content(frames[0]),'Closing retains its own title, description, layout and panel until it disappears');
+  }
   async function prove(page){
     await page.getByRole('button',{name:'Google로 계속하기',exact:true}).click();
     await page.getByRole('button',{name:'테스트 Google 계정 선택',exact:true}).click();
@@ -139,6 +159,38 @@ try{
   }
   assert(!overview.state.calls.some(c=>['account/social-challenge','account/social-verify','account/confirm','account/logout','account/guest-delete'].includes(c.endpoint)),'Opening or backing out of actions never starts an account mutation');
   cases.push('linked overview opens without a recovery form; action navigation is read-only and fits 320/390px');await overview.context.close();
+  const closing=await setup({reducedMotion:'no-preference'});await closing.page.goto(base);
+  await openAccount(closing.page);
+  await closing.page.locator('.game-dialog').getByRole('button',{name:'옵션',exact:true}).click();
+  await expect(closing.page.locator('.game-dialog [data-slot="dialog-title"]')).toHaveText('옵션');
+  await closing.page.getByRole('button',{name:/계정 관리/}).click();
+  await closeWithoutChangingContent(closing.page,()=>closing.page.getByRole('button',{name:'닫기',exact:true}).click());
+  await expect(closing.page.locator('.home-version')).toBeVisible();
+  await openAccount(closing.page);
+  await closeWithoutChangingContent(closing.page,()=>closing.page.keyboard.press('Escape'));
+  await openAccount(closing.page);
+  await closeWithoutChangingContent(closing.page,()=>closing.page.mouse.click(5,5));
+  for(const panel of ['게임 설명','레시피 도감']){
+    await closing.page.getByRole('button',{name:'옵션',exact:true}).click();
+    await closing.page.getByRole('button',{name:new RegExp(panel)}).click();
+    await closeWithoutChangingContent(closing.page,()=>closing.page.getByRole('button',{name:'닫기',exact:true}).click());
+  }
+  assert(!closing.state.calls.some(c=>['account/social-challenge','account/social-verify','account/confirm','account/logout','account/guest-delete'].includes(c.endpoint)),'Closing panels never starts an account operation');
+  cases.push('account X, Escape and backdrop close directly without intermediate content; back still opens options and help/book retain their exit content');
+  await closing.page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+  await closing.page.getByRole('button',{name:'게임 시작',exact:true}).click();
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  await closing.page.getByRole('button',{name:'옵션',exact:true}).click();
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','paused');
+  await expect(closing.page.getByRole('button',{name:/계정 관리/})).toBeDisabled();
+  await closeWithoutChangingContent(closing.page,()=>closing.page.getByRole('button',{name:'닫기',exact:true}).click());
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  await closing.page.getByRole('button',{name:'일시정지',exact:true}).click();
+  await closing.page.getByRole('button',{name:'옵션',exact:true}).click();
+  await closeWithoutChangingContent(closing.page,()=>closing.page.getByRole('button',{name:'닫기',exact:true}).click());
+  await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','paused');
+  cases.push('closing options resumes only a game it paused; an already paused game remains paused and account changes stay disabled during play');
+  await closing.context.close();
   const saved=await setup();await saved.page.goto(base);await expect(saved.page.locator('.home-version')).toBeVisible();
   await saved.page.reload();await expect(saved.page.locator('.home-version')).toBeVisible();
   assert.equal(await saved.page.evaluate(()=>localStorage.getItem('fixture-google-opens')),null);
