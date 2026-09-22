@@ -1,5 +1,11 @@
 # Web Google login rollout — 2026-09-22
 
+## White dialog follow-up
+
+Source ae2b86a572087a68023082566f0c98a2a2b79be3, tree 2978fd85bd8370ffe3c3517e87b724096e05a5db. Following the user screenshot and preference, the app-owned card now has a pure white background and light color scheme. The official Google button uses the white outline theme. Dark text, a muted gold brand accent and a light gray cancel button preserve contrast. Layout, copy, account selection, cancellation and authentication behavior are unchanged.
+
+Local documentation check and Vite build passed; the 13 original image/audio hashes are unchanged. Existing pre/post account and game gates remain enabled. Real personalized Google iframe rendering is separate from fixture tests. No server/database changes, reset or store submission.
+
 ## GiraLab dialog style
 
 Source `f88d30750e3498bcea2192e2bf5f041f69140c9e`, tree `c4aebb7a554b3916a64dd41e6d4676e11c7fb3ec`. The app-owned intermediate dialog now uses a navy card, muted gold accents, clearer instructions and a secondary cancel button. The official Google button uses the supported `filled_black`, `pill` and responsive width options. Google account selection remains provider-controlled; no credential, nonce, request order, automatic login, server or record behavior changed.

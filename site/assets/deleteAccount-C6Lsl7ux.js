@@ -1,0 +1,1 @@
+import{at as e,ct as t,t as n}from"./globals-DU4FbHxb.js";var r=t(),i=e();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(`main`,{className:`account-page`,children:(0,i.jsx)(n,{deletionOnly:!0})}));
