@@ -8,3 +8,5 @@ The account UI preserves the existing owner and records, supports email linking/
 Email readiness remains disabled until SMTP, templates and actual delivery are verified. Existing guests can delete their own account without email. No production users, mail, scores or deletion requests are created by tests.
 
 Deployment gates retain the existing gameplay, artwork, sound, record and layout tests and add account UI cases against isolated API fixtures. PRs validate without publishing. Optional screenshots use one-day retention and cannot fail a successfully validated release. The required GitHub Pages artifact and publication still must succeed. Current account-wide artifact quota is being diagnosed; no existing artifacts have been deleted.
+
+PR validation runs in a separate job with read-only repository permissions and no production environment. The actual deploy job retains the github-pages environment and only runs after main is updated.
