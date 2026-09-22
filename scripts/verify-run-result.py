@@ -7,6 +7,7 @@ from threading import Thread
 from playwright.sync_api import sync_playwright, expect
 
 PROGRESS={'unlocked':['classic','cheese','green','bacon','double'],'bestScore':21350}
+PLAYER={'id':'00000000-0000-0000-0000-000000000601','nickname':'분석검증'}
 SEQUENCES=[['bun','patty','bun'],['bun','patty','cheese','bun'],['bun','patty','lettuce','bun'],
            ['bun','patty','cheese','cheese','bun'],['bun','cheese','patty','cheese','bun'],
            ['bun','patty','bacon','cheese','bun'],['bun','lettuce','patty','lettuce','bun']]
@@ -47,9 +48,9 @@ def verify(base,out):
         def fixture(route):
             path=route.request.url.split('/api/')[-1].split('?')[0];calls.append([route.request.method,path])
             if path=='account/status':
-                route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-            if path=='player':data={'player':{'id':'result-fixture','nickname':'분석검증'}}
-            elif path=='progress':
+                route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+            if path=='player':data={'player':PLAYER}
+            elif path in ('progress','account/backup'):
                 if route.request.method=='POST':
                     posted=route.request.post_data_json
                     saved['unlocked']=sorted(set(saved['unlocked']+posted['unlocked']))
@@ -111,7 +112,7 @@ def verify(base,out):
         shared=page.evaluate('window.fixtureShares[0]')
         assert shared['type']=='image/png' and [shared['width'],shared['height']]==[720,1040]
         assert f'{final:,}점' in shared['text'] and '일반 1개' in shared['text'] and '고급 1개' in shared['text']
-        assert 'result-fixture' not in shared['text']
+        assert PLAYER['id'] not in shared['text']
         (out/'shared-result.png').write_bytes(base64.b64decode(shared['png']))
         page.evaluate("Object.defineProperty(navigator,'canShare',{value:()=>false,configurable:true})")
         result.get_by_role('button',name='카카오톡으로 공유',exact=True).click()

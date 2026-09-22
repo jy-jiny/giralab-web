@@ -9,6 +9,7 @@ from threading import Thread
 from playwright.sync_api import sync_playwright, expect
 
 VERSION='1.7.2'
+PLAYER={'id':'22222222-2222-4222-8222-222222222201','nickname':'기린연구원'}
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 PROGRESS={'unlocked':['classic','cheese','green','bacon','double'],'bestScore':21350}
 RANKS={'entries':[{'rank':1,'nickname':'기린연구원','score':21350,'isMe':True}],'me':{'nickname':'기린연구원','score':21350,'rank':1},'updatedAt':0}
@@ -27,10 +28,10 @@ def verify(base,out):
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0]
                 if path=='account/status':
-                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-                if path=='player':data={'player':{'id':'theme-book-test','nickname':'기린연구원'}}
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+                if path=='player':data={'player':PLAYER}
                 elif path=='leaderboard':data=RANKS
-                elif path=='progress':
+                elif path in ('progress','account/backup'):
                     if route.request.method=='POST':state['writes']+=1;state['progress']=route.request.post_data_json
                     data=state['progress']
                 else:raise AssertionError('Unexpected API endpoint: '+path)

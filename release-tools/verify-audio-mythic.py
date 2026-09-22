@@ -6,6 +6,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
 VERSION='1.7.2'
+PLAYER={'id':'00000000-0000-0000-0000-000000000604','nickname':'검증'}
 IDS=['classic','cheese','green','bacon','double-patty','double','bacon-cheese','cheese-melt','garden-stack','smoky-green','bacon-first','green-cheese','cheese-bacon-stack','double-bacon','cheese-mad','meat-monster','green-monster','bacon-bomb','forbidden-seven']
 MYTH=['bun','bacon','bacon','bacon','bacon','bacon','bun']
 HOOK="window.__boardDraws=[];const originalRandom=Math.random;Math.random=()=>window.__boardDraws.length?window.__boardDraws.shift():originalRandom();window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t;}}});"
@@ -38,13 +39,21 @@ def verify(base,out):
                 ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK)
                 page=ctx.new_page();page.set_default_timeout(20000);errors=[];saved=[]
                 page.on('pageerror',lambda e:errors.append(str(e)))
+                progress={'unlocked':list(IDS),'bestScore':0}
                 def fixture(route):
                     name=route.request.url.split('/api/')[-1].split('?')[0]
                     if name=='account/status':
-                        route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-                    data={'player':{'id':'audio-mythic-qa','nickname':'검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':IDS,'bestScore':0}
-                    if name=='progress' and route.request.method=='POST':
-                        data=route.request.post_data_json;assert set(data['unlocked'])<=set(IDS);saved.append(data)
+                        route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':True,'providers':['google'],'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+                    if name=='player': data={'player':PLAYER}
+                    elif name=='leaderboard': data={'entries':[],'me':None}
+                    elif name in ('progress','account/backup'):
+                        if route.request.method=='POST':
+                            incoming=route.request.post_data_json;assert set(incoming['unlocked'])<=set(IDS);saved.append(incoming)
+                            progress['bestScore']=max(progress['bestScore'],incoming['bestScore'])
+                            progress['unlocked']=sorted(set(progress['unlocked'])|set(incoming['unlocked']))
+                        data=progress
+                    else:
+                        route.abort(); return
                     route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
                 page.route('**/api/**',fixture)
                 page.goto(base+'?audio-mythic='+VERSION,wait_until='domcontentloaded')
@@ -141,7 +150,23 @@ def verify(base,out):
         browser=p.chromium.launch(executable_path=executable,args=['--no-sandbox','--autoplay-policy=no-user-gesture-required'])
         ctx=browser.new_context();ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script(HOOK+"localStorage.setItem('burger-lab-music-volume','0');")
         page=ctx.new_page()
-        page.route('**/api/**',lambda route:route.fulfill(status=200,content_type='application/json',body=json.dumps({'player':{'id':'mute-qa','nickname':'무음'}} if '/api/player' in route.request.url else {'entries':[],'me':None} if '/api/leaderboard' in route.request.url else {'unlocked':['classic'],'bestScore':0})))
+        muted_player={'id':'00000000-0000-0000-0000-000000000605','nickname':'무음'}
+        muted_progress={'unlocked':['classic'],'bestScore':0}
+        def muted_fixture(route):
+            endpoint=route.request.url.split('/api/')[-1].split('?')[0]
+            if endpoint=='player': data={'player':muted_player}
+            elif endpoint=='account/status': data={'enabled':True,'providers':['google'],'linked':True,'player':muted_player,'deviceState':'active','devices':1}
+            elif endpoint=='leaderboard': data={'entries':[],'me':None}
+            elif endpoint in ('progress','account/backup'):
+                if route.request.method=='POST':
+                    incoming=route.request.post_data_json
+                    muted_progress['bestScore']=max(muted_progress['bestScore'],incoming['bestScore'])
+                    muted_progress['unlocked']=sorted(set(muted_progress['unlocked'])|set(incoming['unlocked']))
+                data=muted_progress
+            else:
+                route.abort(); return
+            route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
+        page.route('**/api/**',muted_fixture)
         page.goto(base);expect(page.locator('.home-screen')).to_be_visible()
         page.wait_for_function('window.__gameTools.get_audio_state?.execute({})')
         assert page.evaluate('window.__gameTools.get_audio_state.execute({}).musicVolume')==0

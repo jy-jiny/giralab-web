@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright, expect
 
 VERSION='1.7.2'
+PLAYER={'id':'22222222-2222-4222-8222-222222222203','nickname':'점심검증'}
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 
 class MediaHandler(SimpleHTTPRequestHandler):
@@ -52,9 +53,12 @@ def verify(base,out):
             def fixture(route):
                 name=route.request.url.split('/api/')[-1].split('?')[0]
                 if name=='account/status':
-                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-                data={'player':{'id':'soundtrack-qa','nickname':'점심검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':['classic'],'bestScore':0}
-                if name=='progress' and route.request.method=='POST':data=route.request.post_data_json
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+                if name=='player':data={'player':PLAYER}
+                elif name=='leaderboard':data={'entries':[],'me':None}
+                elif name in ('progress','account/backup'):data={'unlocked':['classic'],'bestScore':0}
+                else:raise AssertionError('Unexpected API endpoint: '+name)
+                if name in ('progress','account/backup') and route.request.method=='POST':data=route.request.post_data_json
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
             page.route('**/api/**',fixture)
             page.goto(base+'?soundtrack='+VERSION,wait_until='domcontentloaded')

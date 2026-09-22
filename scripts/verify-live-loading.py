@@ -5,6 +5,7 @@ from playwright.async_api import async_playwright
 
 SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
 COMMIT='546c8b583e812f5d37a0d8f4056e495801ad319a'
+PLAYER={'id':'00000000-0000-0000-0000-000000000603','nickname':'로딩검증'}
 
 async def main(base, out):
     out.mkdir(parents=True, exist_ok=True)
@@ -20,10 +21,16 @@ async def main(base, out):
             async def gate_ingredients(route):
                 await ingredients_ready.wait(); await route.continue_()
             async def gate_profile(route):
-                await profile_ready.wait()
-                await route.fulfill(status=200,content_type='application/json',body='{"player":null}')
+                endpoint=route.request.url.split('/api/')[-1].split('?')[0]
+                if endpoint=='player':
+                    await profile_ready.wait(); data={'player':None}
+                elif endpoint=='account/status':
+                    data={'enabled':True,'providers':['google'],'linked':False,'player':None,'deviceState':'new','devices':0}
+                else:
+                    await route.abort(); return
+                await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
             await page.route('**/ingredients.png',gate_ingredients)
-            await page.route('**/api/player',gate_profile)
+            await page.route('**/api/**',gate_profile)
             await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
             art=page.locator('.giralab-boot__art')
             await art.wait_for(state='visible')
@@ -48,22 +55,33 @@ async def main(base, out):
             await page.screenshot(path=str(out/f'loading-{width}x{height}-70.png'))
             profile_ready.set()
             await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '100'")
-            await page.locator('.nickname-screen').wait_for(state='visible')
+            await page.locator('.login-screen').wait_for(state='visible')
+            assert await page.locator('#nickname').count()==0,'Nickname entry must follow Google proof'
+            assert await page.get_by_role('button',name='Google로 계속하기',exact=True).is_enabled()
             assert await page.locator('.giralab-boot').count()==0,'Boot never closes'
             assert not errors,errors
             await page.screenshot(path=str(out/f'ready-{width}x{height}.png'))
             report['tests'].append({'viewport':[width,height],'device_pixel_ratio':3,'source':img_info,'progress':[50,70,100],
-                'fill_widths':[first['width'],second['width']],'next_screen':'nickname','page_errors':errors,'profile':'isolated fixture'})
+                'fill_widths':[first['width'],second['width']],'next_screen':'Google login before nickname','page_errors':errors,'profile':'isolated fixture'})
             await ctx.close()
         ctx=await browser.new_context(viewport={'width':390,'height':844})
         page=await ctx.new_page(); errors=[]
         page.on('pageerror',lambda e:errors.append(str(e)))
+        progress={'unlocked':['classic'],'bestScore':0}
         async def api_fixture(route):
-            path=route.request.url.split('/api/')[-1]
+            path=route.request.url.split('/api/')[-1].split('?')[0]
             if path=='account/status':
-                await route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-            data={'player':{'id':'loading-qa','nickname':'로딩검증'}} if path=='player' else (
-                {'entries':[],'me':None} if path=='leaderboard' else {'unlocked':['classic'],'bestScore':0})
+                data={'enabled':True,'providers':['google'],'linked':True,'player':PLAYER,'deviceState':'active','devices':1}
+            elif path=='player': data={'player':PLAYER}
+            elif path=='leaderboard': data={'entries':[],'me':None}
+            elif path in ('progress','account/backup'):
+                if route.request.method=='POST':
+                    incoming=route.request.post_data_json
+                    progress['bestScore']=max(progress['bestScore'],incoming['bestScore'])
+                    progress['unlocked']=sorted(set(progress['unlocked'])|set(incoming['unlocked']))
+                data=progress
+            else:
+                await route.abort(); return
             await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
         await page.route('**/api/**',api_fixture)
         await page.goto(base,wait_until='domcontentloaded')
@@ -85,22 +103,26 @@ async def main(base, out):
         assert int(await page.get_by_role('progressbar').get_attribute('aria-valuenow'))<100
         report['tests'].append({'flow':'asset failure','result':'visible retry, no false 100%'})
         await ctx.close()
-        # A real fresh visit: permit only the real read-only profile call; never register or play.
+        # Normal fresh loading still uses the real site assets, with every API request isolated.
         ctx=await browser.new_context(viewport={'width':390,'height':844})
         page=await ctx.new_page(); errors=[]
         page.on('pageerror',lambda e:errors.append(str(e)))
+        await page.route('**/api/**',gate_profile)
         await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
-        await page.locator('.nickname-screen,.home-screen').wait_for(state='visible',timeout=20000)
+        await page.locator('.login-screen').wait_for(state='visible',timeout=20000)
+        assert await page.locator('#nickname').count()==0
         assert not errors,errors
-        report['normal_open']={'boot_closed':await page.locator('.giralab-boot').count()==0,'page_errors':errors}
+        report['normal_open']={'boot_closed':await page.locator('.giralab-boot').count()==0,'page_errors':errors,'network':'isolated API fixture'}
         await ctx.close(); await browser.close()
     (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
     print(json.dumps(report,ensure_ascii=False,indent=2))
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
-    parser.add_argument('--site',default='site'); parser.add_argument('--url'); parser.add_argument('--out',default='live-loading-proof')
+    parser.add_argument('--site',default='site'); parser.add_argument('--url'); parser.add_argument('--out',default='live-loading-proof'); parser.add_argument('--source-commit',default=COMMIT)
     args=parser.parse_args()
+    assert len(args.source_commit)==40 and all(c in '0123456789abcdef' for c in args.source_commit),'Expected source commit must be an exact SHA'
+    COMMIT=args.source_commit
     if args.url:
         asyncio.run(main(args.url.rstrip('/')+'/',Path(args.out)))
     else:

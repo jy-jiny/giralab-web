@@ -6,6 +6,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 
 VERSION='1.7.2'
+PLAYER={'id':'22222222-2222-4222-8222-222222222204','nickname':'연출검증'}
 ROWS=['LBBPPP','PALCPA','PLALPA','PLLLLC','LLPAAL','LPAALP','APCCLC','ALCPCL','PCPPPP']
 VALUE={'L':.85,'B':.1,'P':.5,'A':.95,'C':.7}
 TYPES={'L':'lettuce','B':'bun','P':'patty','A':'bacon','C':'cheese'}
@@ -23,9 +24,12 @@ ANIMS="[...document.querySelectorAll('button[data-tile-id],.regeneration-ghost,.
 def fixture(route):
  name=route.request.url.split('/api/')[-1].split('?')[0]
  if name=='account/status':
-     route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
- data={'player':{'id':'burst-refill-qa','nickname':'연출검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':IDS,'bestScore':0}
- if name=='progress' and route.request.method=='POST':data=route.request.post_data_json
+     route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+ if name=='player':data={'player':PLAYER}
+ elif name=='leaderboard':data={'entries':[],'me':None}
+ elif name in ('progress','account/backup'):data={'unlocked':IDS,'bestScore':0}
+ else:raise AssertionError('Unexpected API endpoint: '+name)
+ if name in ('progress','account/backup') and route.request.method=='POST':data=route.request.post_data_json
  route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
 
 

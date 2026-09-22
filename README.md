@@ -1,6 +1,24 @@
 # GiraLab Web
 
+The 2026-09-22 web Google login rollout is documented in [WEB_GOOGLE_LOGIN_20260922.md](WEB_GOOGLE_LOGIN_20260922.md). The original API URL and existing records are preserved; publication and actual Google account verification are separate.
+
 Public deployment target for the built GiraLab web app. Source code remains in the private repository.
+
+The 2026-09-22 Google-first release requires Google proof before a new nickname,
+restores an existing account automatically, and preserves server records on logout.
+The original `giralab-game` API address remains unchanged so saved installation
+credentials, account journals and progress keep their existing namespace.
+`site/source-build.json` records the exact source tree, file hashes, provider readiness
+and the separate status of actual Google-account verification. This release does not
+reset server data or publish an app to a store.
+
+Before and after publication, the account suite checks ten isolated login/account
+scenarios. Gameplay regressions use a saved linked-player fixture and private-backup
+responses, preserving the existing layout, audio, rules, codex and result checks.
+Loading checks exercise Google-first entry before nickname input and retain the
+same audio element through verified nickname creation. Every game API and Google
+credential in these automated checks is a fixture; no production account or score
+is created. The earlier release history below describes previous publications.
 
 The 2026-09-21 results release adds the end-of-game report (tier counts, score chart,
 final score and image sharing) from the shared app UI. `site/source-build.json`

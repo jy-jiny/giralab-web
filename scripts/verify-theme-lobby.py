@@ -9,6 +9,7 @@ from threading import Thread
 from playwright.sync_api import sync_playwright, expect
 
 VERSION='1.7.2'
+PLAYER={'id':'22222222-2222-4222-8222-222222222202','nickname':'기린연구원'}
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 PROGRESS={'unlocked':['classic','cheese','green','bacon','double'],'bestScore':21350}
 RANKS={'entries':[{'rank':1,'nickname':'기린연구원','score':21350,'isMe':True},{'rank':2,'nickname':'버거박사','score':16450,'isMe':False}],'me':{'nickname':'기린연구원','score':21350,'rank':1},'updatedAt':0}
@@ -30,19 +31,19 @@ def memory_load(page,site):
     js=js.replace(plain,'e=>window.__asset[e]').replace(clean,'e=>window.__asset[e.replace(/^\\/+/,``)]')
     page.set_content('<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>'+css+'</style></head><body><div id="root"></div></body></html>')
     page.evaluate(HOOK)
-    page.evaluate('''([assets,progress,ranks])=>{
+    page.evaluate('''([assets,progress,ranks,player])=>{
       window.__asset=assets;window.__fixture={progress,ranks,rankFail:false,writes:0};
       const store=new Map();Object.defineProperty(window,'localStorage',{configurable:true,value:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k),clear:()=>store.clear()}});
       window.fetch=async(url,options={})=>{
        const path=String(url).split('/api/')[1]?.split('?')[0];let value;
-       if(path==='player')value={player:{id:'theme-lobby-test',nickname:'기린연구원'}};
-       else if(path==='account/status')value={enabled:false,linked:false,player:null,deviceState:'active',devices:1};
+       if(path==='player')value={player};
+       else if(path==='account/status')value={enabled:false,linked:true,player,deviceState:'active',devices:1};
        else if(path==='leaderboard'){if(window.__fixture.rankFail)return new Response(JSON.stringify({error:'fixture offline'}),{status:503});value=window.__fixture.ranks;}
-       else if(path==='progress'){if(options.method==='POST'){window.__fixture.writes++;window.__fixture.progress=JSON.parse(options.body);}value=window.__fixture.progress;}
+       else if(path==='progress'||path==='account/backup'){if(options.method==='POST'){window.__fixture.writes++;window.__fixture.progress=JSON.parse(options.body);}value=window.__fixture.progress;}
        else throw new Error('Unexpected external request in offline test: '+url);
        return new Response(JSON.stringify(value),{status:200,headers:{'Content-Type':'application/json'}});
       };
-    }''',[assets,PROGRESS,RANKS])
+    }''',[assets,PROGRESS,RANKS,PLAYER])
     page.add_script_tag(content=js)
 
 def verify(base,out,site=None,memory=False):
@@ -57,12 +58,12 @@ def verify(base,out,site=None,memory=False):
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0];status=200
                 if path=='account/status':
-                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-                if path=='player':data={'player':{'id':'theme-lobby-test','nickname':'기린연구원'}}
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+                if path=='player':data={'player':PLAYER}
                 elif path=='leaderboard':
                     data=RANKS
                     if fixture_state['rankFail']:status=503;data={'error':'fixture offline'}
-                elif path=='progress':
+                elif path in ('progress','account/backup'):
                     if route.request.method=='POST':fixture_state['writes']+=1;fixture_state['progress']=route.request.post_data_json
                     data=fixture_state['progress']
                 else:raise AssertionError('Unexpected API endpoint: '+path)

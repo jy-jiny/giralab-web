@@ -10,6 +10,7 @@ from playwright.sync_api import sync_playwright, expect
 
 HOOK="window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});"
 PROGRESS={'unlocked':['classic','cheese','green','bacon','double'],'bestScore':21350}
+PLAYER={'id':'00000000-0000-0000-0000-000000000601','nickname':'기린연구원'}
 RANKS={'entries':[{'rank':1,'nickname':'기린연구원','score':21350,'isMe':True}],'me':{'nickname':'기린연구원','score':21350,'rank':1},'updatedAt':0}
 
 class Handler(SimpleHTTPRequestHandler):
@@ -29,11 +30,14 @@ def verify(base,out):
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0]
                 if path=='account/status':
-                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-                if path=='player':data={'player':{'id':'theme-help-test','nickname':'기린연구원'}}
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+                if path=='player':data={'player':PLAYER}
                 elif path=='leaderboard':data=RANKS
-                elif path=='progress':
-                    if route.request.method=='POST':state['writes']+=1;state['progress']=route.request.post_data_json
+                elif path in ('progress','account/backup'):
+                    if route.request.method=='POST':
+                        state['writes']+=1
+                        posted=route.request.post_data_json
+                        state['progress']={'bestScore':max(state['progress']['bestScore'],posted['bestScore']),'unlocked':list(dict.fromkeys(state['progress']['unlocked']+posted['unlocked']))}
                     data=state['progress']
                 else:raise AssertionError('Unexpected API endpoint: '+path)
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))

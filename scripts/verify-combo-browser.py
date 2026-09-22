@@ -5,6 +5,7 @@ import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 EXPECTED='546c8b583e812f5d37a0d8f4056e495801ad319a'
+PLAYER={'id':'22222222-2222-4222-8222-222222222205','nickname':'밸런스검증'}
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -28,8 +29,11 @@ RECIPES=[
 def fixture(route):
  name=route.request.url.split('/api/')[-1].split('?')[0]
  if name=='account/status':
-     route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
- data={'player':{'id':'balance-qa','nickname':'밸런스검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':['classic'],'bestScore':0}
+     route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+ if name=='player':data={'player':PLAYER}
+ elif name=='leaderboard':data={'entries':[],'me':None}
+ elif name in ('progress','account/backup'):data={'unlocked':['classic'],'bestScore':0}
+ else:raise AssertionError('Unexpected API endpoint: '+name)
  route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
 def find(board,sequence):
  def visit(r,c,path):
@@ -47,9 +51,9 @@ def find(board,sequence):
    found=visit(r,c,[])
    if found:return found
  return None
-def verify(base,out):
+def verify(base,out,source_commit=EXPECTED):
  out.mkdir(parents=True,exist_ok=True)
- report={'base_url':base,'source_commit':EXPECTED,'network':'All API requests isolated; no production ranking writes','tests':[]}
+ report={'base_url':base,'source_commit':source_commit,'network':'All API requests isolated; no production ranking writes','tests':[]}
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium') or None,args=['--no-sandbox','--disable-dev-shm-usage'])
   for width,height in [(360,640),(390,844),(412,915)]:
@@ -97,18 +101,18 @@ def verify(base,out):
    report['tests'].append({'viewport':[width,height],'played':played,'idle_board_unchanged':True,'hint_tiles':page.locator('.hinted-tile').count(),'page_errors':errors})
    page.screenshot(path=str(out/f'no-hints-{width}x{height}.png'))
    meta=ctx.request.get(base+'source-build.json?balance=2').json()
-   assert meta['source_commit']==EXPECTED and meta['rules_version']==3 and meta['automatic_board_hints'] is False,meta
+   assert meta['source_commit']==source_commit and meta['rules_version']==3 and meta['automatic_board_hints'] is False,meta
    art=ctx.request.get(base+'giralab-loading-approved-aecda336.jpg').body()
    assert hashlib.sha256(art).hexdigest()=='aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
    ctx.close()
   browser.close()
  (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print(json.dumps(report,ensure_ascii=False,indent=2))
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--site',default='site');parser.add_argument('--url');parser.add_argument('--out',default='combo-proof');args=parser.parse_args()
- if args.url:verify(args.url.rstrip('/')+'/',Path(args.out))
+ parser=argparse.ArgumentParser();parser.add_argument('--site',default='site');parser.add_argument('--url');parser.add_argument('--out',default='combo-proof');parser.add_argument('--source-commit',default=EXPECTED);args=parser.parse_args()
+ if args.url:verify(args.url.rstrip('/')+'/',Path(args.out),args.source_commit)
  else:
   with tempfile.TemporaryDirectory() as root:
    os.symlink(Path(args.site).resolve(),Path(root)/'giralab-web',target_is_directory=True)
    server=subprocess.Popen(['python3','-m','http.server','4174','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-   try:time.sleep(.5);verify('http://127.0.0.1:4174/giralab-web/',Path(args.out))
+   try:time.sleep(.5);verify('http://127.0.0.1:4174/giralab-web/',Path(args.out),args.source_commit)
    finally:server.terminate();server.wait(timeout=5)

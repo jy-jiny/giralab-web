@@ -4,6 +4,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
 VERSION='1.7.2'
+PLAYER={'id':'22222222-2222-4222-8222-222222222206','nickname':'정렬검증'}
 ROWS=[
  ('classic','클래식 버거','normal','가장 기본적인 버거부터 떠올려보세요.'),
  ('cheese','치즈 버거','normal','노란 재료 하나가 맛의 포인트예요.'),
@@ -45,8 +46,11 @@ def verify(base,out):
                 def fixture(route):
                     name=route.request.url.split('/api/')[-1].split('?')[0]
                     if name=='account/status':
-                        route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
-                    data={'player':{'id':'codex-order-qa','nickname':'정렬검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':unlocked,'bestScore':0}
+                        route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':True,'player':PLAYER,'deviceState':'active','devices':1}));return
+                    if name=='player':data={'player':PLAYER}
+                    elif name=='leaderboard':data={'entries':[],'me':None}
+                    elif name in ('progress','account/backup'):data={'unlocked':unlocked,'bestScore':0}
+                    else:raise AssertionError('Unexpected API endpoint: '+name)
                     route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
                 page.route('**/api/**',fixture)
                 page.goto(base+'?codex-order='+VERSION,wait_until='domcontentloaded')
