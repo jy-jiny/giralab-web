@@ -28,6 +28,8 @@ def verify(base,out):
    page=ctx.new_page();page.set_default_timeout(15000);pending=[];errors=[];page.on('pageerror',lambda e:errors.append(str(e)));first=[True]
    def fixture(route):
     name=route.request.url.split('/api/')[-1].split('?')[0]
+    if name=='account/status':
+        route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
     if name=='player' and route.request.method=='GET' and first[0]:first[0]=False;pending.append(route);return
     data={'player':{'id':'loading-audio-qa','nickname':'음악검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':['classic'],'bestScore':0}
     if name=='progress' and route.request.method=='POST':data=route.request.post_data_json

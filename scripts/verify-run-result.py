@@ -46,6 +46,8 @@ def verify(base,out):
         saved={'unlocked':list(PROGRESS['unlocked']),'bestScore':PROGRESS['bestScore']};calls=[]
         def fixture(route):
             path=route.request.url.split('/api/')[-1].split('?')[0];calls.append([route.request.method,path])
+            if path=='account/status':
+                route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
             if path=='player':data={'player':{'id':'result-fixture','nickname':'분석검증'}}
             elif path=='progress':
                 if route.request.method=='POST':

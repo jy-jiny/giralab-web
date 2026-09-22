@@ -22,6 +22,8 @@ ANIMS="[...document.querySelectorAll('button[data-tile-id],.regeneration-ghost,.
 
 def fixture(route):
  name=route.request.url.split('/api/')[-1].split('?')[0]
+ if name=='account/status':
+     route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
  data={'player':{'id':'burst-refill-qa','nickname':'연출검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':IDS,'bestScore':0}
  if name=='progress' and route.request.method=='POST':data=route.request.post_data_json
  route.fulfill(status=200,content_type='application/json',body=json.dumps(data))

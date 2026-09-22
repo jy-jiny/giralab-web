@@ -26,6 +26,8 @@ def verify(base,out):
             state={'progress':dict(PROGRESS),'writes':0}
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0]
+                if path=='account/status':
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
                 if path=='player':data={'player':{'id':'theme-book-test','nickname':'기린연구원'}}
                 elif path=='leaderboard':data=RANKS
                 elif path=='progress':

@@ -36,6 +36,7 @@ def memory_load(page,site):
       window.fetch=async(url,options={})=>{
        const path=String(url).split('/api/')[1]?.split('?')[0];let value;
        if(path==='player')value={player:{id:'theme-lobby-test',nickname:'기린연구원'}};
+       else if(path==='account/status')value={enabled:false,linked:false,player:null,deviceState:'active',devices:1};
        else if(path==='leaderboard'){if(window.__fixture.rankFail)return new Response(JSON.stringify({error:'fixture offline'}),{status:503});value=window.__fixture.ranks;}
        else if(path==='progress'){if(options.method==='POST'){window.__fixture.writes++;window.__fixture.progress=JSON.parse(options.body);}value=window.__fixture.progress;}
        else throw new Error('Unexpected external request in offline test: '+url);
@@ -55,6 +56,8 @@ def verify(base,out,site=None,memory=False):
             fixture_state={'progress':dict(PROGRESS),'rankFail':False,'writes':0}
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0];status=200
+                if path=='account/status':
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
                 if path=='player':data={'player':{'id':'theme-lobby-test','nickname':'기린연구원'}}
                 elif path=='leaderboard':
                     data=RANKS
