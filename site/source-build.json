@@ -145,7 +145,7 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "83e92289655bf3b7100c0e62e8f7cf342dac91e3",
+  "verification_source_commit": "dbf041e69aa3f3b2573bf66146a988c1cab99436",
   "verification_change": "Fresh web score ranking independent from private backup, owner/server-bound retry and concurrent-tab queue protection.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
@@ -154,5 +154,6 @@
   "account_management_layout": "overview-and-actions",
   "account_recovery_auto_expanded": false,
   "web_linked_gameplay_ranking": true,
-  "web_ranking_backup_auto_promotion": false
+  "web_ranking_backup_auto_promotion": false,
+  "verification_input_timing": "Explicit 140ms recipe selection steps preserve the existing 110ms corner correction; selected count, actual earned score and ranking match are asserted."
 }

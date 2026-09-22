@@ -143,7 +143,9 @@ try{
   await saved.page.reload();await expect(saved.page.locator('.home-version')).toBeVisible();
   assert.equal(await saved.page.evaluate(()=>localStorage.getItem('fixture-google-opens')),null);
   assert(!saved.state.calls.some(c=>c.endpoint==='account/social-challenge'));cases.push('saved linked installation enters automatically without Google UI');await saved.context.close();
-  const ranked=await setup({ranking:true});await ranked.page.goto(base);await expect(ranked.page.locator('.home-version')).toBeVisible();
+  const ranked=await setup({ranking:true});
+  try {
+  await ranked.page.goto(base);await expect(ranked.page.locator('.home-version')).toBeVisible();
   assert(!ranked.state.calls.some(c=>c.endpoint==='progress'&&c.body),'Linked boot does not promote personal 205050 to legacy ranking');
   await ranked.page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
   await ranked.page.getByRole('button',{name:'게임 시작',exact:true}).click();
@@ -168,8 +170,14 @@ try{
     return null;
   });
   assert(cells,'Visible playable board contains a recipe');
-  for(const cell of cells){await ranked.page.locator(`button[data-row="${cell.row}"][data-col="${cell.col}"]`).focus();await ranked.page.keyboard.press('Space');}
+  for(const [index,cell] of cells.entries()){
+    await ranked.page.locator(`button[data-row="${cell.row}"][data-col="${cell.col}"]`).focus();
+    // The shared selector corrects drag corners within 110ms. Deliberate keyboard steps must exceed it.
+    await ranked.page.keyboard.press('Space',{delay:140});
+    await expect(ranked.page.locator('button[data-tile-id][aria-pressed="true"]')).toHaveCount(index+1);
+  }
   await ranked.page.getByRole('button',{name:'완성',exact:true}).click();
+  await expect.poll(async()=>Number((await ranked.page.locator('.score-main strong').innerText()).replaceAll(',',''))).toBeGreaterThan(0);
   await expect.poll(()=>ranked.state.progress.bestScore).toBeGreaterThan(0);
   const earned=Number((await ranked.page.locator('.score-main strong').innerText()).replaceAll(',',''));
   assert.equal(ranked.state.progress.bestScore,earned);assert(earned<205050);assert.equal(ranked.state.backup.bestScore,205050);
@@ -178,6 +186,13 @@ try{
   await ranked.page.reload();await expect(ranked.page.locator('.home-version')).toBeVisible();
   assert(ranked.state.calls.filter(c=>c.endpoint==='progress'&&c.body).every(c=>c.body.bestScore===earned),'Reload never submits a merged private score');
   cases.push('linked account with personal 205050 and rank 0 ranks fresh gameplay only; private best and reload remain isolated');await ranked.context.close();
+  } catch(error) {
+    console.error(JSON.stringify({rankingFixtureFailure:{calls:ranked.state.calls,rankBest:ranked.state.progress.bestScore,privateBest:ranked.state.backup.bestScore,errors,
+      screen:await ranked.page.evaluate(()=>({status:document.querySelector('[data-game-status]')?.dataset.gameStatus,score:document.querySelector('.score-main strong')?.textContent,
+        selected:[...document.querySelectorAll('button[data-tile-id][aria-pressed="true"]')].map(el=>({row:el.dataset.row,col:el.dataset.col,ingredient:el.dataset.ingredient})),
+        pending:Object.fromEntries(Object.entries(localStorage).filter(([key])=>key.startsWith('giralab-web-ranking-v1:'))),text:document.body.innerText})).catch(()=>null)}}));
+    throw error;
+  }
   const cancelled=await setup({fresh:true,newGoogle:true});await cancelled.page.goto(base);await fit(cancelled.page);
   await expect(cancelled.page.locator('#nickname')).toHaveCount(0);
   await cancelled.page.getByRole('button',{name:'Google로 계속하기',exact:true}).click();
