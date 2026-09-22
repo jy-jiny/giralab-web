@@ -27,18 +27,19 @@ const errors=[],cases=[];
 try{
   const systemChrome=process.env.GIRALAB_CHROMIUM || ['/usr/bin/google-chrome','/usr/bin/chromium'].find(existsSync);
   browser=await chromium.launch({headless:true,...(systemChrome?{executablePath:systemChrome}:{}),args:['--no-sandbox']});
-  async function setup({fresh=false,enabled=true,loseDelete=false,loseSignin=false,loseLogout=false,newGoogle=false,linked=true}={}){
+  async function setup({fresh=false,enabled=true,loseDelete=false,loseSignin=false,loseLogout=false,newGoogle=false,linked=true,ranking=false}={}){
     const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
-    await context.addInitScript(({fresh})=>{
+    await context.addInitScript(({fresh,ranking})=>{
       if(!localStorage.getItem('fixture-init')){
         localStorage.setItem('fixture-init','1');localStorage.setItem('giralab-player-token-v2','A'.repeat(43));
         localStorage.setItem('burger-lab-volume','25');localStorage.setItem('burger-lab-music-volume','30');
-        if(!fresh)localStorage.setItem('giralab-progress-v3',JSON.stringify({bestScore:2000,unlocked:['classic','cheese']}));
+        if(!fresh)localStorage.setItem('giralab-progress-v3',JSON.stringify({bestScore:ranking?205050:2000,unlocked:['classic','cheese']}));
       }
       let callback;
       window.google={accounts:{id:{initialize(options){callback=options.callback;},renderButton(container){localStorage.setItem('fixture-google-opens',String(Number(localStorage.getItem('fixture-google-opens')||0)+1));const button=document.createElement('button');button.textContent='테스트 Google 계정 선택';button.onclick=()=>callback({credential:'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJmaXh0dXJlIn0.c2lnbmF0dXJl'});container.append(button);},cancel(){}}}};
-    },{fresh});
+    },{fresh,ranking});
     const state={player:fresh?null:owner,linked:!fresh&&linked,deleted:false,progress:{bestScore:newGoogle?0:500,unlocked:['classic']},backup:newGoogle?{bestScore:0,unlocked:['classic']}:{bestScore:9000,unlocked:['classic','cheese','green']},requests:new Map(),calls:[],lost:false,googlePlayer:newGoogle?null:owner};
+    if(ranking){state.progress.bestScore=0;state.backup.bestScore=205050;}
     await context.route('**/*',async route=>{
       const req=route.request(),url=new URL(req.url());
       if(url.origin===new URL(base).origin && url.pathname.startsWith(new URL(base).pathname))return route.continue();
@@ -54,9 +55,12 @@ try{
         assert.equal(req.method(),'GET','Account management never registers a replacement guest');
         if(state.deleted){status=401;data={code:'ACCOUNT_DELETED',error:'삭제된 계정이에요.'};}else data={player:state.player};
       }else if(endpoint==='progress'){
-        if(body){assert(!state.linked,'Linked private progress cannot write legacy ranking');state.progress={bestScore:Math.max(state.progress.bestScore,body.bestScore),unlocked:[...new Set([...state.progress.unlocked,...body.unlocked])]};}
+        if(body){
+          if(state.linked){assert(ranking,'Linked private progress cannot write legacy ranking');assert.equal(req.headers()['x-giralab-player-id'],owner.id);assert.deepEqual(body.unlocked,[]);assert(body.bestScore>0&&body.bestScore<205050,'Only fresh gameplay, never recovered personal best, enters TOP 5');}
+          state.progress={bestScore:Math.max(state.progress.bestScore,body.bestScore),unlocked:[...new Set([...state.progress.unlocked,...body.unlocked])]};
+        }
         data=state.progress;
-      }else if(endpoint==='leaderboard')data={entries:[],me:null};
+      }else if(endpoint==='leaderboard')data=ranking&&state.progress.bestScore>0?{entries:[{rank:1,nickname:owner.nickname,score:state.progress.bestScore,isMe:true}],me:{rank:1,nickname:owner.nickname,score:state.progress.bestScore},updatedAt:Date.now()}:{entries:[],me:null};
       else if(endpoint==='account/status')data={enabled,providers:enabled?['google']:[],linked:state.linked,player:state.player,deviceState:state.deleted?'deleted':state.player?'active':'new',devices:state.linked?2:1};
       else if(endpoint==='account/backup'){
         state.backup={bestScore:Math.max(state.backup.bestScore,body.bestScore),unlocked:[...new Set([...state.backup.unlocked,...body.unlocked])]};data=state.backup;
@@ -139,6 +143,41 @@ try{
   await saved.page.reload();await expect(saved.page.locator('.home-version')).toBeVisible();
   assert.equal(await saved.page.evaluate(()=>localStorage.getItem('fixture-google-opens')),null);
   assert(!saved.state.calls.some(c=>c.endpoint==='account/social-challenge'));cases.push('saved linked installation enters automatically without Google UI');await saved.context.close();
+  const ranked=await setup({ranking:true});await ranked.page.goto(base);await expect(ranked.page.locator('.home-version')).toBeVisible();
+  assert(!ranked.state.calls.some(c=>c.endpoint==='progress'&&c.body),'Linked boot does not promote personal 205050 to legacy ranking');
+  await ranked.page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+  await ranked.page.getByRole('button',{name:'게임 시작',exact:true}).click();
+  await expect(ranked.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  const cells=await ranked.page.evaluate(()=>{
+    const board=Array.from({length:9},()=>Array(6).fill(null));
+    document.querySelectorAll('button[data-tile-id]').forEach(el=>{board[+el.dataset.row][+el.dataset.col]=el.dataset.ingredient;});
+    const recipes=[['bun','patty','bun'],...['cheese','lettuce','bacon','patty'].map(x=>['bun','patty',x,'bun']),
+      ['bun','patty','cheese','cheese','bun'],['bun','patty','bacon','cheese','bun'],
+      ['bun','cheese','patty','cheese','bun'],['bun','lettuce','patty','lettuce','bun'],
+      ['bun','bacon','patty','lettuce','bun'],['bun','bacon','patty','cheese','bun'],
+      ['bun','lettuce','patty','cheese','bun'],['bun','cheese','patty','bacon','bun'],['bun','bacon','patty','bacon','bun']];
+    for(const recipe of recipes){
+      const visit=(row,col,path)=>{
+        if(board[row]?.[col]!==recipe[path.length]||path.some(p=>p.row===row&&p.col===col))return null;
+        const next=[...path,{row,col}];if(next.length===recipe.length)return next;
+        for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const found=visit(row+dr,col+dc,next);if(found)return found;}
+        return null;
+      };
+      for(let row=0;row<9;row++)for(let col=0;col<6;col++){const found=visit(row,col,[]);if(found)return found;}
+    }
+    return null;
+  });
+  assert(cells,'Visible playable board contains a recipe');
+  for(const cell of cells){await ranked.page.locator(`button[data-row="${cell.row}"][data-col="${cell.col}"]`).focus();await ranked.page.keyboard.press('Space');}
+  await ranked.page.getByRole('button',{name:'완성',exact:true}).click();
+  await expect.poll(()=>ranked.state.progress.bestScore).toBeGreaterThan(0);
+  const earned=Number((await ranked.page.locator('.score-main strong').innerText()).replaceAll(',',''));
+  assert.equal(ranked.state.progress.bestScore,earned);assert(earned<205050);assert.equal(ranked.state.backup.bestScore,205050);
+  const personal=await ranked.page.evaluate(()=>Object.entries(localStorage).filter(([k])=>k.startsWith('giralab-progress-v4:')).map(([,v])=>JSON.parse(v)));
+  assert(personal.some(p=>p.bestScore===205050),'Fresh lower ranking never overwrites personal best');
+  await ranked.page.reload();await expect(ranked.page.locator('.home-version')).toBeVisible();
+  assert(ranked.state.calls.filter(c=>c.endpoint==='progress'&&c.body).every(c=>c.body.bestScore===earned),'Reload never submits a merged private score');
+  cases.push('linked account with personal 205050 and rank 0 ranks fresh gameplay only; private best and reload remain isolated');await ranked.context.close();
   const cancelled=await setup({fresh:true,newGoogle:true});await cancelled.page.goto(base);await fit(cancelled.page);
   await expect(cancelled.page.locator('#nickname')).toHaveCount(0);
   await cancelled.page.getByRole('button',{name:'Google로 계속하기',exact:true}).click();
