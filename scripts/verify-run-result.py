@@ -35,9 +35,11 @@ def verify(base,out):
         ctx=browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,reduced_motion='reduce')
         ctx.add_init_script("""
           window.fixtureTools=[];document.modelContext={registerTool:t=>window.fixtureTools.push(t.name)};
-          window.fixtureShares=[];
+          window.fixtureShares=[];window.fixtureShareAttempts=0;window.fixtureCancelShare=false;
           Object.defineProperty(navigator,'canShare',{configurable:true,value:()=>true});
           Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{
+            window.fixtureShareAttempts++;
+            if(window.fixtureCancelShare)throw new DOMException('Share dismissed','AbortError');
             const file=data.files[0],bytes=new Uint8Array(await file.arrayBuffer());
             const bitmap=await createImageBitmap(file);
             window.fixtureShares.push({text:data.text,name:file.name,type:file.type,width:bitmap.width,height:bitmap.height,
@@ -99,24 +101,37 @@ def verify(base,out):
         expect(result.get_by_role('img',name=re.compile('누적 점수 차트'))).to_be_visible()
         assert result.locator('.result-chart path').get_attribute('d').count('V')>=2
         expect(result.locator('.result-highlights')).to_contain_text('2개')
+        share=result.get_by_role('button',name='결과 공유',exact=True)
+        expect(result.locator('.result-share button')).to_have_count(1)
+        expect(share).to_have_class('result-share-button')
+        expect(result.locator('.result-share-status')).to_have_count(0)
         for width,height in [(320,568),(390,844),(844,390)]:
             page.set_viewport_size({'width':width,'height':height});page.clock.run_for(200)
             box=result.bounding_box();assert box and box['x']>=0 and box['y']>=0 and box['x']+box['width']<=width+.5 and box['y']+box['height']<=height+.5,box
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-            result.get_by_role('button',name='카카오톡으로 공유',exact=True).scroll_into_view_if_needed()
+            share.scroll_into_view_if_needed()
             expect(result.get_by_role('button',name='한 판 더',exact=True)).to_be_in_viewport()
             page.screenshot(path=str(out/f'result-{width}x{height}.png'))
             report['cases'].append({'viewport':[width,height],'fit':True,'scrollableReport':True})
-        result.get_by_role('button',name='카카오톡으로 공유',exact=True).click()
+        share.click()
         page.wait_for_function('window.fixtureShares.length===1')
+        expect(share).to_be_enabled()
+        expect(result.locator('.result-share-status')).to_have_count(0)
         shared=page.evaluate('window.fixtureShares[0]')
         assert shared['type']=='image/png' and [shared['width'],shared['height']]==[720,1040]
         assert f'{final:,}점' in shared['text'] and '일반 1개' in shared['text'] and '고급 1개' in shared['text']
         assert PLAYER['id'] not in shared['text']
         (out/'shared-result.png').write_bytes(base64.b64decode(shared['png']))
         page.evaluate("Object.defineProperty(navigator,'canShare',{value:()=>false,configurable:true})")
-        result.get_by_role('button',name='카카오톡으로 공유',exact=True).click()
+        share.click()
         expect(result.locator('.result-share-status')).to_contain_text('이미지 공유를 지원하지 않아요')
+        assert len(page.evaluate('window.fixtureShares'))==1
+        page.evaluate("()=>{Object.defineProperty(navigator,'canShare',{value:()=>true,configurable:true});window.fixtureCancelShare=true}")
+        share.click()
+        page.wait_for_function('window.fixtureShareAttempts===2')
+        expect(share).to_be_enabled()
+        expect(result.locator('.result-share-status')).to_have_count(0)
+        expect(result).not_to_contain_text('공유를 취소했어요')
         assert len(page.evaluate('window.fixtureShares'))==1
         result.get_by_role('button',name='메인으로',exact=True).click()
         expect(page.locator('[data-theme-best=burger]')).to_have_text('21,350')
@@ -125,7 +140,7 @@ def verify(base,out):
         expect(page.locator('.score-main strong')).to_have_text('0')
         expect(page.locator('.run-result-dialog')).to_have_count(0)
         assert not errors,errors
-        report.update(finalScore=final,tiers=expected,sharedPNG=[720,1040],unsupportedShare=True,recordsPreserved=True,noAITools=True,errors=errors,requests=calls)
+        report.update(finalScore=final,tiers=expected,singleShareButton=True,sharedPNG=[720,1040],successfulShareSilent=True,cancelledShareSilent=True,shareButtonReenabled=True,unsupportedShare=True,recordsPreserved=True,noAITools=True,errors=errors,requests=calls)
         ctx.close();browser.close()
     (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print(json.dumps(report,ensure_ascii=False,indent=2))
 
