@@ -4,7 +4,7 @@ _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-ga
 import argparse,json,hashlib,subprocess,time,shutil,tempfile,os
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-EXPECTED='7286b1ff064f1fd9e0e0629c2792859d686e6136'
+EXPECTED='2c032cc21643d854ef7aac5573b0fd1b853cffb6'
 RECIPES=[
  ('double',['bun','patty','cheese','cheese','bun'],1000),
  ('cheese-melt',['bun','cheese','patty','cheese','bun'],1200),
@@ -27,6 +27,8 @@ RECIPES=[
 ]
 def fixture(route):
  name=route.request.url.split('/api/')[-1].split('?')[0]
+ if name=='account/status':
+     route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
  data={'player':{'id':'balance-qa','nickname':'밸런스검증'}} if name=='player' else {'entries':[],'me':None} if name=='leaderboard' else {'unlocked':['classic'],'bestScore':0}
  route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
 def find(board,sequence):

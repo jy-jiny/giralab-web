@@ -4,7 +4,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 SHA = 'aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4'
-COMMIT = '7286b1ff064f1fd9e0e0629c2792859d686e6136'
+COMMIT='2c032cc21643d854ef7aac5573b0fd1b853cffb6'
 
 async def main(base, out):
     out.mkdir(parents=True, exist_ok=True)
@@ -60,6 +60,8 @@ async def main(base, out):
         page.on('pageerror',lambda e:errors.append(str(e)))
         async def api_fixture(route):
             path=route.request.url.split('/api/')[-1]
+            if path=='account/status':
+                await route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
             data={'player':{'id':'loading-qa','nickname':'로딩검증'}} if path=='player' else (
                 {'entries':[],'me':None} if path=='leaderboard' else {'unlocked':['classic'],'bestScore':0})
             await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))

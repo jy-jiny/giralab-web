@@ -32,6 +32,8 @@ def verify(base,out):
             page=ctx.new_page();page.set_default_timeout(12000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             def fixture(route):
                 path=route.request.url.split('/api/')[-1].split('?')[0]
+                if path=='account/status':
+                    route.fulfill(status=200,content_type='application/json',body=json.dumps({'enabled':False,'linked':False,'player':None,'deviceState':'active','devices':1}));return
                 if path=='player':data={'player':{'id':'viewport-fixture','nickname':'기린연구원'}}
                 elif path=='leaderboard':data=lobby.RANKS
                 elif path=='progress':data=lobby.PROGRESS

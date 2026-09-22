@@ -1,5 +1,5 @@
 {
-  "source_commit": "7286b1ff064f1fd9e0e0629c2792859d686e6136",
+  "source_commit": "2c032cc21643d854ef7aac5573b0fd1b853cffb6",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -91,8 +91,8 @@
   "theme_terminology_revision": "20260921",
   "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
   "theme_price_display": "출시예정",
-  "previous_source_commit": "75fd1a5feb8baed95fe34a1b3c568d86c376f9ca",
-  "release_revision": "results-capture-20260921",
+  "previous_source_commit": "7286b1ff064f1fd9e0e0629c2792859d686e6136",
+  "release_revision": "accounts-20260922",
   "run_result_dialog": true,
   "run_result_tiers": [
     "normal",
@@ -103,21 +103,31 @@
   "run_result_chart": "cumulative-score",
   "release_ai_tools": false,
   "build_files_sha256": {
-    "assets/index-5uUMChBg.js": "849dd49155111386208b0b8fdc5868d7019785d816b9a0e1d63ff22d0b69242a",
-    "assets/index-CgNCqMf2.css": "4a1006015088ca49b1824459cc98a71ec6fbac4e17e1a228a463a7ecc4258158",
+    "assets/deleteAccount-B9HlyUe1.js": "a810709f86fe06c21396a6ac7064ca62a1916cd2d4a44692240355e0aca731d5",
+    "assets/globals-Q8vj2Px_.js": "41cbdc4d4a4e431dd199b5540f6f8fed2bbb9efec3f9b53171ff8807176471de",
+    "assets/globals-TLcWe3e3.css": "da9451540bcc4d833c87615cf4673f457db179d597fc21dfda1337794ebd77a6",
+    "assets/main-BS-dz-GZ.css": "94ab1bdafdba6f932f398372c61cbcaba4a8a5271be811ed6f28e393786440a4",
+    "assets/main-XtCa7Sip.js": "43727b996698f1ecd832ae622559bc9638252913f8fee82f8e5484c3a03fe5ca",
     "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
     "audio/lunch-rush-v1.json": "b7d87ddeef3b2cb25f5b5f4345a8f2856d94baceb0a9eaa9c81c725dd3a50e66",
     "audio/lunch-rush-v1.ogg": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
+    "delete-account.html": "c76b8d05e6b3ce69a97f4f2cf91ec5925296a92c2bf50551fa8290dc6ccd2ae1",
     "giraffe-chef.png": "a51899962824ff9fc631251fe1a9e1e0a874955e72adeccc870a822edc7d1691",
     "giraffe-scientist-hq.webp": "f5d295cb3dbca80fb033c4a665d5edd172585129c025044372c636d705a8bc93",
     "giraffe-scientist.webp": "e2b4eae943a16023b8c13533027a34202ea01de63975eb4604e08b6ebd8a2d86",
     "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
     "giralab-loading-d52df73017d8.jpg": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
     "giralab-loading-screen.webp": "85609073c18c7ef7dd46a2226a985becbfd128ced575ba6675e54864f2533f7c",
-    "index.html": "fa82da56bae4e061d0906da422da81e4f2b1787958accee48233a30bb2b7c8ea",
+    "index.html": "e3b6b251c5974fd1040f17d0c43b095189ce89621801a2acecd3422e41bf1f92",
     "ingredients.png": "fa6d9ce38fbb1efb4913fd4df9d577b045f49ed01709a6facaae6c1433357a7e",
     "theme-art/music-glossy-20260919.webp": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
     "theme-art/robot-glossy-20260919.webp": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989",
     "theme-art/war-glossy-20260919.webp": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7"
-  }
+  },
+  "source_tree": "af3f9f2e7eafbe771e1ec2975839e0df3d10d196",
+  "account_ui": true,
+  "email_auth_ready": false,
+  "account_delete_entry": "delete-account.html",
+  "source_workflow_run": 35676748335,
+  "build_provenance": "Complete Git tree verified locally; Vite chunk names match the successful source CI build"
 }
