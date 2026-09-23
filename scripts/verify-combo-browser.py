@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Exercise the published game with isolated API fixtures, never real ranking writes."""
@@ -60,7 +64,7 @@ def verify(base,out,source_commit=EXPECTED):
    ctx=browser.new_context(viewport={'width':width,'height':height},device_scale_factor=2,is_mobile=True,has_touch=True)
    ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script("window.__gameTools={};Object.defineProperty(document,'modelContext',{configurable:true,value:{registerTool(t){window.__gameTools[t.name]=t}}});")
    page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.set_default_timeout(20000)
-   page.route('**/api/**',fixture)
+   page.route('**/api/**',with_session_transport(fixture))
    page.goto(base+'?balance=2',wait_until='domcontentloaded')
    page.locator('.home-screen').wait_for(state='visible')
    assert page.locator('.home-version').inner_text()=='GiraLab · 1.7.2'
@@ -116,3 +120,4 @@ if __name__=='__main__':
    server=subprocess.Popen(['python3','-m','http.server','4174','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    try:time.sleep(.5);verify('http://127.0.0.1:4174/giralab-web/',Path(args.out),args.source_commit)
    finally:server.terminate();server.wait(timeout=5)
+

@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Real browser verification with isolated API fixtures; no production player writes."""
@@ -43,7 +47,7 @@ def verify(base,out):
    print('CHECK',width,height,'reduced',reduced,'unsupported',unsupported,flush=True)
    ctx=browser.new_context(viewport={'width':width,'height':height},is_mobile=True,has_touch=True,reduced_motion='reduce' if reduced else 'no-preference')
    ctx.add_init_script(_TEST_DRIVER);ctx.add_init_script('localStorage.clear();sessionStorage.clear();'+HOOK+('Element.prototype.animate=undefined;' if unsupported else ''))
-   page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('**/api/**',fixture)
+   page=ctx.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('**/api/**',with_session_transport(fixture))
    page.goto(base+'?burst-refill='+VERSION,wait_until='domcontentloaded')
    expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
    page.locator('.home-version').click()
@@ -162,4 +166,5 @@ if __name__=='__main__':
    server=subprocess.Popen(['python3','-m','http.server','4182','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    try:time.sleep(.3);verify('http://127.0.0.1:4182/giralab-web/',Path(a.out))
    finally:server.terminate();server.wait(timeout=5)
+
 

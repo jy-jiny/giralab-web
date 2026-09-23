@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Read-only audio smoke tests; local media uses production-like byte-range responses."""
@@ -60,7 +64,7 @@ def verify(base,out):
                 else:raise AssertionError('Unexpected API endpoint: '+name)
                 if name in ('progress','account/backup') and route.request.method=='POST':data=route.request.post_data_json
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-            page.route('**/api/**',fixture)
+            page.route('**/api/**',with_session_transport(fixture))
             page.goto(base+'?soundtrack='+VERSION,wait_until='domcontentloaded')
             expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
             page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying')
@@ -111,4 +115,5 @@ if __name__=='__main__':
             Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4181/giralab-web/',Path(a.out))
             finally:server.shutdown();server.server_close()
+
 

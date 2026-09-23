@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 """Verify the exact approved artwork and real boot UI without production account writes."""
 import argparse, asyncio, hashlib, json, os, shutil, subprocess, tempfile, time
 from pathlib import Path
@@ -30,7 +34,7 @@ async def main(base, out):
                     await route.abort(); return
                 await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
             await page.route('**/ingredients.png',gate_ingredients)
-            await page.route('**/api/**',gate_profile)
+            await page.route('**/api/**',with_session_transport(gate_profile))
             await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
             art=page.locator('.giralab-boot__art')
             await art.wait_for(state='visible')
@@ -83,7 +87,7 @@ async def main(base, out):
             else:
                 await route.abort(); return
             await route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-        await page.route('**/api/**',api_fixture)
+        await page.route('**/api/**',with_session_transport(api_fixture))
         await page.goto(base,wait_until='domcontentloaded')
         await page.locator('.home-screen').wait_for(state='visible')
         if await page.locator('[data-theme-select=burger]').count(): await page.locator('[data-theme-select=burger]').click()
@@ -95,7 +99,7 @@ async def main(base, out):
         await ctx.close()
         ctx=await browser.new_context(viewport={'width':390,'height':844})
         page=await ctx.new_page()
-        await page.route('**/api/**',api_fixture)
+        await page.route('**/api/**',with_session_transport(api_fixture))
         await page.route('**/ingredients.png',lambda route:route.fulfill(status=404,body='missing'))
         await page.goto(base,wait_until='domcontentloaded')
         await page.get_by_role('button',name='다시 불러오기').wait_for(state='visible')
@@ -107,7 +111,7 @@ async def main(base, out):
         ctx=await browser.new_context(viewport={'width':390,'height':844})
         page=await ctx.new_page(); errors=[]
         page.on('pageerror',lambda e:errors.append(str(e)))
-        await page.route('**/api/**',gate_profile)
+        await page.route('**/api/**',with_session_transport(gate_profile))
         await page.goto(base+'?v='+COMMIT[:12],wait_until='domcontentloaded')
         await page.locator('.login-screen').wait_for(state='visible',timeout=20000)
         assert await page.locator('#nickname').count()==0
@@ -133,3 +137,4 @@ if __name__=='__main__':
                 time.sleep(.6); asyncio.run(main('http://127.0.0.1:4173/giralab-web/',Path(args.out)))
             finally:
                 server.terminate(); server.wait(timeout=5)
+

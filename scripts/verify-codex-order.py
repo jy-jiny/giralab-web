@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 """Read-only mobile codex regression with isolated API fixtures and stable recipe IDs."""
 import argparse, json, os, re, shutil, subprocess, tempfile, time
 from pathlib import Path
@@ -52,7 +56,7 @@ def verify(base,out):
                     elif name in ('progress','account/backup'):data={'unlocked':unlocked,'bestScore':0}
                     else:raise AssertionError('Unexpected API endpoint: '+name)
                     route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-                page.route('**/api/**',fixture)
+                page.route('**/api/**',with_session_transport(fixture))
                 page.goto(base+'?codex-order='+VERSION,wait_until='domcontentloaded')
                 page.locator('.home-screen').wait_for(state='visible')
                 expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
@@ -139,3 +143,4 @@ if __name__=='__main__':
             server=subprocess.Popen(['python3','-m','http.server','4177','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             try:time.sleep(.5);verify('http://127.0.0.1:4177/giralab-web/',Path(args.out))
             finally:server.terminate();server.wait(timeout=5)
+

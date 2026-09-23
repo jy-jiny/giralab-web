@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 """Dark carousel checks with isolated player API; never writes production records."""
 import argparse, importlib.util, json, os, shutil, tempfile
 from pathlib import Path
@@ -33,7 +37,7 @@ def verify(base,out,site=None,memory=False,widths=None):
                     data=lobby.PROGRESS
                 else:raise AssertionError('Unexpected API: '+path)
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-            page.route('**/api/**',fixture)
+            page.route('**/api/**',with_session_transport(fixture))
             if memory:lobby.memory_load(page,site)
             else:page.goto(base+'?dark-lobby='+VERSION,wait_until='domcontentloaded')
             expect(page.locator('.theme-grid')).to_be_visible()
@@ -116,3 +120,4 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',4187),partial(media.MediaHandler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4187/giralab-web/',Path(a.out),site,widths=a.width)
             finally:server.shutdown();server.server_close()
+

@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Verify help/options against an isolated API on both the candidate and live site."""
@@ -32,7 +36,7 @@ def verify(base,out):
                     data=state['progress']
                 else:raise AssertionError(endpoint)
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-            page.route('**/api/**',fixture)
+            page.route('**/api/**',with_session_transport(fixture))
             page.goto(base+'?theme-help-verified=1',wait_until='domcontentloaded')
             expect(page.locator('.home-version')).to_have_text('GiraLab · 1.7.2')
             before=state['writes']
@@ -109,3 +113,4 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',4191),partial(Handler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4191/giralab-web/',Path(a.out))
             finally:server.shutdown();server.server_close()
+

@@ -1,5 +1,11 @@
 # GiraLab Web
 
+## 2026-09-23 · 짧은 토큰과 웹 쿠키
+
+검증한 원본 `66ec5f80ac7aec5866fbd588eaf85ed6eee376db`의 전체 Vite 빌드를 적용한다. 기존 Supabase의 `giralab-auth`에서 15분 게임 토큰·자동 갱신·HttpOnly/Secure/Partitioned 쿠키를 제공한다. 30일 미사용 또는 Google 확인 후 90일에 재인증하며 계정과 기록은 유지한다. 기존 365일 토큰은 배포 후 7일 내 한 번만 자동 이행한다. 인증 환경과 비밀키까지 격리하는 작업은 후속이다.
+
+게시 전후 게임·계정 검사를 유지한다. 기존 UI fixture에 단기 세션 전송 어댑터를 추가했으며 실제 쿠키·갱신·만료·동시 요청은 원본의 브라우저/PG17 검사에서 별도로 검증했다. 개인 Google 계정 선택과 실기기 조작은 자동 검사와 구분한다.
+
 ## 2026-09-23 · 판 종료 음악
 
 원본 `2a4dce7c9ac28356de4b8ecf39a206d714fcdbf6`의 전체 Vite 빌드를 반영합니다. 결과 화면에 8초짜리 오리지널 곡 Experiment Complete가 한 번 재생되며, 기존 음악·음소거·기록·Google 로그인은 유지합니다. 새 판을 완료하면 다시 한 번 재생됩니다.
@@ -45,4 +51,5 @@ The first publication succeeded, but the live mythic-effect check exposed a test
 observer race: React's previous render can still have a null animation object.
 The driver now reads the stable presentation timer ref and validates its hook
 anchor. Gameplay assertions remain unchanged; the published build is unchanged.
+
 

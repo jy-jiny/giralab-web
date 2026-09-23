@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Actual-browser checks; all game API writes are intercepted, never sent to production."""
@@ -55,7 +59,7 @@ def verify(base,out):
                     else:
                         route.abort(); return
                     route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-                page.route('**/api/**',fixture)
+                page.route('**/api/**',with_session_transport(fixture))
                 page.goto(base+'?audio-mythic='+VERSION,wait_until='domcontentloaded')
                 # Playwright evaluate may count as user activation. Inspect first autoplay via CDP.
                 cdp=ctx.new_cdp_session(page)
@@ -168,7 +172,7 @@ def verify(base,out):
             else:
                 route.abort(); return
             route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-        page.route('**/api/**',muted_fixture)
+        page.route('**/api/**',with_session_transport(muted_fixture))
         page.goto(base);expect(page.locator('.home-screen')).to_be_visible()
         page.wait_for_function('window.__gameTools.get_audio_state?.execute({})')
         assert page.evaluate('window.__gameTools.get_audio_state.execute({}).musicVolume')==0
@@ -190,4 +194,5 @@ if __name__=='__main__':
             server=subprocess.Popen(['python3','-m','http.server','4179','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             try:time.sleep(.4);verify('http://127.0.0.1:4179/giralab-web/',Path(args.out))
             finally:server.terminate();server.wait(timeout=5)
+
 

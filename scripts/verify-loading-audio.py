@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Observe loading audio without synthetic activation. All game APIs use fixtures."""
@@ -73,7 +77,7 @@ def verify(base,out):
      data={'state':'complete','action':'signin','player':account['player'],'progress':account['progress'],'requestId':body['requestId']}
     else:raise AssertionError('Unexpected API endpoint: '+name)
     route.fulfill(status=200,headers=api_headers,content_type='application/json',body=json.dumps(data))
-   page.route('**/api/**',fixture)
+   page.route('**/api/**',with_session_transport(fixture))
    page.route('https://accounts.google.com/**',lambda route:route.fulfill(status=200,content_type='text/javascript',body=GOOGLE_FIXTURE) if route.request.url=='https://accounts.google.com/gsi/client' else route.abort('blockedbyclient'))
    page.goto(base+'?loading-audio='+VERSION,wait_until='domcontentloaded')
    cdp=ctx.new_cdp_session(page)
@@ -185,5 +189,6 @@ if __name__=='__main__':
    server=subprocess.Popen(['python3','-m','http.server','4180','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    try:time.sleep(.3);verify('http://127.0.0.1:4180/giralab-web/',Path(args.out))
    finally:server.terminate();server.wait(timeout=5)
+
 
 

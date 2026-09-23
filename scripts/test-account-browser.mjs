@@ -44,14 +44,17 @@ try{
       const req=route.request(),url=new URL(req.url());
       if(url.origin===new URL(base).origin && url.pathname.startsWith(new URL(base).pathname))return route.continue();
       if(url.href==='https://accounts.google.com/gsi/client')return route.fulfill({contentType:'text/javascript',body:'/* isolated Google credential fixture */'});
-      const marker='/functions/v1/giralab-game/api/';
-      if(url.hostname!=='tqqgnrfklhmxwsphjera.supabase.co'||!url.pathname.startsWith(marker))return route.abort('blockedbyclient');
+      const marker=['/functions/v1/giralab-game/api/','/functions/v1/giralab-auth/api/'].find(value=>url.pathname.startsWith(value));
+      if(url.hostname!=='tqqgnrfklhmxwsphjera.supabase.co'||!marker)return route.abort('blockedbyclient');
       const endpoint=url.pathname.slice(marker.length),body=req.postDataJSON();
-      const headers={'access-control-allow-origin':new URL(base).origin,'access-control-allow-headers':'authorization,content-type,x-giralab-player-id','access-control-allow-methods':'GET,POST,OPTIONS'};
+      const headers={'access-control-allow-origin':new URL(base).origin,'access-control-allow-credentials':'true','access-control-allow-headers':'authorization,content-type,x-giralab-player-id,x-giralab-csrf','access-control-allow-methods':'GET,POST,OPTIONS'};
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers});
       state.calls.push({endpoint,body,method:req.method()});
       let data,status=200;
-      if(endpoint==='player'){
+      if(endpoint==='auth/cookie-check'){status=state.shortSession?200:401;data={ok:!!state.shortSession};}
+      else if(endpoint==='auth/bootstrap'){state.shortSession=true;data={ok:true};}
+      else if(endpoint==='auth/reset'){state.shortSession=false;data={ok:true};}
+      else if(endpoint==='player'){
         assert.equal(req.method(),'GET','Account management never registers a replacement guest');
         if(state.deleted){status=401;data={code:'ACCOUNT_DELETED',error:'삭제된 계정이에요.'};}else data={player:state.player};
       }else if(endpoint==='progress'){

@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 """End a real web game via DOM controls/clock; all API traffic is intercepted."""
 import argparse, base64, json, os, re, shutil, tempfile
 from functools import partial
@@ -74,7 +78,7 @@ def verify(base,out):
             elif path=='leaderboard':data={'entries':[],'me':None}
             else:raise AssertionError('Unexpected API: '+path)
             route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-        ctx.route('**/api/**',fixture)
+        ctx.route('**/api/**',with_session_transport(fixture))
         page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.set_default_timeout(15000)
         page.clock.install()
         page.goto(base+'?run-result=20260921',wait_until='domcontentloaded')
@@ -180,4 +184,5 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',0),partial(Handler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify(f'http://127.0.0.1:{server.server_port}/giralab-web/',Path(args.out))
             finally:server.shutdown();server.server_close()
+
 

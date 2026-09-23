@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Browser verification for the scoped options/help change. All game API calls are fixtures."""
@@ -48,7 +52,7 @@ def verify(base,out):
                     data=state['progress']
                 else:raise AssertionError('Unexpected API endpoint: '+path)
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-            page.route('**/api/**',fixture)
+            page.route('**/api/**',with_session_transport(fixture))
             try:
                 page.goto(base+'?theme-help-check=1',wait_until='domcontentloaded')
                 # The app allows image loading for 15s; expect has its own 5s default.
@@ -221,3 +225,4 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',4189),partial(Handler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4189/giralab-web/',Path(a.out))
             finally:server.shutdown();server.server_close()
+

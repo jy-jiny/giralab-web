@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 from pathlib import Path as _DriverPath
 _TEST_DRIVER = (_DriverPath(__file__).resolve().parents[1] / "scripts/browser-game-driver.js").read_text()
 """Theme navigation/regression proof. All API traffic is isolated; never write test scores live."""
@@ -68,7 +72,7 @@ def verify(base,out,site=None,memory=False):
                     data=fixture_state['progress']
                 else:raise AssertionError('Unexpected API endpoint: '+path)
                 route.fulfill(status=status,content_type='application/json',body=json.dumps(data))
-            page.route('**/api/**',fixture)
+            page.route('**/api/**',with_session_transport(fixture))
             if memory:memory_load(page,site)
             else:page.goto(base+'?theme-lobby='+VERSION,wait_until='domcontentloaded')
             expect(page.locator('.theme-grid')).to_be_visible();expect(page.locator('.home-version')).to_have_text('GiraLab · '+VERSION)
@@ -154,4 +158,5 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',4183),partial(media.MediaHandler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4183/giralab-web/',Path(a.out),site)
             finally:server.shutdown();server.server_close()
+
 

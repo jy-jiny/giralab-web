@@ -1,3 +1,7 @@
+import sys as _session_sys
+from pathlib import Path as _SessionPath
+_session_sys.path.insert(0, str(_SessionPath(__file__).resolve().parents[1] / 'scripts'))
+from session_fixture import with_session_transport
 """Main/game viewport proof; all API traffic uses isolated fixtures."""
 import argparse, importlib.util, json, os, shutil, tempfile
 from pathlib import Path
@@ -39,7 +43,7 @@ def verify(base,out):
                 elif path=='progress':data=lobby.PROGRESS
                 else:raise AssertionError('Unexpected API: '+path)
                 route.fulfill(status=200,content_type='application/json',body=json.dumps(data))
-            page.route('**/api/**',fixture);page.goto(base+'?viewport-fit=1',wait_until='domcontentloaded')
+            page.route('**/api/**',with_session_transport(fixture));page.goto(base+'?viewport-fit=1',wait_until='domcontentloaded')
             expect(page.locator('.theme-grid')).to_be_visible();page.wait_for_timeout(450)
             layouts={'main':fits(page,'.theme-lobby')}
             swipe(page,ctx,'.theme-grid');fits(page,'.theme-lobby');swipe(page,ctx,'.theme-grid',False)
@@ -86,3 +90,4 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',4188),partial(media.MediaHandler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify('http://127.0.0.1:4188/giralab-web/',Path(a.out))
             finally:server.shutdown();server.server_close()
+
