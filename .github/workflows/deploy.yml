@@ -27,7 +27,7 @@ defaults:
   run:
     shell: bash
 env:
-  GIRALAB_EXPECTED_SOURCE_COMMIT: '2aa080d4c22a7cfc75d9723c12da91e0914643c3'
+  GIRALAB_EXPECTED_SOURCE_COMMIT: '2a4dce7c9ac28356de4b8ecf39a206d714fcdbf6'
 jobs:
   verify:
     if: github.event_name == 'pull_request'
@@ -214,3 +214,4 @@ jobs:
             live-*
           if-no-files-found: warn
           retention-days: 1
+

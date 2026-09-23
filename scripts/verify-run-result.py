@@ -36,6 +36,19 @@ def verify(base,out):
         ctx.add_init_script("""
           window.fixtureTools=[];document.modelContext={registerTool:t=>window.fixtureTools.push(t.name)};
           window.fixtureShares=[];window.fixtureShareAttempts=0;window.fixtureCancelShare=false;
+          window.fixtureResultCues=[];
+          const createSource=AudioContext.prototype.createBufferSource;
+          AudioContext.prototype.createBufferSource=function(){
+            const context=this,source=createSource.call(this),start=source.start.bind(source);
+            source.start=function(...args){
+              if(source.buffer?.duration===8){
+                const cue={duration:source.buffer.duration,loop:source.loop,context:context.state,ended:false};
+                window.fixtureResultCues.push(cue);source.addEventListener('ended',()=>cue.ended=true);
+              }
+              return start(...args);
+            };
+            return source;
+          };
           Object.defineProperty(navigator,'canShare',{configurable:true,value:()=>true});
           Object.defineProperty(navigator,'share',{configurable:true,value:async data=>{
             window.fixtureShareAttempts++;
@@ -92,6 +105,9 @@ def verify(base,out):
         page.clock.run_for(60000)
         result=page.get_by_role('dialog',name='이번 판의 기록')
         expect(result).to_be_visible()
+        cues=page.evaluate('window.fixtureResultCues')
+        assert len(cues)==1 and cues[0]['duration']==8 and cues[0]['loop'] is False and cues[0]['context']=='running',cues
+        assert page.locator('audio').evaluate('(el)=>el.paused'), 'Game track must stop on results'
         expect(result.get_by_test_id('result-final-score')).to_have_text(f'{final:,}점')
         expect(result.get_by_test_id('result-final-score')).to_be_in_viewport()
         page.screenshot(path=str(out/'result-open.png'))
@@ -133,6 +149,15 @@ def verify(base,out):
         expect(result.locator('.result-share-status')).to_have_count(0)
         expect(result).not_to_contain_text('공유를 취소했어요')
         assert len(page.evaluate('window.fixtureShares'))==1
+        assert len(page.evaluate('window.fixtureResultCues'))==1, 'Sharing and result renders must not replay the cue'
+        result.get_by_role('button',name='한 판 더',exact=True).click()
+        expect(page.locator('[data-game-status]')).to_have_attribute('data-game-status','playing')
+        expect(page.locator('.run-result-dialog')).to_have_count(0)
+        page.wait_for_function('document.querySelector("audio").paused===false')
+        page.clock.run_for(60000)
+        expect(result).to_be_visible()
+        assert len(page.evaluate('window.fixtureResultCues'))==2, 'Next completed game needs a fresh cue'
+        assert page.locator('audio').evaluate('(el)=>el.paused')
         result.get_by_role('button',name='메인으로',exact=True).click()
         expect(page.locator('[data-theme-best=burger]')).to_have_text('21,350')
         assert saved['bestScore']==PROGRESS['bestScore'] and set(saved['unlocked'])>=set(PROGRESS['unlocked'])
@@ -140,7 +165,7 @@ def verify(base,out):
         expect(page.locator('.score-main strong')).to_have_text('0')
         expect(page.locator('.run-result-dialog')).to_have_count(0)
         assert not errors,errors
-        report.update(finalScore=final,tiers=expected,singleShareButton=True,sharedPNG=[720,1040],successfulShareSilent=True,cancelledShareSilent=True,shareButtonReenabled=True,unsupportedShare=True,recordsPreserved=True,noAITools=True,errors=errors,requests=calls)
+        report.update(finalScore=final,tiers=expected,singleShareButton=True,sharedPNG=[720,1040],successfulShareSilent=True,cancelledShareSilent=True,shareButtonReenabled=True,unsupportedShare=True,recordsPreserved=True,noAITools=True,resultMusic={"duration":8,"oncePerRun":True,"retryRestarts":True,"gameTrackStops":True,"cues":page.evaluate("window.fixtureResultCues")},errors=errors,requests=calls)
         ctx.close();browser.close()
     (out/'verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print(json.dumps(report,ensure_ascii=False,indent=2))
 
@@ -155,3 +180,4 @@ if __name__=='__main__':
             server=ThreadingHTTPServer(('127.0.0.1',0),partial(Handler,directory=root));Thread(target=server.serve_forever,daemon=True).start()
             try:verify(f'http://127.0.0.1:{server.server_port}/giralab-web/',Path(args.out))
             finally:server.shutdown();server.server_close()
+
