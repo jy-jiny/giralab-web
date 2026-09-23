@@ -4,9 +4,9 @@
 
 원본 `2a4dce7c9ac28356de4b8ecf39a206d714fcdbf6`의 전체 Vite 빌드를 반영합니다. 결과 화면에 8초짜리 오리지널 곡 Experiment Complete가 한 번 재생되며, 기존 음악·음소거·기록·Google 로그인은 유지합니다. 새 판을 완료하면 다시 한 번 재생됩니다.
 
-GitHub Actions 예산 해결 후 원본 APK/웹 빌드 `35802601488`이 성공했습니다. 웹 배포 워크플로는 게시 전후 기존 게임·계정 검사와 실제 결과 화면의 종료 음악/재도전 검사를 실행합니다. `site/source-build.json`에 원본 커밋·아티팩트와 파일 해시를 기록합니다. 실제 게시 완료 여부는 해당 배포 실행 결과를 확인합니다.
+GitHub Actions 예산 해결 후 원본 APK/웹 빌드 `35802601488`이 성공했습니다. 웹 배포 워크플로는 게시 전후 기존 게임·계정 검사와 실제 결과 화면의 종료 음악/재도전 검사를 실행합니다. `site/source-build.json`에 원본 커밋·아티팩트와 파일 해시를 기록합니다. [최종 배포 35805200578](https://github.com/jy-jiny/giralab-web/actions/runs/35805200578)이 성공했으며 게시 전후 게임·계정·로딩·오디오·결과 검사가 모두 통과했습니다. 실제 공개 URL에서 8초/반복 없음/판당 한 번/재도전 후 재생/기존 게임 음악 중단을 확인했습니다. 실계정 Google 인증과 실기기 청음은 별도입니다.
 
-첫 배포 `35804019836`은 게시 전 결과 음악 검증과 GitHub Pages 게시에 성공했으나, 게시 후 로딩/음량 검사에서 메인 복귀 직후 옵션 창 확인이 실패했습니다. 검사는 닫히는 Radix 대화상자와 오버레이가 제거되고 메인 화면이 표시된 뒤 메인의 옵션 버튼을 누르도록 보완했습니다. 음량/음소거/오디오 미지원에 대한 기존 단언은 유지하며, 실패 시 화면과 대화상자 상태를 남깁니다. 동일한 전체 게시 전후 검사를 다시 실행합니다.
+첫 배포 `35804019836`은 게시 전 결과 음악 검증과 GitHub Pages 게시에 성공했으나, 게시 후 로딩/음량 검사에서 메인 복귀 직후 옵션 창 확인이 실패했습니다. 검사는 닫히는 Radix 대화상자와 오버레이가 제거되고 메인 화면이 표시된 뒤 메인의 옵션 버튼을 누르도록 보완했습니다. 음량/음소거/오디오 미지원에 대한 기존 단언은 유지하며, 실패 시 화면과 대화상자 상태를 남깁니다. 보완 후 동일한 전체 게시 전후 검사를 통과했습니다. 검증 증거는 해당 실행의 `giralab-e5-live-verification` 아티팩트에 보관합니다.
 
 
 The 2026-09-22 web Google login rollout is documented in [WEB_GOOGLE_LOGIN_20260922.md](WEB_GOOGLE_LOGIN_20260922.md). The original API URL and existing records are preserved; publication and actual Google account verification are separate.
