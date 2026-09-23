@@ -135,12 +135,26 @@ def verify(base,out):
    page.get_by_role('button',name='메인으로',exact=True).click()
    expect(page.get_by_role('heading',name='메인으로 돌아갈까요?',exact=True)).to_be_visible()
    page.get_by_role('button',name='돌아가기',exact=True).click()
+   # The home mixer resumes before Radix has unmounted the closing leave dialog.
+   # Wait for the visible navigation to finish before opening the next dialog.
+   expect(page.locator('.home-screen')).to_be_visible()
+   expect(page.locator('.leave-dialog')).to_have_count(0)
+   expect(page.locator('[data-slot="dialog-overlay"]')).to_have_count(0)
    if not unsupported and saved!=0:
     page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying');assert not state()['gamePlaying']
     page.evaluate('window.dispatchEvent(new Event("burger-native-pause"))');assert not state()['labPlaying']
     page.evaluate('window.dispatchEvent(new Event("burger-native-resume"))');page.wait_for_function('window.__gameTools.get_audio_state.execute({}).labPlaying')
-   page.get_by_role('button',name='옵션',exact=True).click()
-   expect(page.locator('.settings-dialog .sound-setting')).to_have_count(1)
+   page.locator('.home-screen').get_by_role('button',name='옵션',exact=True).click()
+   try:
+    expect(page.locator('.settings-dialog .sound-setting')).to_have_count(1)
+   except Exception:
+    page.screenshot(path=str(out/f'{label}-{width}-settings-failure.png'))
+    (out/f'{label}-{width}-settings-failure.json').write_text(json.dumps({
+     'case':label,'viewport':[width,height],'audio':state(),'errors':errors,
+     'dialogs':page.locator('[role="dialog"]').evaluate_all('(nodes)=>nodes.map(node=>({state:node.dataset.state,className:node.className,text:node.innerText}))'),
+     'homeVisible':page.locator('.home-screen').is_visible()
+    },ensure_ascii=False,indent=2))
+    raise
    expect(page.locator('.settings-dialog [role="slider"]')).to_have_count(2)
    expect(page.locator('.audio-enable')).to_have_count(0)
    if unsupported:expect(page.locator('.settings-dialog .audio-setting-status')).to_be_visible()
@@ -171,4 +185,5 @@ if __name__=='__main__':
    server=subprocess.Popen(['python3','-m','http.server','4180','--bind','127.0.0.1','--directory',root],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
    try:time.sleep(.3);verify('http://127.0.0.1:4180/giralab-web/',Path(args.out))
    finally:server.terminate();server.wait(timeout=5)
+
 
