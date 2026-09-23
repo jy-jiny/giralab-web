@@ -2,6 +2,8 @@
 
 ## 2026-09-23 · 인증 서버 Netlify 분리
 
+2026-09-23 [배포 35848467623](https://github.com/jy-jiny/giralab-web/actions/runs/35848467623)이 성공했다. 게시 전후 계정·게임·로딩·음악·결과 화면 회귀 검사가 모두 통과했고 실제 공개 metadata의 새 인증 URL을 확인했다. 원본 배포 기록은 `jy-jiny/giralab`의 `docs/game/evidence/2026-09-23-auth-isolation.json`이다. 실제 Google 재로그인과 이전 인증 키 폐기는 여전히 별도 확인 단계다.
+
 검증된 원본 `1ddb385dd405bc7bf10a8331fa12b9796689b7db`의 전체 Vite 아티팩트를 반영한다. Google 확인과 쿠키/토큰 갱신은 `https://giralab-auth.netlify.app`에서 처리한다. 기존 게임 서버 주소·계정·점수·도감·음량·종료 음악은 유지한다. 웹 인증 쿠키의 호스트가 바뀌어 Google 로그인이 한 번 더 필요할 수 있다. 이전 인증 자격 폐기는 실제 Google 재로그인 확인 후 진행하며, 이 단계에서 완전한 비밀키 격리 완료로 표시하지 않는다.
 
 CI 아티팩트 ZIP SHA-256 및 원본 tree 일치, 빌드 20개 파일과 기존 이미지/음악 해시를 확인했다. 계정 UI fixture는 배포 metadata의 정확한 게임·인증 API를 가로채며 운영 계정/점수는 쓰지 않는다. 기존 게시 전후 회귀 검사를 유지한다. 최종 게시 결과와 실계정 로그인은 별도 확인 사항이다.
