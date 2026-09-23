@@ -18,7 +18,28 @@ defaults:
   run:
     shell: bash
 jobs:
+  current-release:
+    runs-on: ubuntu-latest
+    outputs:
+      legacy: ${{ steps.version.outputs.legacy }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        name: Preserve the current full-source security release
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          current = json.loads(Path('site/source-build.json').read_text())
+          legacy = not bool(current.get('auth_api'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('legacy=' + str(legacy).lower() + '\n')
+          if not legacy:
+              print('This historical asset publisher is superseded by deploy.yml; current authentication and its full regression gates are preserved.')
+          PY
   deploy:
+    needs: current-release
+    if: needs.current-release.outputs.legacy == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment:
