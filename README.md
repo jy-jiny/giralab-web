@@ -1,5 +1,12 @@
 # GiraLab Web
 
+## 2026-09-23 · Google 로그인 확인과 이전 인증 폐기 완료
+
+사용자가 공개 웹에서 실제 Google 재로그인과 기존 기록 복구 성공을 확인했다. 11:13 UTC 운영 전환으로 이전 인증 RPC 자격·공유 인증 bridge·DB의 이전 HMAC 키 복사본을 폐기했다. 기존 계정·점수·도감·세션 9개 표의 전후 전체 지문이 일치했다. Netlify의 원본 HMAC 키와 새 독립 자격은 유지한다.
+
+새 호스트의 900초 토큰 발급·갱신·재사용 차단·HttpOnly 쿠키·CSRF 검사를 다시 통과했다. 이전 Supabase 인증 주소는 410 UPDATE_REQUIRED를 반환하고 게임 서버는 정상이다. `source-build.json`의 전환 상태만 갱신하며 원본 빌드 커밋과 20개 파일 해시는 유지한다. 아래 절은 이전 배포 이력이다. Android 실기기 설치 확인과 공유 DB 관리자 침해 위험은 별개다.
+
+
 ## 2026-09-23 · 인증 서버 Netlify 분리
 
 2026-09-23 [배포 35848467623](https://github.com/jy-jiny/giralab-web/actions/runs/35848467623)이 성공했다. 게시 전후 계정·게임·로딩·음악·결과 화면 회귀 검사가 모두 통과했고 실제 공개 metadata의 새 인증 URL을 확인했다. 원본 배포 기록은 `jy-jiny/giralab`의 `docs/game/evidence/2026-09-23-auth-isolation.json`이다. 실제 Google 재로그인과 이전 인증 키 폐기는 여전히 별도 확인 단계다.

@@ -140,8 +140,8 @@
   "server_function": "giralab-game",
   "server_api": "https://tqqgnrfklhmxwsphjera.supabase.co/functions/v1/giralab-game",
   "google_web_origin": "https://jy-jiny.github.io",
-  "google_origin_verified": false,
-  "actual_google_login_verified": false,
+  "google_origin_verified": true,
+  "actual_google_login_verified": true,
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
@@ -185,6 +185,10 @@
   "reauthentication_days": 90,
   "web_token_storage": "HttpOnly Secure Partitioned cookies",
   "auth_runtime_isolated": true,
-  "auth_legacy_credentials_removed": false,
-  "auth_cutover_pending_google_login": true
+  "auth_legacy_credentials_removed": true,
+  "auth_cutover_pending_google_login": false,
+  "auth_cutover_migration": "20260923111328_activate_isolated_short_sessions",
+  "auth_cutover_verified_at": "2026-09-23T11:13:28Z",
+  "actual_google_login_verification": "User confirmed successful Google re-login and existing records on the production web client.",
+  "legacy_auth_http_status": 410
 }
