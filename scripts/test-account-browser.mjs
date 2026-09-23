@@ -9,8 +9,10 @@ import path from 'node:path';
 const require=createRequire(process.env.GIRALAB_BROWSER_TOOLS ? path.join(process.env.GIRALAB_BROWSER_TOOLS,'package.json') : import.meta.url);
 const {chromium,expect}=require('playwright/test');
 const args=process.argv.slice(2),value=flag=>args.includes(flag)?args[args.indexOf(flag)+1]:null;
-const root=path.resolve(value('--site')||'pages-dist');let server,browser;
+const root=path.resolve(value('--site')||'site');let server,browser;
 const screenshots=value('--out');
+const release=JSON.parse(await readFile(path.join(root,'source-build.json'),'utf8'));
+const fixturePrefixes=[release.server_api,release.auth_api].filter(Boolean).map(base=>base.replace(/\/$/,'')+'/api/');
 let base=value('--url');
 if(!base){
   server=createServer(async(req,res)=>{
@@ -44,9 +46,9 @@ try{
       const req=route.request(),url=new URL(req.url());
       if(url.origin===new URL(base).origin && url.pathname.startsWith(new URL(base).pathname))return route.continue();
       if(url.href==='https://accounts.google.com/gsi/client')return route.fulfill({contentType:'text/javascript',body:'/* isolated Google credential fixture */'});
-      const marker=['/functions/v1/giralab-game/api/','/functions/v1/giralab-auth/api/'].find(value=>url.pathname.startsWith(value));
-      if(url.hostname!=='tqqgnrfklhmxwsphjera.supabase.co'||!marker)return route.abort('blockedbyclient');
-      const endpoint=url.pathname.slice(marker.length),body=req.postDataJSON();
+      const prefix=fixturePrefixes.find(value=>url.href.startsWith(value));
+      if(!prefix)return route.abort('blockedbyclient');
+      const endpoint=url.href.slice(prefix.length),body=req.postDataJSON();
       const headers={'access-control-allow-origin':new URL(base).origin,'access-control-allow-credentials':'true','access-control-allow-headers':'authorization,content-type,x-giralab-player-id,x-giralab-csrf','access-control-allow-methods':'GET,POST,OPTIONS'};
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers});
       state.calls.push({endpoint,body,method:req.method()});

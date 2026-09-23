@@ -11,16 +11,16 @@ MUSIC='e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647'
 # Complete Vite releases are already materialized. Verify every build byte;
 # legacy delta migration below must not rewrite a newer source or its verifiers.
 current=json.loads(Path('site/source-build.json').read_text())
-if current.get('release_revision') in ('results-capture-20260921','accounts-20260922','social-login-reset-20260922','web-google-login-20260922','web-account-layout-20260922','web-linked-ranking-20260922','web-result-share-20260922','web-dialog-close-20260923','web-back-confirm-20260923','web-result-music-20260923','web-browser-back-20260923','web-short-sessions-20260923'):
+if current.get('release_revision') in ('results-capture-20260921','accounts-20260922','social-login-reset-20260922','web-google-login-20260922','web-account-layout-20260922','web-linked-ranking-20260922','web-result-share-20260922','web-dialog-close-20260923','web-back-confirm-20260923','web-result-music-20260923','web-browser-back-20260923','web-short-sessions-20260923','web-isolated-auth-20260923'):
     assert re.fullmatch('[0-9a-f]{40}',current['source_commit'])
     expected_source=os.environ.get('GIRALAB_EXPECTED_SOURCE_COMMIT')
     if expected_source: assert current['source_commit']==expected_source,'Unexpected source commit'
     assert current['run_result_dialog'] and current['release_ai_tools'] is False
     assert current['run_result_tiers']==['normal','advanced','legendary','mythic']
-    if current.get('release_revision') in ('accounts-20260922','social-login-reset-20260922','web-google-login-20260922','web-account-layout-20260922','web-linked-ranking-20260922','web-result-share-20260922','web-dialog-close-20260923','web-back-confirm-20260923','web-result-music-20260923','web-browser-back-20260923','web-short-sessions-20260923'):
+    if current.get('release_revision') in ('accounts-20260922','social-login-reset-20260922','web-google-login-20260922','web-account-layout-20260922','web-linked-ranking-20260922','web-result-share-20260922','web-dialog-close-20260923','web-back-confirm-20260923','web-result-music-20260923','web-browser-back-20260923','web-short-sessions-20260923','web-isolated-auth-20260923'):
         assert current['account_ui'] and current['email_auth_ready'] is False
         assert 'delete-account.html' in current['build_files_sha256']
-    if current.get('release_revision') in ('web-google-login-20260922','web-account-layout-20260922','web-linked-ranking-20260922','web-result-share-20260922','web-dialog-close-20260923','web-back-confirm-20260923','web-result-music-20260923','web-browser-back-20260923','web-short-sessions-20260923'):
+    if current.get('release_revision') in ('web-google-login-20260922','web-account-layout-20260922','web-linked-ranking-20260922','web-result-share-20260922','web-dialog-close-20260923','web-back-confirm-20260923','web-result-music-20260923','web-browser-back-20260923','web-short-sessions-20260923','web-isolated-auth-20260923'):
         assert re.fullmatch('[0-9a-f]{40}',current['source_tree'])
         assert current['social_auth_ready'] and current['account_providers']==['google']
         assert current['first_login']=='google-before-nickname' and current['automatic_login']
