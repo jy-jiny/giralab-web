@@ -190,7 +190,7 @@ try{
   await closeWithoutChangingContent(closing.page,()=>closing.page.getByRole('button',{name:'닫기',exact:true}).click());
   await expect(closing.page.locator('[data-game-status]')).toHaveAttribute('data-game-status','paused');
   cases.push('closing options resumes only a game it paused; an already paused game remains paused and account changes stay disabled during play');
-  const gameSnapshot=()=>closing.page.locator('.game-shell').evaluate(game=>({
+  const gameSnapshot=(page=closing.page)=>page.locator('.game-shell').evaluate(game=>({
     status:game.dataset.gameStatus,score:game.querySelector('.score-main strong')?.textContent,
     elapsed:game.querySelector('.score-secondary time')?.textContent,danger:game.querySelector('.bomb-track')?.getAttribute('aria-valuenow'),
     board:[...game.querySelectorAll('button[data-tile-id]')].map(tile=>({id:tile.dataset.tileId,row:tile.dataset.row,col:tile.dataset.col,ingredient:tile.dataset.ingredient})),
@@ -233,6 +233,72 @@ try{
   const returned=await gameSnapshot();assert.deepEqual(returned.board,leaving.board);assert.equal(returned.score,leaving.score);
   cases.push('exit confirmation freezes play; cancel resumes it and confirmed return keeps the same game available to continue');
   await closing.context.close();
+  const navigation=await setup({reducedMotion:'no-preference'}),nav=navigation.page;
+  const previousURL=new URL('__back-origin',base).href;
+  await navigation.context.route(previousURL,route=>route.fulfill({contentType:'text/html; charset=utf-8',body:`<meta charset="utf-8"><a href="${base}">GiraLab 열기</a>`}));
+  await nav.goto(previousURL);await nav.getByRole('link',{name:'GiraLab 열기'}).click();
+  await expect(nav.locator('.home-version')).toBeVisible();
+  const initialHistory=await nav.evaluate(()=>history.length);
+  const startFromLobby=async()=>{
+    await nav.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+    await nav.locator('.home-play').click();
+    await expect(nav.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  };
+  const expectLeave=async()=>{
+    await expect(nav.getByRole('heading',{name:'메인으로 돌아갈까요?',exact:true})).toBeVisible();
+    await expect(nav.locator('[data-game-status]')).toHaveAttribute('data-game-status','paused');
+    assert.equal(nav.url(),base,'Back stays on the game document until an explicit return');
+  };
+  const cancelLeave=async()=>{
+    await nav.locator('.leave-dialog').getByRole('button',{name:'계속하기',exact:true}).click();
+    await expect(nav.locator('.game-dialog')).toHaveCount(0);
+  };
+  await startFromLobby();
+  for(let repeat=0;repeat<3;repeat++){
+    await nav.goBack();await expectLeave();
+    const paused=await gameSnapshot(nav);await nav.waitForTimeout(1200);
+    assert.deepEqual(await gameSnapshot(nav),paused,'Browser Back confirmation freezes the clock, danger, score and board');
+    if(screenshots&&repeat===0)await nav.screenshot({path:path.join(screenshots,'browser-back-confirm.png')});
+    if(repeat===1){await nav.goBack();await expect(nav.locator('.game-dialog')).toHaveCount(0);}
+    else await cancelLeave();
+    await expect(nav.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+    assert.deepEqual((await gameSnapshot(nav)).board,paused.board);
+    assert.equal(await nav.evaluate(()=>history.length),initialHistory+1,'Repeated Back/cancel reuses one history entry');
+  }
+  await nav.getByRole('button',{name:'일시정지',exact:true}).click();
+  const manualPause=await gameSnapshot(nav);
+  await nav.goBack();await expectLeave();await cancelLeave();
+  assert.deepEqual(await gameSnapshot(nav),manualPause,'Browser Back preserves a manually paused game');
+  await nav.locator('.board-controls').getByRole('button',{name:'계속하기',exact:true}).click();
+  await nav.getByRole('button',{name:'옵션',exact:true}).click();
+  await nav.getByRole('button',{name:/레시피 도감/}).click();
+  await nav.goBack();await expect(nav.locator('.settings-content')).toBeVisible();
+  await nav.goBack();await expect(nav.locator('.game-dialog')).toHaveCount(0);
+  await expect(nav.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  await nav.evaluate(()=>window.dispatchEvent(new Event('burger-native-back')));await expectLeave();
+  await nav.evaluate(()=>window.dispatchEvent(new Event('burger-native-back')));
+  await expect(nav.locator('.game-dialog')).toHaveCount(0);
+  await expect(nav.locator('[data-game-status]')).toHaveAttribute('data-game-status','playing');
+  await nav.goBack();await expectLeave();
+  const browserHeld=await gameSnapshot(nav);
+  await nav.locator('.leave-dialog').getByRole('button',{name:'돌아가기',exact:true}).click();
+  await expect(nav.locator('.home-play')).toHaveText('계속하기');
+  await expect(nav.locator('.game-dialog')).toHaveCount(0);
+  await nav.locator('.home-play').click();
+  assert.deepEqual((await gameSnapshot(nav)).board,browserHeld.board,'Confirmed browser Back retains the same run');
+  await nav.goBack();await expectLeave();
+  await nav.locator('.leave-dialog').getByRole('button',{name:'돌아가기',exact:true}).click();
+  await expect(nav.locator('.game-dialog')).toHaveCount(0);
+  await nav.goBack();await expect(nav.locator('.home-play')).toHaveCount(0);
+  await expect.poll(()=>nav.evaluate(()=>history.state?.['giralab-browser-back-v1']===true)).toBe(false);
+  await nav.goBack();await expect(nav).toHaveURL(previousURL);
+  await nav.goForward();await expect(nav.locator('.home-version')).toBeVisible();
+  await startFromLobby();
+  await nav.reload();await expect(nav.locator('.home-version')).toBeVisible();
+  await expect.poll(()=>nav.evaluate(()=>history.state?.['giralab-browser-back-v1']===true)).toBe(false);
+  await nav.goBack();await expect(nav).toHaveURL(previousURL);
+  cases.push('real browser history Back opens exit confirmation, repeated Back/cancel and native Back preserve pause/run, nested panels close first, lobby exit and reload/Forward do not trap navigation');
+  await navigation.context.close();
   const saved=await setup();await saved.page.goto(base);await expect(saved.page.locator('.home-version')).toBeVisible();
   await saved.page.reload();await expect(saved.page.locator('.home-version')).toBeVisible();
   assert.equal(await saved.page.evaluate(()=>localStorage.getItem('fixture-google-opens')),null);
