@@ -1,0 +1,3 @@
+# Preserve the exact validated build bytes in the Pages checkout.
+site/** -text
+scripts/hearts-fixture.json -text
