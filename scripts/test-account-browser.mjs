@@ -26,10 +26,11 @@ if(!base){
 }
 const owner={id:'00000000-0000-0000-0000-000000000501',nickname:'로그인검증'};
 const errors=[],cases=[];
+let activeFixture;
 try{
   const systemChrome=process.env.GIRALAB_CHROMIUM || ['/usr/bin/google-chrome','/usr/bin/chromium'].find(existsSync);
   browser=await chromium.launch({headless:true,...(systemChrome?{executablePath:systemChrome}:{}),args:['--no-sandbox']});
-  async function setup({fresh=false,enabled=true,loseDelete=false,loseSignin=false,loseLogout=false,newGoogle=false,linked=true,ranking=false,reducedMotion='reduce'}={}){
+  async function setup({fresh=false,enabled=true,loseDelete=false,loseSignin=false,loseLogout=false,newGoogle=false,linked=true,ranking=false,reducedMotion='reduce',startupGates=null,failBackup=false}={}){
     const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion});
     await context.addInitScript(({fresh,ranking})=>{
       if(!localStorage.getItem('fixture-init')){
@@ -52,6 +53,8 @@ try{
       const headers={'access-control-allow-origin':new URL(base).origin,'access-control-allow-credentials':'true','access-control-allow-headers':'authorization,content-type,x-giralab-player-id,x-giralab-csrf','access-control-allow-methods':'GET,POST,OPTIONS'};
       if(req.method()==='OPTIONS')return route.fulfill({status:204,headers});
       state.calls.push({endpoint,body,method:req.method()});
+      if(startupGates?.[endpoint] && req.method()==='GET')await startupGates[endpoint];
+      if(startupGates?.backup && endpoint==='account/backup')await startupGates.backup;
       let data,status=200;
       if(endpoint==='auth/cookie-check'){status=state.shortSession?200:401;data={ok:!!state.shortSession};}
       else if(endpoint==='auth/bootstrap'){state.shortSession=true;data={ok:true};}
@@ -68,6 +71,7 @@ try{
       }else if(endpoint==='leaderboard')data=ranking&&state.progress.bestScore>0?{entries:[{rank:1,nickname:owner.nickname,score:state.progress.bestScore,isMe:true}],me:{rank:1,nickname:owner.nickname,score:state.progress.bestScore},updatedAt:Date.now()}:{entries:[],me:null};
       else if(endpoint==='account/status')data={enabled,providers:enabled?['google']:[],linked:state.linked,player:state.player,deviceState:state.deleted?'deleted':state.player?'active':'new',devices:state.linked?2:1};
       else if(endpoint==='account/backup'){
+        if(failBackup)return route.fulfill({status:503,headers,contentType:'application/json',body:JSON.stringify({code:'UNAVAILABLE',error:'Fixture backup unavailable'})});
         state.backup={bestScore:Math.max(state.backup.bestScore,body.bestScore),unlocked:[...new Set([...state.backup.unlocked,...body.unlocked])]};data=state.backup;
       }else if(endpoint==='account/social-challenge'){
         assert(enabled);assert.equal(body.provider,'google');assert.match(body.nonce,/^[a-f0-9]{64}$/);state.requests.set(body.requestId,{action:body.action,nonce:body.nonce});data={requestId:body.requestId,expiresAt:new Date(Date.now()+600000).toISOString()};
@@ -100,7 +104,7 @@ try{
       return route.fulfill({status,headers,contentType:'application/json',body:JSON.stringify(data)});
     });
     const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(15000);
-    return {context,page,state};
+    activeFixture={context,page,state};return activeFixture;
   }
   async function openAccount(page){await page.getByRole('button',{name:'옵션',exact:true}).click();await page.getByRole('button',{name:/계정 관리/}).click();await expect(page.locator('.account-panel')).toBeVisible();}
   async function closeWithoutChangingContent(page,close){
@@ -150,6 +154,36 @@ try{
       if(screenshots){await mkdir(screenshots,{recursive:true});await page.screenshot({path:path.join(screenshots,`account-${provider?'recovery':'overview'}-${width}.png`),fullPage:true});}
     }
   }
+  let releaseProgress,releaseBackup;
+  const startupGates={progress:new Promise(resolve=>releaseProgress=resolve),backup:new Promise(resolve=>releaseBackup=resolve)};
+  const startup=await setup({startupGates});await startup.page.goto(base);
+  await expect(startup.page.getByRole('progressbar',{name:'게임 준비 작업 진행률'})).toHaveAttribute('aria-valuenow','70');
+  await expect.poll(()=>startup.state.calls.filter(c=>c.endpoint==='leaderboard').length).toBe(1);
+  assert(!startup.state.calls.some(c=>c.endpoint==='player'),'Web automatic login reuses the authenticated account-status owner');
+  await expect(startup.page.locator('.home-version')).toHaveCount(0);
+  assert(!startup.state.calls.some(c=>c.endpoint==='account/backup'),'Ranks start even before progress restoration completes');
+  releaseProgress();await expect(startup.page.locator('.home-version')).toBeVisible();
+  await expect.poll(()=>startup.state.calls.some(c=>c.endpoint==='account/backup')).toBe(true);
+  await startup.page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+  await expect(startup.page.locator('.ranking-status')).toHaveText('첫 기록의 주인공이 되어 보세요');
+  assert.equal(startup.state.calls.filter(c=>c.endpoint==='leaderboard').length,1,'Finishing the splash does not duplicate the early ranking read');
+  assert.equal(await startup.page.evaluate(()=>JSON.parse(localStorage.getItem('giralab-progress-v3')).bestScore),2000,'Legacy personal progress survives status-based entry');
+  releaseBackup();await expect.poll(()=>startup.state.calls.filter(c=>c.endpoint==='leaderboard').length).toBe(2);
+  cases.push('authenticated web boot omits player fetch; ranks start during progress restoration and remain independent of backup; legacy data preserved');await startup.context.close();
+  let releaseRanks;
+  const overlap=await setup({startupGates:{leaderboard:new Promise(resolve=>releaseRanks=resolve)}});await overlap.page.goto(base);
+  await expect(overlap.page.locator('.home-version')).toBeVisible();
+  await expect.poll(()=>overlap.page.evaluate(()=>JSON.parse(localStorage.getItem('giralab-progress-v3')).bestScore)).toBe(9000);
+  releaseRanks();await expect.poll(()=>overlap.state.calls.filter(c=>c.endpoint==='leaderboard').length).toBe(2);
+  cases.push('backup completion during the early ranking read schedules one fresh read');await overlap.context.close();
+  const failedBackup=await setup({failBackup:true});await failedBackup.page.goto(base);
+  await failedBackup.page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+  await expect(failedBackup.page.locator('.ranking-status')).toHaveText('첫 기록의 주인공이 되어 보세요');
+  await expect.poll(()=>failedBackup.state.calls.some(c=>c.endpoint==='account/backup')).toBe(true);
+  await failedBackup.page.getByRole('button',{name:'순위 새로고침',exact:true}).click();
+  await expect.poll(()=>failedBackup.state.calls.filter(c=>c.endpoint==='leaderboard').length).toBeGreaterThan(1);
+  await expect(failedBackup.page.locator('.ranking-status')).toHaveText('첫 기록의 주인공이 되어 보세요');
+  cases.push('failed private backup neither blocks ranking reads nor replaces successful ranks with a ranking error');await failedBackup.context.close();
   const overview=await setup();await overview.page.goto(base);await openAccount(overview.page);
   await expect(overview.page.locator('.account-overview')).toBeVisible();await expect(overview.page.locator('.account-profile-name')).toHaveText(owner.nickname);
   await expect(overview.page.locator('.account-social-actions')).toHaveCount(0);await expect(overview.page.locator('.account-operation')).toHaveCount(0);
@@ -414,4 +448,7 @@ try{
   await expect(reset.page.getByRole('button',{name:'새 계정으로 시작',exact:true})).toBeEnabled();
   cases.push('server reset without local deletion journal opens new-account flow');await reset.context.close();
   assert.deepEqual(errors,[]);console.log(JSON.stringify({passed:true,cases,noProductionRequests:true}));
+}catch(error){
+  console.error(JSON.stringify({cases,errors,calls:activeFixture?.state.calls,screen:await activeFixture?.page.locator('body').innerText().catch(()=>null)}));
+  throw error;
 }finally{if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));}
