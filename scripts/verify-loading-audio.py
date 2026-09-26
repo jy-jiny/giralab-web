@@ -48,10 +48,10 @@ def verify(base,out):
     body=route.request.post_data_json if method=='POST' else None
     account['calls'].append([method,name])
     if name=='account/status':
+     if first[0]:first[0]=False;pending.append(route);return
      data={'enabled':True,'providers':['google'],'linked':account['linked'],'player':account['player'],'deviceState':'active' if account['player'] else 'new','devices':1 if account['player'] else 0}
     elif name=='player':
      assert method=='GET','Nickname registration must use the verified account operation'
-     if first[0]:first[0]=False;pending.append(route);return
      data={'player':account['player']}
     elif name=='leaderboard':data={'entries':[],'me':None}
     elif name in ('progress','account/backup'):
@@ -101,7 +101,7 @@ def verify(base,out):
    else:assert initial['context']=='running' and initial['labPlaying']==(saved!=0),initial
    read('window.__keptMedia=document.querySelector("audio");true')
    time0=read('window.__audioContexts[0]?.currentTime')
-   pending.pop().fulfill(status=200,headers=api_headers,content_type='application/json',body=json.dumps({'player':account['player']}))
+   pending.pop().fulfill(status=200,headers=api_headers,content_type='application/json',body=json.dumps({'enabled':True,'providers':['google'],'linked':account['linked'],'player':account['player'],'deviceState':'active' if account['player'] else 'new','devices':1 if account['player'] else 0}))
    selector='.login-screen' if new_player else '.home-screen'
    for _ in range(100):
     if read(f'!!document.querySelector({json.dumps(selector)})'):break

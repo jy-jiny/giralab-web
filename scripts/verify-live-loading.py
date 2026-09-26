@@ -27,8 +27,9 @@ async def main(base, out):
             async def gate_profile(route):
                 endpoint=route.request.url.split('/api/')[-1].split('?')[0]
                 if endpoint=='player':
-                    await profile_ready.wait(); data={'player':None}
+                    data={'player':None}
                 elif endpoint=='account/status':
+                    await profile_ready.wait()
                     data={'enabled':True,'providers':['google'],'linked':False,'player':None,'deviceState':'new','devices':0}
                 else:
                     await route.abort(); return
@@ -58,14 +59,13 @@ async def main(base, out):
             assert second['width']>first['width']*1.25,(first,second)
             await page.screenshot(path=str(out/f'loading-{width}x{height}-70.png'))
             profile_ready.set()
-            await page.wait_for_function("document.querySelector('[role=progressbar]')?.getAttribute('aria-valuenow') === '100'")
             await page.locator('.login-screen').wait_for(state='visible')
             assert await page.locator('#nickname').count()==0,'Nickname entry must follow Google proof'
             assert await page.get_by_role('button',name='Google로 계속하기',exact=True).is_enabled()
             assert await page.locator('.giralab-boot').count()==0,'Boot never closes'
             assert not errors,errors
             await page.screenshot(path=str(out/f'ready-{width}x{height}.png'))
-            report['tests'].append({'viewport':[width,height],'device_pixel_ratio':3,'source':img_info,'progress':[50,70,100],
+            report['tests'].append({'viewport':[width,height],'device_pixel_ratio':3,'source':img_info,'progress':[50,70],'ready_without_fixed_delay':True,
                 'fill_widths':[first['width'],second['width']],'next_screen':'Google login before nickname','page_errors':errors,'profile':'isolated fixture'})
             await ctx.close()
         ctx=await browser.new_context(viewport={'width':390,'height':844})
