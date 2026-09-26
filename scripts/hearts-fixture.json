@@ -1,0 +1,1516 @@
+{
+  "generatedFrom": "isolated fixture; no production records",
+  "now": 1790430441078,
+  "player": {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "nickname": "Fixture",
+    "bestScore": 500,
+    "unlocked": [
+      "classic"
+    ],
+    "bestAt": "2026-09-01",
+    "createdAt": "2026-09-01"
+  },
+  "initial": {
+    "/api/player": {
+      "player": {
+        "id": "00000000-0000-0000-0000-000000000001",
+        "nickname": "Fixture"
+      }
+    },
+    "/api/progress": {
+      "unlocked": [
+        "classic"
+      ],
+      "bestScore": 500
+    },
+    "/api/leaderboard": {
+      "entries": [],
+      "me": null,
+      "research": {
+        "score": 500,
+        "rank": 1,
+        "participantCount": 1
+      },
+      "updatedAt": 1790430441113
+    },
+    "/api/runs": {
+      "run": null,
+      "hearts": {
+        "available": 5,
+        "bonus": 5,
+        "capacity": 5,
+        "refillMs": 1800000,
+        "nextAtMs": null,
+        "serverNowMs": 1790430441078
+      }
+    }
+  },
+  "first": {
+    "runId": "32c035d8-d217-40f8-af79-1373ff42b8ca",
+    "scope": {
+      "theme": "burger",
+      "season": "prelaunch-v1",
+      "rulesVersion": 3,
+      "verifierVersion": 1
+    },
+    "revision": 0,
+    "lifecycle": "active",
+    "game": {
+      "board": [
+        [
+          {
+            "id": 1,
+            "type": "cheese"
+          },
+          {
+            "id": 2,
+            "type": "lettuce"
+          },
+          {
+            "id": 3,
+            "type": "bacon"
+          },
+          {
+            "id": 4,
+            "type": "bun"
+          },
+          {
+            "id": 5,
+            "type": "lettuce"
+          },
+          {
+            "id": 6,
+            "type": "patty"
+          }
+        ],
+        [
+          {
+            "id": 7,
+            "type": "patty"
+          },
+          {
+            "id": 8,
+            "type": "patty"
+          },
+          {
+            "id": 9,
+            "type": "cheese"
+          },
+          {
+            "id": 10,
+            "type": "bacon"
+          },
+          {
+            "id": 11,
+            "type": "bacon"
+          },
+          {
+            "id": 12,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 13,
+            "type": "patty"
+          },
+          {
+            "id": 14,
+            "type": "patty"
+          },
+          {
+            "id": 15,
+            "type": "bun"
+          },
+          {
+            "id": 16,
+            "type": "cheese"
+          },
+          {
+            "id": 17,
+            "type": "patty"
+          },
+          {
+            "id": 18,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "type": "bun"
+          },
+          {
+            "id": 20,
+            "type": "bun"
+          },
+          {
+            "id": 21,
+            "type": "bun"
+          },
+          {
+            "id": 22,
+            "type": "bacon"
+          },
+          {
+            "id": 23,
+            "type": "cheese"
+          },
+          {
+            "id": 24,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 25,
+            "type": "bun"
+          },
+          {
+            "id": 26,
+            "type": "patty"
+          },
+          {
+            "id": 27,
+            "type": "bacon"
+          },
+          {
+            "id": 28,
+            "type": "bun"
+          },
+          {
+            "id": 29,
+            "type": "bun"
+          },
+          {
+            "id": 30,
+            "type": "patty"
+          }
+        ],
+        [
+          {
+            "id": 31,
+            "type": "patty"
+          },
+          {
+            "id": 32,
+            "type": "bun"
+          },
+          {
+            "id": 33,
+            "type": "bun"
+          },
+          {
+            "id": 34,
+            "type": "lettuce"
+          },
+          {
+            "id": 35,
+            "type": "bun"
+          },
+          {
+            "id": 36,
+            "type": "cheese"
+          }
+        ],
+        [
+          {
+            "id": 37,
+            "type": "bun"
+          },
+          {
+            "id": 38,
+            "type": "patty"
+          },
+          {
+            "id": 39,
+            "type": "patty"
+          },
+          {
+            "id": 40,
+            "type": "lettuce"
+          },
+          {
+            "id": 41,
+            "type": "cheese"
+          },
+          {
+            "id": 42,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 43,
+            "type": "cheese"
+          },
+          {
+            "id": 44,
+            "type": "bun"
+          },
+          {
+            "id": 45,
+            "type": "cheese"
+          },
+          {
+            "id": 46,
+            "type": "cheese"
+          },
+          {
+            "id": 47,
+            "type": "bun"
+          },
+          {
+            "id": 48,
+            "type": "cheese"
+          }
+        ],
+        [
+          {
+            "id": 49,
+            "type": "bun"
+          },
+          {
+            "id": 50,
+            "type": "bacon"
+          },
+          {
+            "id": 51,
+            "type": "bun"
+          },
+          {
+            "id": 52,
+            "type": "bun"
+          },
+          {
+            "id": 53,
+            "type": "patty"
+          },
+          {
+            "id": 54,
+            "type": "bun"
+          }
+        ]
+      ],
+      "nextId": 55,
+      "status": "ready",
+      "elapsed": 0,
+      "danger": 20,
+      "score": 0,
+      "served": 0,
+      "freeze": 0,
+      "known": [
+        "classic"
+      ],
+      "chain": 0,
+      "comboUntil": 0,
+      "lastRecipe": null,
+      "sameCombo": 0,
+      "ladderStep": 0,
+      "selected": [],
+      "result": null,
+      "resultUntil": 0,
+      "failedUntil": 0,
+      "regenerations": 0,
+      "regenerationPause": 0,
+      "idleSeconds": 0,
+      "hint": []
+    },
+    "reducedMotion": true,
+    "settleRemainingMs": 0,
+    "regenerationRemainingMs": 0,
+    "asOfMs": 1790430441078,
+    "serverNowMs": 1790430441078,
+    "expiresAtMs": 1790516841078,
+    "receipt": null,
+    "acknowledgedSequence": null,
+    "replayed": false,
+    "hearts": {
+      "available": 4,
+      "bonus": 5,
+      "capacity": 5,
+      "refillMs": 1800000,
+      "nextAtMs": 1790432241078,
+      "serverNowMs": 1790430441078
+    }
+  },
+  "playing": {
+    "runId": "32c035d8-d217-40f8-af79-1373ff42b8ca",
+    "scope": {
+      "theme": "burger",
+      "season": "prelaunch-v1",
+      "rulesVersion": 3,
+      "verifierVersion": 1
+    },
+    "revision": 1,
+    "lifecycle": "active",
+    "game": {
+      "board": [
+        [
+          {
+            "id": 1,
+            "type": "cheese"
+          },
+          {
+            "id": 2,
+            "type": "lettuce"
+          },
+          {
+            "id": 3,
+            "type": "bacon"
+          },
+          {
+            "id": 4,
+            "type": "bun"
+          },
+          {
+            "id": 5,
+            "type": "lettuce"
+          },
+          {
+            "id": 6,
+            "type": "patty"
+          }
+        ],
+        [
+          {
+            "id": 7,
+            "type": "patty"
+          },
+          {
+            "id": 8,
+            "type": "patty"
+          },
+          {
+            "id": 9,
+            "type": "cheese"
+          },
+          {
+            "id": 10,
+            "type": "bacon"
+          },
+          {
+            "id": 11,
+            "type": "bacon"
+          },
+          {
+            "id": 12,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 13,
+            "type": "patty"
+          },
+          {
+            "id": 14,
+            "type": "patty"
+          },
+          {
+            "id": 15,
+            "type": "bun"
+          },
+          {
+            "id": 16,
+            "type": "cheese"
+          },
+          {
+            "id": 17,
+            "type": "patty"
+          },
+          {
+            "id": 18,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "type": "bun"
+          },
+          {
+            "id": 20,
+            "type": "bun"
+          },
+          {
+            "id": 21,
+            "type": "bun"
+          },
+          {
+            "id": 22,
+            "type": "bacon"
+          },
+          {
+            "id": 23,
+            "type": "cheese"
+          },
+          {
+            "id": 24,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 25,
+            "type": "bun"
+          },
+          {
+            "id": 26,
+            "type": "patty"
+          },
+          {
+            "id": 27,
+            "type": "bacon"
+          },
+          {
+            "id": 28,
+            "type": "bun"
+          },
+          {
+            "id": 29,
+            "type": "bun"
+          },
+          {
+            "id": 30,
+            "type": "patty"
+          }
+        ],
+        [
+          {
+            "id": 31,
+            "type": "patty"
+          },
+          {
+            "id": 32,
+            "type": "bun"
+          },
+          {
+            "id": 33,
+            "type": "bun"
+          },
+          {
+            "id": 34,
+            "type": "lettuce"
+          },
+          {
+            "id": 35,
+            "type": "bun"
+          },
+          {
+            "id": 36,
+            "type": "cheese"
+          }
+        ],
+        [
+          {
+            "id": 37,
+            "type": "bun"
+          },
+          {
+            "id": 38,
+            "type": "patty"
+          },
+          {
+            "id": 39,
+            "type": "patty"
+          },
+          {
+            "id": 40,
+            "type": "lettuce"
+          },
+          {
+            "id": 41,
+            "type": "cheese"
+          },
+          {
+            "id": 42,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 43,
+            "type": "cheese"
+          },
+          {
+            "id": 44,
+            "type": "bun"
+          },
+          {
+            "id": 45,
+            "type": "cheese"
+          },
+          {
+            "id": 46,
+            "type": "cheese"
+          },
+          {
+            "id": 47,
+            "type": "bun"
+          },
+          {
+            "id": 48,
+            "type": "cheese"
+          }
+        ],
+        [
+          {
+            "id": 49,
+            "type": "bun"
+          },
+          {
+            "id": 50,
+            "type": "bacon"
+          },
+          {
+            "id": 51,
+            "type": "bun"
+          },
+          {
+            "id": 52,
+            "type": "bun"
+          },
+          {
+            "id": 53,
+            "type": "patty"
+          },
+          {
+            "id": 54,
+            "type": "bun"
+          }
+        ]
+      ],
+      "nextId": 55,
+      "status": "playing",
+      "elapsed": 0,
+      "danger": 20,
+      "score": 0,
+      "served": 0,
+      "freeze": 0,
+      "known": [
+        "classic"
+      ],
+      "chain": 0,
+      "comboUntil": 0,
+      "lastRecipe": null,
+      "sameCombo": 0,
+      "ladderStep": 0,
+      "selected": [],
+      "result": null,
+      "resultUntil": 0,
+      "failedUntil": 0,
+      "regenerations": 0,
+      "regenerationPause": 0,
+      "idleSeconds": 0,
+      "hint": []
+    },
+    "reducedMotion": true,
+    "settleRemainingMs": 0,
+    "regenerationRemainingMs": 0,
+    "asOfMs": 1790430441078,
+    "serverNowMs": 1790430441078,
+    "expiresAtMs": 1790516841078,
+    "receipt": null,
+    "acknowledgedSequence": 1,
+    "replayed": false
+  },
+  "finished": {
+    "runId": "32c035d8-d217-40f8-af79-1373ff42b8ca",
+    "scope": {
+      "theme": "burger",
+      "season": "prelaunch-v1",
+      "rulesVersion": 3,
+      "verifierVersion": 1
+    },
+    "revision": 2,
+    "lifecycle": "finished",
+    "game": {
+      "board": [
+        [
+          {
+            "id": 1,
+            "type": "cheese"
+          },
+          {
+            "id": 2,
+            "type": "lettuce"
+          },
+          {
+            "id": 3,
+            "type": "bacon"
+          },
+          {
+            "id": 4,
+            "type": "bun"
+          },
+          {
+            "id": 5,
+            "type": "lettuce"
+          },
+          {
+            "id": 6,
+            "type": "patty"
+          }
+        ],
+        [
+          {
+            "id": 7,
+            "type": "patty"
+          },
+          {
+            "id": 8,
+            "type": "patty"
+          },
+          {
+            "id": 9,
+            "type": "cheese"
+          },
+          {
+            "id": 10,
+            "type": "bacon"
+          },
+          {
+            "id": 11,
+            "type": "bacon"
+          },
+          {
+            "id": 12,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 13,
+            "type": "patty"
+          },
+          {
+            "id": 14,
+            "type": "patty"
+          },
+          {
+            "id": 15,
+            "type": "bun"
+          },
+          {
+            "id": 16,
+            "type": "cheese"
+          },
+          {
+            "id": 17,
+            "type": "patty"
+          },
+          {
+            "id": 18,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "type": "bun"
+          },
+          {
+            "id": 20,
+            "type": "bun"
+          },
+          {
+            "id": 21,
+            "type": "bun"
+          },
+          {
+            "id": 22,
+            "type": "bacon"
+          },
+          {
+            "id": 23,
+            "type": "cheese"
+          },
+          {
+            "id": 24,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 25,
+            "type": "bun"
+          },
+          {
+            "id": 26,
+            "type": "patty"
+          },
+          {
+            "id": 27,
+            "type": "bacon"
+          },
+          {
+            "id": 28,
+            "type": "bun"
+          },
+          {
+            "id": 29,
+            "type": "bun"
+          },
+          {
+            "id": 30,
+            "type": "patty"
+          }
+        ],
+        [
+          {
+            "id": 31,
+            "type": "patty"
+          },
+          {
+            "id": 32,
+            "type": "bun"
+          },
+          {
+            "id": 33,
+            "type": "bun"
+          },
+          {
+            "id": 34,
+            "type": "lettuce"
+          },
+          {
+            "id": 35,
+            "type": "bun"
+          },
+          {
+            "id": 36,
+            "type": "cheese"
+          }
+        ],
+        [
+          {
+            "id": 37,
+            "type": "bun"
+          },
+          {
+            "id": 38,
+            "type": "patty"
+          },
+          {
+            "id": 39,
+            "type": "patty"
+          },
+          {
+            "id": 40,
+            "type": "lettuce"
+          },
+          {
+            "id": 41,
+            "type": "cheese"
+          },
+          {
+            "id": 42,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 43,
+            "type": "cheese"
+          },
+          {
+            "id": 44,
+            "type": "bun"
+          },
+          {
+            "id": 45,
+            "type": "cheese"
+          },
+          {
+            "id": 46,
+            "type": "cheese"
+          },
+          {
+            "id": 47,
+            "type": "bun"
+          },
+          {
+            "id": 48,
+            "type": "cheese"
+          }
+        ],
+        [
+          {
+            "id": 49,
+            "type": "bun"
+          },
+          {
+            "id": 50,
+            "type": "bacon"
+          },
+          {
+            "id": 51,
+            "type": "bun"
+          },
+          {
+            "id": 52,
+            "type": "bun"
+          },
+          {
+            "id": 53,
+            "type": "patty"
+          },
+          {
+            "id": 54,
+            "type": "bun"
+          }
+        ]
+      ],
+      "nextId": 55,
+      "status": "over",
+      "elapsed": 60,
+      "danger": 100,
+      "score": 0,
+      "served": 0,
+      "freeze": 0,
+      "known": [
+        "classic"
+      ],
+      "chain": 0,
+      "comboUntil": 0,
+      "lastRecipe": null,
+      "sameCombo": 0,
+      "ladderStep": 0,
+      "selected": [],
+      "result": null,
+      "resultUntil": 0,
+      "failedUntil": 0,
+      "regenerations": 0,
+      "regenerationPause": 0,
+      "idleSeconds": 0,
+      "hint": []
+    },
+    "reducedMotion": true,
+    "settleRemainingMs": 0,
+    "regenerationRemainingMs": 0,
+    "asOfMs": 1790430501078,
+    "serverNowMs": 1790430501078,
+    "expiresAtMs": 1790516841078,
+    "receipt": {
+      "score": 0,
+      "commandCount": 2,
+      "verifiedAtMs": 1790430501078
+    },
+    "acknowledgedSequence": 2,
+    "replayed": false,
+    "report": {
+      "version": 1,
+      "runId": "32c035d8-d217-40f8-af79-1373ff42b8ca",
+      "revision": 2,
+      "complete": true,
+      "score": 0,
+      "served": 0,
+      "elapsedMs": 60000,
+      "maxCombo": 0,
+      "tiers": [
+        {
+          "tier": "normal",
+          "count": 0,
+          "points": 0
+        },
+        {
+          "tier": "advanced",
+          "count": 0,
+          "points": 0
+        },
+        {
+          "tier": "legendary",
+          "count": 0,
+          "points": 0
+        },
+        {
+          "tier": "mythic",
+          "count": 0,
+          "points": 0
+        }
+      ],
+      "timeline": [
+        {
+          "elapsedMs": 0,
+          "score": 0
+        },
+        {
+          "elapsedMs": 60000,
+          "score": 0
+        }
+      ]
+    }
+  },
+  "second": {
+    "runId": "78a343b3-b774-47ad-b8c4-367e9f2e1c50",
+    "scope": {
+      "theme": "burger",
+      "season": "prelaunch-v1",
+      "rulesVersion": 3,
+      "verifierVersion": 1
+    },
+    "revision": 0,
+    "lifecycle": "active",
+    "game": {
+      "board": [
+        [
+          {
+            "id": 1,
+            "type": "patty"
+          },
+          {
+            "id": 2,
+            "type": "patty"
+          },
+          {
+            "id": 3,
+            "type": "patty"
+          },
+          {
+            "id": 4,
+            "type": "cheese"
+          },
+          {
+            "id": 5,
+            "type": "lettuce"
+          },
+          {
+            "id": 6,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 7,
+            "type": "patty"
+          },
+          {
+            "id": 8,
+            "type": "bun"
+          },
+          {
+            "id": 9,
+            "type": "bun"
+          },
+          {
+            "id": 10,
+            "type": "bacon"
+          },
+          {
+            "id": 11,
+            "type": "bun"
+          },
+          {
+            "id": 12,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 13,
+            "type": "bun"
+          },
+          {
+            "id": 14,
+            "type": "patty"
+          },
+          {
+            "id": 15,
+            "type": "patty"
+          },
+          {
+            "id": 16,
+            "type": "cheese"
+          },
+          {
+            "id": 17,
+            "type": "bun"
+          },
+          {
+            "id": 18,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "type": "bun"
+          },
+          {
+            "id": 20,
+            "type": "bun"
+          },
+          {
+            "id": 21,
+            "type": "cheese"
+          },
+          {
+            "id": 22,
+            "type": "bun"
+          },
+          {
+            "id": 23,
+            "type": "bun"
+          },
+          {
+            "id": 24,
+            "type": "bacon"
+          }
+        ],
+        [
+          {
+            "id": 25,
+            "type": "bun"
+          },
+          {
+            "id": 26,
+            "type": "lettuce"
+          },
+          {
+            "id": 27,
+            "type": "bacon"
+          },
+          {
+            "id": 28,
+            "type": "bun"
+          },
+          {
+            "id": 29,
+            "type": "cheese"
+          },
+          {
+            "id": 30,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 31,
+            "type": "cheese"
+          },
+          {
+            "id": 32,
+            "type": "patty"
+          },
+          {
+            "id": 33,
+            "type": "bacon"
+          },
+          {
+            "id": 34,
+            "type": "bun"
+          },
+          {
+            "id": 35,
+            "type": "bun"
+          },
+          {
+            "id": 36,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 37,
+            "type": "bun"
+          },
+          {
+            "id": 38,
+            "type": "cheese"
+          },
+          {
+            "id": 39,
+            "type": "bun"
+          },
+          {
+            "id": 40,
+            "type": "cheese"
+          },
+          {
+            "id": 41,
+            "type": "cheese"
+          },
+          {
+            "id": 42,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 43,
+            "type": "lettuce"
+          },
+          {
+            "id": 44,
+            "type": "bun"
+          },
+          {
+            "id": 45,
+            "type": "bun"
+          },
+          {
+            "id": 46,
+            "type": "patty"
+          },
+          {
+            "id": 47,
+            "type": "patty"
+          },
+          {
+            "id": 48,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 49,
+            "type": "bun"
+          },
+          {
+            "id": 50,
+            "type": "bun"
+          },
+          {
+            "id": 51,
+            "type": "bun"
+          },
+          {
+            "id": 52,
+            "type": "bun"
+          },
+          {
+            "id": 53,
+            "type": "cheese"
+          },
+          {
+            "id": 54,
+            "type": "patty"
+          }
+        ]
+      ],
+      "nextId": 55,
+      "status": "ready",
+      "elapsed": 0,
+      "danger": 20,
+      "score": 0,
+      "served": 0,
+      "freeze": 0,
+      "known": [
+        "classic"
+      ],
+      "chain": 0,
+      "comboUntil": 0,
+      "lastRecipe": null,
+      "sameCombo": 0,
+      "ladderStep": 0,
+      "selected": [],
+      "result": null,
+      "resultUntil": 0,
+      "failedUntil": 0,
+      "regenerations": 0,
+      "regenerationPause": 0,
+      "idleSeconds": 0,
+      "hint": []
+    },
+    "reducedMotion": true,
+    "settleRemainingMs": 0,
+    "regenerationRemainingMs": 0,
+    "asOfMs": 1790430501078,
+    "serverNowMs": 1790430501078,
+    "expiresAtMs": 1790516901078,
+    "receipt": null,
+    "acknowledgedSequence": null,
+    "replayed": false,
+    "hearts": {
+      "available": 3,
+      "bonus": 5,
+      "capacity": 5,
+      "refillMs": 1800000,
+      "nextAtMs": 1790432241078,
+      "serverNowMs": 1790430501078
+    }
+  },
+  "secondPlaying": {
+    "runId": "78a343b3-b774-47ad-b8c4-367e9f2e1c50",
+    "scope": {
+      "theme": "burger",
+      "season": "prelaunch-v1",
+      "rulesVersion": 3,
+      "verifierVersion": 1
+    },
+    "revision": 1,
+    "lifecycle": "active",
+    "game": {
+      "board": [
+        [
+          {
+            "id": 1,
+            "type": "patty"
+          },
+          {
+            "id": 2,
+            "type": "patty"
+          },
+          {
+            "id": 3,
+            "type": "patty"
+          },
+          {
+            "id": 4,
+            "type": "cheese"
+          },
+          {
+            "id": 5,
+            "type": "lettuce"
+          },
+          {
+            "id": 6,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 7,
+            "type": "patty"
+          },
+          {
+            "id": 8,
+            "type": "bun"
+          },
+          {
+            "id": 9,
+            "type": "bun"
+          },
+          {
+            "id": 10,
+            "type": "bacon"
+          },
+          {
+            "id": 11,
+            "type": "bun"
+          },
+          {
+            "id": 12,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 13,
+            "type": "bun"
+          },
+          {
+            "id": 14,
+            "type": "patty"
+          },
+          {
+            "id": 15,
+            "type": "patty"
+          },
+          {
+            "id": 16,
+            "type": "cheese"
+          },
+          {
+            "id": 17,
+            "type": "bun"
+          },
+          {
+            "id": 18,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 19,
+            "type": "bun"
+          },
+          {
+            "id": 20,
+            "type": "bun"
+          },
+          {
+            "id": 21,
+            "type": "cheese"
+          },
+          {
+            "id": 22,
+            "type": "bun"
+          },
+          {
+            "id": 23,
+            "type": "bun"
+          },
+          {
+            "id": 24,
+            "type": "bacon"
+          }
+        ],
+        [
+          {
+            "id": 25,
+            "type": "bun"
+          },
+          {
+            "id": 26,
+            "type": "lettuce"
+          },
+          {
+            "id": 27,
+            "type": "bacon"
+          },
+          {
+            "id": 28,
+            "type": "bun"
+          },
+          {
+            "id": 29,
+            "type": "cheese"
+          },
+          {
+            "id": 30,
+            "type": "lettuce"
+          }
+        ],
+        [
+          {
+            "id": 31,
+            "type": "cheese"
+          },
+          {
+            "id": 32,
+            "type": "patty"
+          },
+          {
+            "id": 33,
+            "type": "bacon"
+          },
+          {
+            "id": 34,
+            "type": "bun"
+          },
+          {
+            "id": 35,
+            "type": "bun"
+          },
+          {
+            "id": 36,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 37,
+            "type": "bun"
+          },
+          {
+            "id": 38,
+            "type": "cheese"
+          },
+          {
+            "id": 39,
+            "type": "bun"
+          },
+          {
+            "id": 40,
+            "type": "cheese"
+          },
+          {
+            "id": 41,
+            "type": "cheese"
+          },
+          {
+            "id": 42,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 43,
+            "type": "lettuce"
+          },
+          {
+            "id": 44,
+            "type": "bun"
+          },
+          {
+            "id": 45,
+            "type": "bun"
+          },
+          {
+            "id": 46,
+            "type": "patty"
+          },
+          {
+            "id": 47,
+            "type": "patty"
+          },
+          {
+            "id": 48,
+            "type": "bun"
+          }
+        ],
+        [
+          {
+            "id": 49,
+            "type": "bun"
+          },
+          {
+            "id": 50,
+            "type": "bun"
+          },
+          {
+            "id": 51,
+            "type": "bun"
+          },
+          {
+            "id": 52,
+            "type": "bun"
+          },
+          {
+            "id": 53,
+            "type": "cheese"
+          },
+          {
+            "id": 54,
+            "type": "patty"
+          }
+        ]
+      ],
+      "nextId": 55,
+      "status": "playing",
+      "elapsed": 0,
+      "danger": 20,
+      "score": 0,
+      "served": 0,
+      "freeze": 0,
+      "known": [
+        "classic"
+      ],
+      "chain": 0,
+      "comboUntil": 0,
+      "lastRecipe": null,
+      "sameCombo": 0,
+      "ladderStep": 0,
+      "selected": [],
+      "result": null,
+      "resultUntil": 0,
+      "failedUntil": 0,
+      "regenerations": 0,
+      "regenerationPause": 0,
+      "idleSeconds": 0,
+      "hint": []
+    },
+    "reducedMotion": true,
+    "settleRemainingMs": 0,
+    "regenerationRemainingMs": 0,
+    "asOfMs": 1790430501078,
+    "serverNowMs": 1790430501078,
+    "expiresAtMs": 1790516901078,
+    "receipt": null,
+    "acknowledgedSequence": 1,
+    "replayed": false
+  }
+}

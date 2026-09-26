@@ -3,216 +3,61 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths:
-      - '.github/workflows/deploy.yml'
-      - 'site/**'
-      - 'scripts/verify-*.py'
-      - 'scripts/test-account-browser.mjs'
-      - 'scripts/restore-dark-lobby.py'
-      - 'scripts/browser-game-driver.js'
-      - 'release-tools/verify-audio-mythic.py'
-      - 'release-tools/verify-lobby-cleanup.py'
-      - 'release-tools/dark-lobby-public.part*'
-      - 'deploy-assets/dark-lobby*'
+    paths: ['site/**', 'scripts/test-hearts-release.mjs', 'scripts/hearts-fixture.json', 'scripts/verify-release.py', '.github/workflows/deploy.yml']
   workflow_dispatch:
 permissions:
-  contents: write
-  actions: read
-  pages: write
-  id-token: write
+  contents: read
 concurrency:
   group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
   cancel-in-progress: true
-defaults:
-  run:
-    shell: bash
-env:
-  GIRALAB_EXPECTED_SOURCE_COMMIT: '303bf43f0db87d36f22d184faeba8a76e9140888'
 jobs:
   verify:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      actions: read
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Report existing build artifact usage
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Verify complete bundle, approved art and audio hashes
+        run: python3 scripts/verify-release.py
+      - name: Check compiled JavaScript
+        run: for f in site/assets/*.js; do node --check "$f"; done
+      - name: Install isolated browser tools
         run: |
-          gh api --paginate --slurp repos/${{ github.repository }}/actions/artifacts > "$RUNNER_TEMP/giralab-artifacts.json"
-          python3 - <<'PYART'
-          import json, os
-          with open(os.environ['RUNNER_TEMP']+'/giralab-artifacts.json') as f: pages=json.load(f)
-          items=[item for page in pages for item in page['artifacts'] if not item['expired']]
-          print(json.dumps({'artifact_count':len(items),'bytes':sum(x['size_in_bytes'] for x in items),'largest':[{'name':x['name'],'bytes':x['size_in_bytes'],'expires_at':x['expires_at']} for x in sorted(items,key=lambda x:x['size_in_bytes'],reverse=True)[:10]]}))
-          PYART
-      - name: Verify unchanged storage compatibility
-        run: |
-          python3 - <<'PY'
-          import json,urllib.request
-          req=urllib.request.Request('https://tqqgnrfklhmxwsphjera.supabase.co/functions/v1/giralab-game/api/health',headers={'Origin':'https://jy-jiny.github.io'})
-          with urllib.request.urlopen(req,timeout=30) as response:health=json.load(response)
-          assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
-          print('Existing storage server compatible:',health)
-          PY
-      - name: Restore exact tested dark lobby and regression verifiers
-        run: |
-          set -euo pipefail
-          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
-          python3 scripts/restore-dark-lobby.py
-          for f in site/assets/*.js; do node --check "$f"; done
-          python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
-      - name: Install account screen verification tools
-        run: npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
-      - name: Install Korean fonts for mobile screenshots
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify Google-first login, automatic entry, logout, recovery and deletion
+          npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          node "$RUNNER_TEMP/giralab-browser-tools/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Verify hearts, paid replay and compact results without production API access
         env:
           GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-account-browser.mjs --site site --out predeploy-account
-      - name: Verify dark carousel, theme codex and preserved game before publication
-        run: |
-          set -euo pipefail
-          python3 release-tools/verify-lobby-cleanup.py --site site --out predeploy-dark-lobby
-          python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
-          python3 scripts/verify-theme-lobby.py --site site --out predeploy-theme-lobby
-          python3 scripts/verify-game-music.py --site site --out predeploy-game-music
-          python3 scripts/verify-burst-refill.py --site site --out predeploy-burst-refill
-          python3 scripts/verify-loading-audio.py --site site --out predeploy-loading-audio
-          python3 release-tools/verify-audio-mythic.py --site site --out predeploy-audio-mythic
-          python3 scripts/verify-combo-browser.py --site site --out predeploy-combo --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
-          python3 scripts/verify-codex-order.py --site site --out predeploy-codex
-          python3 scripts/verify-live-loading.py --site site --out predeploy-loading --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
-          python3 scripts/verify-run-result.py --site site --out predeploy-run-result
+        run: node scripts/test-hearts-release.mjs
   deploy:
+    needs: verify
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.publish.outputs.page_url || steps.retry.outputs.page_url }}
+      url: ${{ steps.publish.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Report existing build artifact usage
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api --paginate --slurp repos/${{ github.repository }}/actions/artifacts > "$RUNNER_TEMP/giralab-artifacts.json"
-          python3 - <<'PYART'
-          import json, os
-          with open(os.environ['RUNNER_TEMP']+'/giralab-artifacts.json') as f: pages=json.load(f)
-          items=[item for page in pages for item in page['artifacts'] if not item['expired']]
-          print(json.dumps({'artifact_count':len(items),'bytes':sum(x['size_in_bytes'] for x in items),'largest':[{'name':x['name'],'bytes':x['size_in_bytes'],'expires_at':x['expires_at']} for x in sorted(items,key=lambda x:x['size_in_bytes'],reverse=True)[:10]]}))
-          PYART
-      - name: Verify unchanged storage compatibility
-        run: |
-          python3 - <<'PY'
-          import json,urllib.request
-          req=urllib.request.Request('https://tqqgnrfklhmxwsphjera.supabase.co/functions/v1/giralab-game/api/health',headers={'Origin':'https://jy-jiny.github.io'})
-          with urllib.request.urlopen(req,timeout=30) as response:health=json.load(response)
-          assert health.get('ok') and health.get('recipeCount')==19 and health.get('rulesVersion')==3,health
-          print('Existing storage server compatible:',health)
-          PY
-      - name: Restore exact tested dark lobby and regression verifiers
-        run: |
-          set -euo pipefail
-          python3 -m pip install --disable-pip-version-check bsdiff4==1.2.6 playwright==1.55.0
-          python3 scripts/restore-dark-lobby.py
-          for f in site/assets/*.js; do node --check "$f"; done
-          python3 -m py_compile scripts/verify-*.py release-tools/verify-audio-mythic.py
-      - name: Install account screen verification tools
-        run: npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
-      - name: Install Korean fonts for mobile screenshots
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq fonts-noto-cjk
-      - name: Verify Google-first login, automatic entry, logout, recovery and deletion
-        env:
-          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-account-browser.mjs --site site --out predeploy-account
-      - name: Verify dark carousel, theme codex and preserved game before publication
-        run: |
-          set -euo pipefail
-          python3 release-tools/verify-lobby-cleanup.py --site site --out predeploy-dark-lobby
-          python3 scripts/verify-theme-book.py --site site --out predeploy-theme-book
-          python3 scripts/verify-theme-lobby.py --site site --out predeploy-theme-lobby
-          python3 scripts/verify-game-music.py --site site --out predeploy-game-music
-          python3 scripts/verify-burst-refill.py --site site --out predeploy-burst-refill
-          python3 scripts/verify-loading-audio.py --site site --out predeploy-loading-audio
-          python3 release-tools/verify-audio-mythic.py --site site --out predeploy-audio-mythic
-          python3 scripts/verify-combo-browser.py --site site --out predeploy-combo --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
-          python3 scripts/verify-codex-order.py --site site --out predeploy-codex
-          python3 scripts/verify-live-loading.py --site site --out predeploy-loading --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
-          python3 scripts/verify-run-result.py --site site --out predeploy-run-result
-      - name: Persist verified files and remove completed transfer
-        if: github.event_name != 'pull_request'
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A site
-          git add scripts/verify-*.py release-tools/verify-audio-mythic.py
-          git rm --ignore-unmatch deploy-assets/dark-lobby.json deploy-assets/dark-lobby.delta.b64 deploy-assets/dark-lobby-import.json
-          rm -f deploy-assets/dark-lobby.json deploy-assets/dark-lobby.delta.b64
-          if ! git diff --cached --quiet; then
-            git commit -m 'deploy: verified original-dark horizontal theme lobby, preserved game web 1.7.2 [skip ci]'
-            git push origin HEAD:main
-          fi
+      - run: python3 scripts/verify-release.py
       - uses: actions/configure-pages@v5
-        if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request'
         with:
           path: site
-      - name: Publish GitHub Pages
-        if: github.event_name != 'pull_request'
-        id: publish
-        continue-on-error: true
+      - id: publish
         uses: actions/deploy-pages@v4
-      - name: Brief backoff for transient Pages error
-        if: github.event_name != 'pull_request' && steps.publish.outcome == 'failure'
-        run: sleep 10
-      - name: Retry the same verified artifact
-        id: retry
-        if: github.event_name != 'pull_request' && steps.publish.outcome == 'failure'
-        uses: actions/deploy-pages@v4
-      - name: Verify actual live dark carousel, theme codex and preserved gameplay
-        if: github.event_name != 'pull_request'
+      - name: Verify every published byte against the tested build
+        run: python3 scripts/verify-release.py https://jy-jiny.github.io/giralab-web/
+      - name: Install isolated browser tools
         run: |
-          set -euo pipefail
-          sleep 5
-          python3 release-tools/verify-lobby-cleanup.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-dark-lobby
-          python3 scripts/verify-theme-book.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-book
-          python3 scripts/verify-theme-lobby.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-theme-lobby
-          python3 scripts/verify-game-music.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-game-music
-          python3 scripts/verify-burst-refill.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-burst-refill
-          python3 scripts/verify-loading-audio.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading-audio
-          python3 release-tools/verify-audio-mythic.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-audio-mythic
-          python3 scripts/verify-combo-browser.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-combo --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
-          python3 scripts/verify-codex-order.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-codex
-          python3 scripts/verify-live-loading.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-loading --source-commit "$GIRALAB_EXPECTED_SOURCE_COMMIT"
-          python3 scripts/verify-run-result.py --url 'https://jy-jiny.github.io/giralab-web/' --out live-run-result
-      - name: Verify live account screens with isolated API fixtures
-        if: github.event_name != 'pull_request'
+          npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          node "$RUNNER_TEMP/giralab-browser-tools/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Verify the actual live result layout with isolated API fixtures
         env:
           GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-account-browser.mjs --url https://jy-jiny.github.io/giralab-web/ --out live-account
-      - uses: actions/upload-artifact@v4
-        continue-on-error: true
-        if: always()
-        with:
-          name: giralab-e5-live-verification
-          path: |
-            predeploy-*
-            live-*
-          if-no-files-found: warn
-          retention-days: 1
+        run: node scripts/test-hearts-release.mjs https://jy-jiny.github.io/giralab-web/
 
 

@@ -1,1 +1,0 @@
-import{at as e,ct as t,t as n}from"./globals-aHbPFEaT.js";var r=t(),i=e();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(`main`,{className:`account-page`,children:(0,i.jsx)(n,{deletionOnly:!0})}));
