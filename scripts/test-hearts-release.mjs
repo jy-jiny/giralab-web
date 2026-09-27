@@ -23,9 +23,10 @@ try {
  const origin=new URL(base).origin;
  browser=await chromium.launch({headless:true});
  const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
- let starts=0,current=null,finished=false;
- const fresh=value=>JSON.parse(JSON.stringify(value),(key,v)=>typeof v==='number'&&v>1e12?v+Date.now()-source.now:v);
- const balance=()=>starts===0?fresh(source.initial['/api/runs'].hearts):fresh((starts===1?source.first:source.second).hearts);
+ let starts=0,current=null,finished=false,coldFinishes=0;
+ const fresh=value=>JSON.parse(JSON.stringify(value),(key,v)=>key==='bonus'?0:typeof v==='number'&&v>1e12?v+Date.now()-source.now:v);
+ const balance=()=>({...fresh(starts===0?source.initial['/api/runs'].hearts:source.first.hearts),available:5-starts});
+ const view=template=>({...fresh(template),runId:current.runId});
  await context.route('**/*',async route=>{
   const req=route.request(),url=new URL(req.url());
   if(url.origin===origin)return route.continue();
@@ -38,10 +39,20 @@ try {
   if(api==='/api/auth/cookie-check')data={ok:true};
   else if(api==='/api/account/status')data={enabled:true,providers:['google'],linked:true,player:source.player,deviceState:'active',devices:1};
   else if(api==='/api/account/backup')data=body;
-  else if(api==='/api/runs'&&body){starts++;current=fresh(starts===1?source.first:source.second);finished=false;data=current;}
-  else if(api==='/api/runs')data={run:current,hearts:balance()};
-  else if(api.startsWith('/api/runs/')&&api.endsWith('/commands')){current=fresh(starts===1?source.playing:source.secondPlaying);data=current;}
-  else if(api.startsWith('/api/runs/')){if(finished)current=fresh(source.finished);data=current;}
+  else if(api==='/api/runs'&&body){starts++;current={...fresh(source.first),runId:crypto.randomUUID(),hearts:balance()};finished=false;data=current;}
+  else if(api==='/api/runs')data={run:current?.lifecycle==='active'?current:null,hearts:balance()};
+  else if(api.startsWith('/api/runs/')&&api.endsWith('/commands')){
+   if(body.action.type==='finish'){
+    assert.equal(current.game.status,'ready','Cold restart finishes the old prepared run');coldFinishes++;
+    current={...view(source.finished),game:{...current.game,status:'over',selected:[]},revision:body.sequence,acknowledgedSequence:body.sequence,
+     receipt:{...fresh(source.finished.receipt),score:current.game.score,commandCount:body.sequence}};
+   }else{
+    assert.equal(body.action.type,'begin');
+    current={...view(source.playing),revision:body.sequence,acknowledgedSequence:body.sequence};
+   }
+   data=current;
+  }
+  else if(api.startsWith('/api/runs/')){if(finished){current=view(source.finished);finished=false;}data=current;}
   else if(source.initial[api])data=fresh(source.initial[api]);
   else {unknown.push(api);return route.abort('blockedbyclient');}
   return route.fulfill({status:200,headers,contentType:'application/json',body:JSON.stringify(data)});
@@ -59,7 +70,7 @@ try {
   assert(play.height>=44&&play.y+play.height<=viewport.height-24,'Bottom button remains reachable');
  }
  await page.setViewportSize({width:390,height:844});
- // Server restores a board whose preparation was cancelled before begin.
+ // A full page restart ends even an unstarted old-session board before a new start.
  starts=1;current=fresh(source.first);
  await page.reload();
  await page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
@@ -67,7 +78,7 @@ try {
  await expect(page.locator('.home-play')).toHaveText('게임 시작');
  await page.getByRole('button',{name:'게임 시작',exact:true}).click();
  await page.waitForFunction(()=>document.querySelector('[data-game-status]')?.dataset.gameStatus==='playing');
- assert.equal(starts,1);
+ assert.equal(coldFinishes,1);assert.equal(starts,2);assert.equal(balance().available,3);
  finished=true;await page.evaluate(()=>window.dispatchEvent(new Event('online')));
  const result=page.getByRole('dialog',{name:'이번 판의 기록'});await expect(result).toBeVisible();
  await expect(result.getByText('점수 변화',{exact:true})).toHaveCount(0);
@@ -79,7 +90,7 @@ try {
  }
  await result.getByRole('button',{name:'한 판 더',exact:true}).click();
  await page.waitForFunction(()=>document.querySelector('[data-game-status]')?.dataset.gameStatus==='playing');
- assert.equal(starts,2);assert.equal(balance().available,3);
+ assert.equal(starts,3);assert.equal(balance().available,2);
  assert.deepEqual(errors,[]);assert.deepEqual(unknown,[]);
- console.log(JSON.stringify({passed:true,site:base,unstartedBoardLabel:true,preparedBoardReused:true,bottomPlayButton:true,heartStart:true,paidReplay:true,resultChart:false,footerWidths:[320,360,390],productionApiRequests:0}));
+ console.log(JSON.stringify({passed:true,site:base,unstartedBoardLabel:true,coldRestartEndsOldBoard:true,bottomPlayButton:true,heartStart:true,paidReplay:true,resultChart:false,footerWidths:[320,360,390],productionApiRequests:0}));
 }finally{await browser?.close();server?.close();}
