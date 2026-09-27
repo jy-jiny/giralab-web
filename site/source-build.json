@@ -193,7 +193,13 @@
   "practice_mode": false,
   "run_result_actions": "one-row",
   "source_ci": {
-    "status": "pending",
+    "android": "success",
+    "auth": "success",
+    "server_tests": "success",
+    "release_boundaries": "success",
+    "game_docs": "success",
+    "ios": "not_started_budget_limit",
+    "aggregate": "failure",
     "tested_commit": "6b00fa4efacb4403e258a8df1766a4e229859df4"
   },
   "lobby_play_position": "bottom-below-ranking",
