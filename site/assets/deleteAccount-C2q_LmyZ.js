@@ -1,0 +1,1 @@
+import{ft as e,t,vt as n}from"./globals-CMOV86Oh.js";var r=n(),i=e();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(`main`,{className:`account-page`,children:(0,i.jsx)(t,{deletionOnly:!0})}));
