@@ -1,5 +1,5 @@
 {
-  "source_commit": "8f714197f54d89c52479beb81c5f12d572f50d28",
+  "source_commit": "42206a31ad8a4fcfcee77beee1e47bb336a24e03",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -126,9 +126,9 @@
   "account_ui": true,
   "email_auth_ready": false,
   "account_delete_entry": "delete-account.html",
-  "source_workflow_run": null,
+  "source_workflow_run": 36318286062,
   "build_provenance": "Complete Vite web build from Android 1.5.23 runtime source, preserving the public-web API namespace. Gameplay tests use isolated fixtures.",
-  "sourceCommit": "8f714197f54d89c52479beb81c5f12d572f50d28",
+  "sourceCommit": "42206a31ad8a4fcfcee77beee1e47bb336a24e03",
   "social_auth_ready": true,
   "account_providers": [
     "google"
@@ -142,7 +142,7 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "8f714197f54d89c52479beb81c5f12d572f50d28",
+  "verification_source_commit": "42206a31ad8a4fcfcee77beee1e47bb336a24e03",
   "verification_change": "Visible accelerating ingredient fall with a small landing rebound; zero start wait and unchanged 180ms duration. Three consecutive refills and delayed ACKs verified.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
@@ -193,8 +193,14 @@
   "practice_mode": false,
   "run_result_actions": "one-row",
   "source_ci": {
-    "status": "pending",
-    "tested_commit": "8f714197f54d89c52479beb81c5f12d572f50d28"
+    "status": "android_checks_passed_ios_budget_blocked",
+    "run": 36318286062,
+    "url": "https://github.com/jy-jiny/giralab/actions/runs/36318286062",
+    "tested_commit": "8f714197f54d89c52479beb81c5f12d572f50d28",
+    "android_release_checks_passed": true,
+    "aggregate": "failure",
+    "ios": "not_started_budget_limit",
+    "limitation": "The job was not started because an Actions budget is preventing further use."
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -208,7 +214,7 @@
   "completion_feedback": "once-per-local-success",
   "combo_display": "monotonic-per-success",
   "gauge_display": "server-confirmed",
-  "source_tested_commit": "25393ce76d05180921dc5f14bc0323f64995cb0c",
+  "source_tested_commit": "8f714197f54d89c52479beb81c5f12d572f50d28",
   "instant_refill_motion": "accelerating-fall-soft-landing",
   "instant_refill_start_wait_ms": 0,
   "instant_refill_duration_ms": 180
