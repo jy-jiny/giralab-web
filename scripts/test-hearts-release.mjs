@@ -50,6 +50,21 @@ try {
  await page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
  await expect(page.getByTestId('heart-status')).toContainText('5 / 5');
  await expect(page.getByRole('button',{name:/연습/})).toHaveCount(0);
+ await expect(page.locator('.home-play')).toHaveText('게임 시작');
+ for(const viewport of [{width:320,height:568},{width:390,height:844},{width:412,height:915}]) {
+  await page.setViewportSize(viewport);
+  await page.locator('.theme-detail').evaluate(el=>{el.scrollTop=el.scrollHeight;});
+  const rank=await page.locator('.theme-ranking').boundingBox(),play=await page.locator('.home-play').boundingBox();
+  assert(rank&&play&&rank.y+rank.height+16<=play.y,'Play stays below the rankings');
+  assert(play.height>=44&&play.y+play.height<=viewport.height-24,'Bottom button remains reachable');
+ }
+ await page.setViewportSize({width:390,height:844});
+ // Server restores a board whose preparation was cancelled before begin.
+ starts=1;current=fresh(source.first);
+ await page.reload();
+ await page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+ await expect(page.locator('.home-play')).toBeEnabled();
+ await expect(page.locator('.home-play')).toHaveText('게임 시작');
  await page.getByRole('button',{name:'게임 시작',exact:true}).click();
  await page.waitForFunction(()=>document.querySelector('[data-game-status]')?.dataset.gameStatus==='playing');
  assert.equal(starts,1);
@@ -58,13 +73,13 @@ try {
  await expect(result.getByText('점수 변화',{exact:true})).toHaveCount(0);
  for(const width of [320,360,390]){
   await page.setViewportSize({width,height:640});
-  const boxes=await Promise.all(['결과 공유','한 판 더 · ♥ 1','메인으로'].map(name=>result.getByRole('button',{name,exact:true}).boundingBox()));
+  const boxes=await Promise.all(['결과 공유','한 판 더','메인으로'].map(name=>result.getByRole('button',{name,exact:true}).boundingBox()));
   assert(boxes.every(x=>x&&x.x>=0&&x.x+x.width<=width&&x.height>=44));
   assert(Math.max(...boxes.map(x=>x.y))-Math.min(...boxes.map(x=>x.y))<2,'One footer row');
  }
- await result.getByRole('button',{name:'한 판 더 · ♥ 1',exact:true}).click();
+ await result.getByRole('button',{name:'한 판 더',exact:true}).click();
  await page.waitForFunction(()=>document.querySelector('[data-game-status]')?.dataset.gameStatus==='playing');
  assert.equal(starts,2);assert.equal(balance().available,3);
  assert.deepEqual(errors,[]);assert.deepEqual(unknown,[]);
- console.log(JSON.stringify({passed:true,site:base,heartStart:true,paidReplay:true,resultChart:false,footerWidths:[320,360,390],productionApiRequests:0}));
+ console.log(JSON.stringify({passed:true,site:base,unstartedBoardLabel:true,preparedBoardReused:true,bottomPlayButton:true,heartStart:true,paidReplay:true,resultChart:false,footerWidths:[320,360,390],productionApiRequests:0}));
 }finally{await browser?.close();server?.close();}
