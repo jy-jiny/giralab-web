@@ -26,7 +26,11 @@ try {
  let starts=0,current=null,finished=false,coldFinishes=0;
  const fresh=value=>JSON.parse(JSON.stringify(value),(key,v)=>key==='bonus'?0:typeof v==='number'&&v>1e12?v+Date.now()-source.now:v);
  const balance=()=>({...fresh(starts===0?source.initial['/api/runs'].hearts:source.first.hearts),available:5-starts});
- const view=template=>({...fresh(template),runId:current.runId});
+ const view=template=>{
+  const next={...fresh(template),runId:current.runId};
+  if(next.report)next.report={...next.report,runId:next.runId};
+  return next;
+ };
  await context.route('**/*',async route=>{
   const req=route.request(),url=new URL(req.url());
   if(url.origin===origin)return route.continue();
@@ -81,6 +85,8 @@ try {
  assert.equal(coldFinishes,1);assert.equal(starts,2);assert.equal(balance().available,3);
  finished=true;await page.evaluate(()=>window.dispatchEvent(new Event('online')));
  const result=page.getByRole('dialog',{name:'이번 판의 기록'});await expect(result).toBeVisible();
+ await expect(result.locator('[data-result-tier]')).toHaveCount(4);
+ await expect(result.getByTestId('result-final-score')).toHaveText('0점');
  await expect(result.getByText('점수 변화',{exact:true})).toHaveCount(0);
  for(const width of [320,360,390]){
   await page.setViewportSize({width,height:640});
