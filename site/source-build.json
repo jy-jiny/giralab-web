@@ -1,5 +1,5 @@
 {
-  "source_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
+  "source_commit": "a50a2ff21cad41bd2c050ebf7d2e6443a0d5bc41",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -126,9 +126,9 @@
   "account_ui": true,
   "email_auth_ready": false,
   "account_delete_entry": "delete-account.html",
-  "source_workflow_run": null,
+  "source_workflow_run": 36402817015,
   "build_provenance": "Complete Vite web build from Android 1.5.28 runtime source, preserving the public-web API namespace. Gameplay tests use isolated fixtures.",
-  "sourceCommit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
+  "sourceCommit": "a50a2ff21cad41bd2c050ebf7d2e6443a0d5bc41",
   "social_auth_ready": true,
   "account_providers": [
     "google"
@@ -142,7 +142,7 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
+  "verification_source_commit": "a50a2ff21cad41bd2c050ebf7d2e6443a0d5bc41",
   "verification_change": "Show a compact confirmation while finishing and loading analysis; display the final report only once verified data is ready. Keep retry/home recovery and existing diagnostics.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
@@ -193,8 +193,14 @@
   "practice_mode": false,
   "run_result_actions": "one-row",
   "source_ci": {
-    "status": "pending",
-    "tested_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897"
+    "status": "android_checks_passed_ios_budget_blocked",
+    "run": 36402817015,
+    "url": "https://github.com/jy-jiny/giralab/actions/runs/36402817015",
+    "tested_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
+    "android_release_checks_passed": true,
+    "aggregate": "failure",
+    "ios": "not_started_budget_limit",
+    "limitation": "The job was not started because an Actions budget is preventing further use."
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -208,12 +214,12 @@
   "completion_feedback": "once-per-local-success",
   "combo_display": "monotonic-per-success",
   "gauge_display": "server-confirmed",
-  "source_tested_commit": "78590516279ccd5bea9c28e84401a10b9fd6bb82",
+  "source_tested_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
   "instant_refill_motion": "continuous-soft-deceleration",
   "instant_refill_start_wait_ms": 0,
   "instant_refill_duration_ms": {
     "min": 380,
     "max": 500
   },
-  "diagnostic_build_id": "1b81566a3155ae9bd67f31a17d0d0b94c35a27ad"
+  "diagnostic_build_id": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897"
 }
