@@ -1,1 +1,0 @@
-import{Dt as e,t,xt as n}from"./globals-Bk0GwSBz.js";var r=e(),i=n();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(`main`,{className:`account-page`,children:(0,i.jsx)(t,{deletionOnly:!0})}));
