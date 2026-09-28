@@ -1,1 +1,0 @@
-import{Ot as e,St as t,t as n}from"./globals-CRP1shHI.js";var r=e(),i=t();(0,r.createRoot)(document.getElementById(`root`)).render((0,i.jsx)(`main`,{className:`account-page`,children:(0,i.jsx)(n,{deletionOnly:!0})}));

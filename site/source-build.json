@@ -1,5 +1,5 @@
 {
-  "source_commit": "53d69a51a467b4eedfe0f107c1803a9b539a05ea",
+  "source_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -105,20 +105,20 @@
     "giralab-loading-d52df73017d8.jpg": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
     "giralab-loading-screen.webp": "85609073c18c7ef7dd46a2226a985becbfd128ced575ba6675e54864f2533f7c",
     "ingredients.png": "fa6d9ce38fbb1efb4913fd4df9d577b045f49ed01709a6facaae6c1433357a7e",
-    "index.html": "b884840df3cdde36c65762a6fbd71086820a9c80043e2287867bdffef806e9c1",
+    "index.html": "5a7f8efecfcc9ba93047337f3b8c1d20bcb37a9792d11f64b738bd1fc13ff7f6",
     "giraffe-scientist-hq.webp": "f5d295cb3dbca80fb033c4a665d5edd172585129c025044372c636d705a8bc93",
     "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
-    "delete-account.html": "ede924831d2db1fd6cc551494bd09ed2bb999c6ace01a8f01331a5d359d2f684",
+    "delete-account.html": "ad217290ea3694481008594414689b103cc4b6c14535b69d4475e1aa48220dc8",
     "giraffe-scientist.webp": "e2b4eae943a16023b8c13533027a34202ea01de63975eb4604e08b6ebd8a2d86",
     "giraffe-chef.png": "a51899962824ff9fc631251fe1a9e1e0a874955e72adeccc870a822edc7d1691",
     "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
     "audio/lunch-rush-v1.ogg": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
     "audio/lunch-rush-v1.json": "b7d87ddeef3b2cb25f5b5f4345a8f2856d94baceb0a9eaa9c81c725dd3a50e66",
     "assets/main-D0i2gYAP.css": "4d9715db50e0858f9e0b2f61b4e3c3ded675339729aa6e2a25773ff3af81845f",
-    "assets/globals-CRP1shHI.js": "8ba2e15d7e35888b97e01d8e51a6e893d8e30475e4e3721d5459c463117c007b",
-    "assets/globals-DifDYTcM.css": "36db96f11db61959b71a247fb49a24dbc053acfe7d4bfd07ade3b4b6fb93b9e0",
-    "assets/deleteAccount-Dr3MjKCz.js": "5e975177d35744a475a0a8638950fab3180ed5dbe1cf92e2eb7abb452c3c931d",
-    "assets/main-CE1WELV3.js": "0d6900efd55200dd873922414c88eb17a0116ca207d38f50e00b4210f8bfcc54",
+    "assets/main-CNKd8HGG.js": "e18bf25ecadffc0384085861c5f427336a35e604d3ca43de9e9e7589275a3566",
+    "assets/globals-BDrnJxMs.css": "a0605d48441043853de28eb48f7e6c45516e12a06917197b01293f085babaafc",
+    "assets/globals-x_FHRiKv.js": "8ba2e15d7e35888b97e01d8e51a6e893d8e30475e4e3721d5459c463117c007b",
+    "assets/deleteAccount-RKHpSVAS.js": "ad55bcf0f9f72d0898f3b5126021ae8bdcf52ecee1ac76e6be70da26ed9e2c5a",
     "theme-art/robot-glossy-20260919.webp": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989",
     "theme-art/music-glossy-20260919.webp": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
     "theme-art/war-glossy-20260919.webp": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7"
@@ -128,7 +128,7 @@
   "account_delete_entry": "delete-account.html",
   "source_workflow_run": null,
   "build_provenance": "Complete Vite web build from Android 1.5.28 runtime source, preserving the public-web API namespace. Gameplay tests use isolated fixtures.",
-  "sourceCommit": "53d69a51a467b4eedfe0f107c1803a9b539a05ea",
+  "sourceCommit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
   "social_auth_ready": true,
   "account_providers": [
     "google"
@@ -142,7 +142,7 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "53d69a51a467b4eedfe0f107c1803a9b539a05ea",
+  "verification_source_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897",
   "verification_change": "Show a compact confirmation while finishing and loading analysis; display the final report only once verified data is ready. Keep retry/home recovery and existing diagnostics.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
@@ -194,7 +194,7 @@
   "run_result_actions": "one-row",
   "source_ci": {
     "status": "pending",
-    "tested_commit": "53d69a51a467b4eedfe0f107c1803a9b539a05ea"
+    "tested_commit": "c7dd3f3d49057b9bffb75fcbc3ec25f39bbc3897"
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -208,11 +208,12 @@
   "completion_feedback": "once-per-local-success",
   "combo_display": "monotonic-per-success",
   "gauge_display": "server-confirmed",
-  "source_tested_commit": "17ac7b17b9d569f564ed02f6c185791e088520bd",
+  "source_tested_commit": "78590516279ccd5bea9c28e84401a10b9fd6bb82",
   "instant_refill_motion": "continuous-soft-deceleration",
   "instant_refill_start_wait_ms": 0,
   "instant_refill_duration_ms": {
     "min": 380,
     "max": 500
-  }
+  },
+  "diagnostic_build_id": "1b81566a3155ae9bd67f31a17d0d0b94c35a27ad"
 }
