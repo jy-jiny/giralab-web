@@ -199,11 +199,19 @@
   "practice_mode": false,
   "run_result_actions": "one-row",
   "source_ci": {
-    "status": "pending",
+    "status": "relevant_checks_passed",
     "run": 36555636891,
     "tested_commit": "32ff5927a8796e69a705a8c51a3bad31801527b9",
     "url": "https://github.com/jy-jiny/giralab/actions/runs/36555636891",
-    "ios": "not_started_budget_limit"
+    "ios": "not_started_budget_limit",
+    "android": "success",
+    "authentication": "success",
+    "release_boundaries": "success",
+    "documentation": "success",
+    "server_storage": "success_on_same_source_retry",
+    "server_job": 109368345786,
+    "first_server_attempt": "legacy fixture finish returned 409; cause unconfirmed; tracked in source issue log",
+    "dispatch_attempt": "artifact quota; not counted as validation success"
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -253,5 +261,7 @@
     "initial_equipped": null,
     "images": false,
     "gacha": false
-  }
+  },
+  "source_merge_commit": "db555093e3124af54dcf81df1143d6ea546fc778",
+  "source_pull_request": "https://github.com/jy-jiny/giralab/pull/105"
 }
