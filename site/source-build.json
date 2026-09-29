@@ -1,5 +1,5 @@
 {
-  "source_commit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
+  "source_commit": "4519cb50490564114269d7f1168e2e622334cf29",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -90,8 +90,8 @@
   "theme_terminology_revision": "20260921",
   "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
   "theme_price_display": "출시예정",
-  "previous_source_commit": "32ff5927a8796e69a705a8c51a3bad31801527b9",
-  "release_revision": "settings-menu-20260929-1.5.41",
+  "previous_source_commit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
+  "release_revision": "report-description-20260930-1.5.45",
   "run_result_dialog": true,
   "run_result_tiers": [
     "normal",
@@ -105,10 +105,10 @@
     "giralab-loading-d52df73017d8.jpg": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
     "giralab-loading-screen.webp": "85609073c18c7ef7dd46a2226a985becbfd128ced575ba6675e54864f2533f7c",
     "ingredients.png": "fa6d9ce38fbb1efb4913fd4df9d577b045f49ed01709a6facaae6c1433357a7e",
-    "index.html": "48aeb49ef490b4c243cc24a0ac1f3a07a02cf6f83d6bf9be1d7318ff6388eff9",
+    "index.html": "df7d717a4ecfe02162c7223c85777e298dd557fc8d3924e7d69cc09b8c29c130",
     "giraffe-scientist-hq.webp": "f5d295cb3dbca80fb033c4a665d5edd172585129c025044372c636d705a8bc93",
     "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
-    "delete-account.html": "581b892cf2ea9e5e0629a3f68eada09e0f8e194f7c91dd1c025c7ddb1eaf8640",
+    "delete-account.html": "ced17b17ffc56b2155e48e77a2173b925961ade317e73ca4fcd021c5a5a94f64",
     "giraffe-scientist.webp": "e2b4eae943a16023b8c13533027a34202ea01de63975eb4604e08b6ebd8a2d86",
     "giraffe-chef.png": "a51899962824ff9fc631251fe1a9e1e0a874955e72adeccc870a822edc7d1691",
     "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
@@ -120,11 +120,11 @@
     "research-tiers/master.png": "3deeab59b5d5aba255c6b59fbadf3dce000629faa158ff7d5aba6dc9fe9bd531",
     "research-tiers/doctor.png": "dfe2aa14e4b457a266f3fb604f335109f5d48dcc5f7718bb6620056d839072c8",
     "research-tiers/bachelor.png": "c365a7212c3a198d026a1889fb71c52c0a342cb5e34f272d1823e3e9d93cf9e8",
-    "assets/main-BkvFs54t.css": "711ad0742c575440078b87895cc888e8d13da7f4627f8ffb36c96c20a75f2dac",
-    "assets/globals-C7-8_rX-.css": "ae0b0ae1b8ca8522c5feda70c9408e270dfa24ca2a6f170157938bd45b9d9671",
-    "assets/deleteAccount-CyNpxv5Y.js": "30987191a5b27f8216588ace8bef3fe9f07d9b3f52e3350b5facb83372112ab2",
-    "assets/main-Dm5s05i0.js": "10021975b24947a2512f6965154559f5ac95d29be317144a5e18bee20aed8a05",
-    "assets/globals-DMGXfPll.js": "befa77029294e657b48f95961651a794c61d51d1e565bb6f95158d0c63ff2f6a",
+    "assets/deleteAccount-BnlX5q3Y.js": "13320d6f2ecac8ac838869b7a8110eb6af1c50f1d7b9a189840d0616e6b4545f",
+    "assets/globals-COZb_r2J.css": "c6a1737e9b00a1054ae2c83a610cbea462791f021097745290ced81216a08c13",
+    "assets/main-R3RW6BUM.js": "bef658fde5e977d0bda80011d4d2895cbe48164abfe5aa2ca8faa05b8ff8bd64",
+    "assets/globals-Ce76_egV.js": "9dcb9164f26598a41d0b2bab670f74e11e3db4ca0f69a073136aebd9df68ed58",
+    "assets/main-DzdIBZ6o.css": "098d12ded7357993531789b4ecace25a15939bb867dd2792e3131e092ae9d95e",
     "theme-art/robot-glossy-20260919.webp": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989",
     "theme-art/music-glossy-20260919.webp": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
     "theme-art/war-glossy-20260919.webp": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7",
@@ -143,9 +143,9 @@
   "account_ui": true,
   "email_auth_ready": false,
   "account_delete_entry": "delete-account.html",
-  "source_workflow_run": 36566494213,
-  "build_provenance": "Complete Vite build from source 901986e, whose full tree matches the source main merge. Android and web use the same pet artwork and UI; each keeps its existing API namespace.",
-  "sourceCommit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
+  "source_workflow_run": 36645180073,
+  "build_provenance": "Full Vite web build from verified Android 1.5.45 shared source; existing public web API namespace preserved.",
+  "sourceCommit": "4519cb50490564114269d7f1168e2e622334cf29",
   "social_auth_ready": true,
   "account_providers": [
     "google"
@@ -159,8 +159,8 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
-  "verification_change": "All 11 transparent pet portraits in collection and equipment slot; pet slot centered in the remaining profile space with Korean/English setup prompt. Existing pet effects, progression and records preserved.",
+  "verification_source_commit": "415d7d5cbd4a8c32efa7c45ac2728df58dfaeffc",
+  "verification_change": "Optional multiline 1000-character problem description; same-ID outbox retries, strict server validation, and diagnostic storage. Includes existing transparent pets and centered slot.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
   "web_google_official_button_theme": "outline",
@@ -210,21 +210,20 @@
   "practice_mode": false,
   "run_result_actions": "one-row",
   "source_ci": {
-    "status": "android_web_relevant_checks_passed",
-    "run": 36566494213,
-    "tested_commit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
-    "url": "https://github.com/jy-jiny/giralab/actions/runs/36566494213",
-    "checks": {
-      "android_connection / check": "success",
-      "release_boundaries / check": "success",
-      "game_docs / check": "success",
-      "server_storage / check": "success",
-      "auth_sessions / auth": "success"
-    },
-    "ios": "not_started_actions_budget",
-    "ios_job": 109399716657,
-    "aggregate_status": "completed",
-    "aggregate_conclusion": "failure"
+    "run": 36645180073,
+    "androidReleaseChecksPassed": true,
+    "serverStorageTests": "success",
+    "storageArtifact": "success",
+    "ios": "not_started_budget_limit",
+    "aggregate": "failure",
+    "limitation": "The job was not started because an Actions budget is preventing further use.",
+    "passingJobs": [
+      "Select relevant checks",
+      "android_connection / check",
+      "auth_sessions / auth",
+      "release_boundaries / check",
+      "game_docs / check"
+    ]
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -238,23 +237,23 @@
   "completion_feedback": "once-per-local-success",
   "combo_display": "monotonic-per-success",
   "gauge_display": "immediate-shared-input-clock",
-  "source_tested_commit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
+  "source_tested_commit": "415d7d5cbd4a8c32efa7c45ac2728df58dfaeffc",
   "instant_refill_motion": "continuous-soft-deceleration",
   "instant_refill_start_wait_ms": 0,
   "instant_refill_duration_ms": {
     "min": 380,
     "max": 500
   },
-  "diagnostic_build_id": "901986ef7f44078d22e3ec093c612ed1ec22a084",
+  "diagnostic_build_id": "415d7d5cbd4a8c32efa7c45ac2728df58dfaeffc",
   "profile_layout_stable_during_tier_load": true,
-  "app_version": "1.5.44",
+  "app_version": "1.5.45",
   "report_success_close_ms": 1500,
   "diagnostic_game_time_display": "start-to-latest-recorded-event",
   "result_external_report_button": false,
   "gameplay_input_validation": "continuous-asynchronous-replay",
   "input_timing_delivery_window_ms": 60000,
   "next_run": "finish-before-start-ready-go",
-  "build_source_commit": "901986ef7f44078d22e3ec093c612ed1ec22a084",
+  "build_source_commit": "415d7d5cbd4a8c32efa7c45ac2728df58dfaeffc",
   "research_tier_art": {
     "format": "png",
     "transparent": true,
@@ -278,6 +277,30 @@
     "slot_position": "centered in remaining profile space",
     "gacha": false
   },
-  "source_merge_commit": "66d623fdc686c1001b482ce69517c5e822cca862",
-  "source_pull_request": "https://github.com/jy-jiny/giralab/pull/107"
+  "source_merge_commit": "4519cb50490564114269d7f1168e2e622334cf29",
+  "source_pull_request": "https://github.com/jy-jiny/giralab/pull/109",
+  "diagnostic_description": {
+    "optional": true,
+    "max_length": 1000,
+    "multiline": true,
+    "persistent_retry": true
+  },
+  "source_integration": {
+    "testedCommit": "415d7d5cbd4a8c32efa7c45ac2728df58dfaeffc",
+    "integrationCommit": "5ed0514e0cf4e79674723682303bc94c3679763d",
+    "documentationOnlyChanges": [
+      "GiraLab_Google_Play_Roadmap.md",
+      "README.md",
+      "docs/game/ANDROID.md",
+      "docs/game/CHANGELOG.md",
+      "docs/game/DESIGN.md",
+      "docs/game/DEVELOPMENT_LOG.md",
+      "docs/game/ISSUE_LOG.md",
+      "docs/game/PETS.md",
+      "docs/game/README.md",
+      "docs/game/evidence/2026-09-30-pet-art-release.json"
+    ],
+    "productTreeMatches": true,
+    "gameDocsPassed": true
+  }
 }
