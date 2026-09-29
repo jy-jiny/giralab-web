@@ -40,6 +40,7 @@ try {
   const headers={'access-control-allow-origin':origin,'access-control-allow-credentials':'true','access-control-allow-methods':'GET,POST,OPTIONS','access-control-allow-headers':'authorization,content-type,x-giralab-player-id,x-giralab-csrf'};
   if(req.method()==='OPTIONS')return route.fulfill({status:204,headers});
   let data;
+  if(api==='/api/pets')return route.fulfill({status:404,headers,contentType:'application/json',body:JSON.stringify({code:'NOT_FOUND',error:'Legacy hearts fixture has no pet service'})});
   if(api==='/api/auth/cookie-check')data={ok:true};
   else if(api==='/api/account/status')data={enabled:true,providers:['google'],linked:true,player:source.player,deviceState:'active',devices:1};
   else if(api==='/api/account/backup')data=body;
