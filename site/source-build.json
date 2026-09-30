@@ -1,5 +1,5 @@
 {
-  "source_commit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
+  "source_commit": "4b597f934497683dfb98a07f3b1054dca5042523",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -90,8 +90,8 @@
   "theme_terminology_revision": "20260921",
   "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
   "theme_price_display": "출시예정",
-  "previous_source_commit": "4519cb50490564114269d7f1168e2e622334cf29",
-  "release_revision": "pet-gold-20260930-1.5.46",
+  "previous_source_commit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
+  "release_revision": "paw-pet-20260930-1.5.47",
   "run_result_dialog": true,
   "run_result_tiers": [
     "normal",
@@ -105,7 +105,7 @@
     "giralab-loading-d52df73017d8.jpg": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
     "giralab-loading-screen.webp": "85609073c18c7ef7dd46a2226a985becbfd128ced575ba6675e54864f2533f7c",
     "ingredients.png": "fa6d9ce38fbb1efb4913fd4df9d577b045f49ed01709a6facaae6c1433357a7e",
-    "index.html": "15327940c90717f2018a1d9ac54636c3e4aded1cf60c69f091b85594e7239f51",
+    "index.html": "70b88ea457f861f214cfaeb4d7ce55dcc535812e555bf71272de01db68901244",
     "giraffe-scientist-hq.webp": "f5d295cb3dbca80fb033c4a665d5edd172585129c025044372c636d705a8bc93",
     "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
     "delete-account.html": "ced17b17ffc56b2155e48e77a2173b925961ade317e73ca4fcd021c5a5a94f64",
@@ -122,9 +122,10 @@
     "research-tiers/bachelor.png": "c365a7212c3a198d026a1889fb71c52c0a342cb5e34f272d1823e3e9d93cf9e8",
     "assets/deleteAccount-BnlX5q3Y.js": "13320d6f2ecac8ac838869b7a8110eb6af1c50f1d7b9a189840d0616e6b4545f",
     "assets/globals-COZb_r2J.css": "c6a1737e9b00a1054ae2c83a610cbea462791f021097745290ced81216a08c13",
+    "assets/main-B4qtLsfr.js": "cb74bfbaced1d732e4e668da3de9c95dd36c094200cdbbda5ca2bc7675deb5e9",
+    "assets/main-VE7JmSbN.css": "e58b0038876f374f7e46e429f4c64151485633d290434a625a250bb22eabf85c",
     "assets/globals-Ce76_egV.js": "9dcb9164f26598a41d0b2bab670f74e11e3db4ca0f69a073136aebd9df68ed58",
-    "assets/main-WyNeN3ga.css": "ce6aa68018a3451bf0ae716c48f82a1106153ff9c271d23955923b18736923df",
-    "assets/main-QQO32y7o.js": "542b8526f44b32a0f2a561b3a3397aee7051001fd4f81fbe5a225dd1f2c127b8",
+    "ui/pet-paw-gold.png": "f9d188a600ec787d615ddd6d49e2d7698324482b1a73aee876e3d4e5bede74e5",
     "theme-art/robot-glossy-20260919.webp": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989",
     "theme-art/music-glossy-20260919.webp": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
     "theme-art/war-glossy-20260919.webp": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7",
@@ -143,9 +144,9 @@
   "account_ui": true,
   "email_auth_ready": false,
   "account_delete_entry": "delete-account.html",
-  "source_workflow_run": 36651991891,
-  "build_provenance": "Full Vite web build from Android 1.5.46 shared source; existing public API namespace preserved.",
-  "sourceCommit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
+  "source_workflow_run": 36658318609,
+  "build_provenance": "Full Vite web build from Android 1.5.47 shared source; existing public API namespace preserved.",
+  "sourceCommit": "4b597f934497683dfb98a07f3b1054dca5042523",
   "social_auth_ready": true,
   "account_providers": [
     "google"
@@ -159,8 +160,8 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
-  "verification_change": "Gold empty pet tile with decorative paw and two-line setup text, centered in remaining profile space. Equipped pets preserved.",
+  "verification_source_commit": "4b597f934497683dfb98a07f3b1054dca5042523",
+  "verification_change": "Sculpted golden paw with single-line setup text and borderless equipped pets at least 1.74x taller than the paw; level below artwork.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
   "web_google_official_button_theme": "outline",
@@ -210,11 +211,10 @@
   "practice_mode": false,
   "run_result_actions": "one-row",
   "source_ci": {
-    "tested_commit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
-    "workflow_run": 36651991891,
-    "url": "https://github.com/jy-jiny/giralab/actions/runs/36651991891",
+    "tested_commit": "4b597f934497683dfb98a07f3b1054dca5042523",
+    "workflow_run": 36658318609,
+    "url": "https://github.com/jy-jiny/giralab/actions/runs/36658318609",
     "result_reference": "Live workflow result; release requires successful Android and documentation checks.",
-    "local_final_apk_verified": true,
     "local_full_web_verified": true
   },
   "lobby_play_position": "bottom-below-ranking",
@@ -229,23 +229,23 @@
   "completion_feedback": "once-per-local-success",
   "combo_display": "monotonic-per-success",
   "gauge_display": "immediate-shared-input-clock",
-  "source_tested_commit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
+  "source_tested_commit": "4b597f934497683dfb98a07f3b1054dca5042523",
   "instant_refill_motion": "continuous-soft-deceleration",
   "instant_refill_start_wait_ms": 0,
   "instant_refill_duration_ms": {
     "min": 380,
     "max": 500
   },
-  "diagnostic_build_id": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
+  "diagnostic_build_id": "4b597f934497683dfb98a07f3b1054dca5042523",
   "profile_layout_stable_during_tier_load": true,
-  "app_version": "1.5.46",
+  "app_version": "1.5.47",
   "report_success_close_ms": 1500,
   "diagnostic_game_time_display": "start-to-latest-recorded-event",
   "result_external_report_button": false,
   "gameplay_input_validation": "continuous-asynchronous-replay",
   "input_timing_delivery_window_ms": 60000,
   "next_run": "finish-before-start-ready-go",
-  "build_source_commit": "7d4226a9ea4d2f21b1f02992b78f8c76e0a139f8",
+  "build_source_commit": "4b597f934497683dfb98a07f3b1054dca5042523",
   "research_tier_art": {
     "format": "png",
     "transparent": true,
@@ -269,7 +269,7 @@
     "slot_position": "centered in remaining profile space",
     "gacha": false
   },
-  "source_pull_request": "https://github.com/jy-jiny/giralab/pull/114",
+  "source_pull_request": "https://github.com/jy-jiny/giralab/pull/118",
   "diagnostic_description": {
     "optional": true,
     "max_length": 1000,
@@ -295,18 +295,21 @@
     "gameDocsPassed": true
   },
   "pet_empty_tile": {
-    "style": "gold",
-    "icon": "paw",
+    "style": "borderless",
+    "icon": "sculpted-paw",
     "setup_hint": true,
     "alignment": "center"
   },
   "public_pet_api_verified": false,
   "public_pet_api_known_issue": "ISS-20260930-001: auth proxy returns 404 for pets; separate server deployment required.",
-  "pet_gold_validation": {
-    "local_pet_checks": 497,
+  "pet_paw_validation": {
+    "local_pet_checks": 601,
     "local_account_checks": 28,
     "local_diagnostic_checks": 54,
     "local_hearts_passed": true,
-    "production_api_test_requests": 0
+    "production_api_test_requests": 0,
+    "approved_paw": "ui/pet-paw-gold.png",
+    "equipped_min_visible_height_ratio": 1.745302164,
+    "level_below_artwork": true
   }
 }
