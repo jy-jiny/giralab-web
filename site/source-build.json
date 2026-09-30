@@ -221,7 +221,8 @@
     "game_docs": "success",
     "ios": "Actions budget prevented execution",
     "aggregate": "failure",
-    "first_server_attempt": "Existing retry-count fixture failed (5 != 2); unchanged rerun passed; cause unconfirmed, plan 2-32"
+    "first_server_attempt": "Existing retry-count fixture failed (5 != 2); unchanged rerun passed; cause unconfirmed, plan 2-32",
+    "restart_fixture_sha256": "c280296209b4cf76a76daf2c26c73fb50927699ce5b84c0728b82050b1116714"
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -322,10 +323,16 @@
     "diagnostics": 55,
     "productionGameRequests": 0,
     "physicalDevice": false,
-    "leaderboard": 84
+    "leaderboard": 84,
+    "liveLeaderboard": {
+      "checks": 84,
+      "files": 38,
+      "url": "https://jy-jiny.github.io/giralab-web/",
+      "productionApiTestRequests": 0
+    }
   },
-  "restart_browser_fixture_sha256": "e3a971e81b82bb6a82709baef7e1f7559d8cba88c03480dd533bcf8788ed0da9",
-  "restart_browser_fixture_commit": "9f011d5",
+  "restart_browser_fixture_sha256": "e48ec278e2bf1287d3ad5b08e9d6aaecd1dbca19134de7f8cc3593149c294b65",
+  "restart_browser_fixture_commit": "04225a92ed51de4c9f348f6076e1801970045493",
   "leaderboard_browser": {
     "page_size": 20,
     "tier_count": 6,
