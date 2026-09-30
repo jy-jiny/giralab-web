@@ -90,7 +90,7 @@
   "theme_terminology_revision": "20260921",
   "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
   "theme_price_display": "출시예정",
-  "previous_source_commit": "4b597f934497683dfb98a07f3b1054dca5042523",
+  "previous_source_commit": "5a460370d0d29bf61b99dab359d994b721ab8ba3",
   "release_revision": "leaderboards-20260930-1.5.51",
   "run_result_dialog": true,
   "run_result_tiers": [
@@ -145,7 +145,7 @@
   "email_auth_ready": false,
   "account_delete_entry": "delete-account.html",
   "source_workflow_run": null,
-  "build_provenance": "Full Vite web build from Android 1.5.51 shared source; existing public API namespace preserved.",
+  "build_provenance": "Complete Vite web build from source56fc77f; product files unchanged by subsequent test/document commits.",
   "sourceCommit": "56fc77f728db3bc4706e9186333d0499ed648df8",
   "social_auth_ready": true,
   "account_providers": [
@@ -161,7 +161,7 @@
   "automatic_login": true,
   "logout_preserves_server_records": true,
   "verification_source_commit": "56fc77f728db3bc4706e9186333d0499ed648df8",
-  "verification_change": "Overall and six-tier leaderboards, authenticated pages of twenty, persistent self rank, dark/gold styling and existing tier badges; includes mid-game restart from main.",
+  "verification_change": "Overall and six-tier leaderboard browsing with pages of20, persistent self rank and existing dark/gold tier styling. Includes mid-game restart.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
   "web_google_official_button_theme": "outline",
@@ -212,7 +212,8 @@
   "run_result_actions": "one-row",
   "source_ci": {
     "status": "pending",
-    "tested_commit": "56fc77f728db3bc4706e9186333d0499ed648df8"
+    "tested_commit": "44b8e0409a3ac7cfc14ff4f35066cdc44182935d",
+    "ios": "Actions budget prevented execution"
   },
   "lobby_play_position": "bottom-below-ranking",
   "lobby_continue_requires_started_run": true,
@@ -266,7 +267,7 @@
     "slot_position": "centered in remaining profile space",
     "gacha": false
   },
-  "source_pull_request": null,
+  "source_pull_request": 122,
   "diagnostic_description": {
     "optional": true,
     "max_length": 1000,
@@ -274,22 +275,9 @@
     "persistent_retry": true
   },
   "source_integration": {
-    "testedCommit": "415d7d5cbd4a8c32efa7c45ac2728df58dfaeffc",
-    "integrationCommit": "5ed0514e0cf4e79674723682303bc94c3679763d",
-    "documentationOnlyChanges": [
-      "GiraLab_Google_Play_Roadmap.md",
-      "README.md",
-      "docs/game/ANDROID.md",
-      "docs/game/CHANGELOG.md",
-      "docs/game/DESIGN.md",
-      "docs/game/DEVELOPMENT_LOG.md",
-      "docs/game/ISSUE_LOG.md",
-      "docs/game/PETS.md",
-      "docs/game/README.md",
-      "docs/game/evidence/2026-09-30-pet-art-release.json"
-    ],
-    "productTreeMatches": true,
-    "gameDocsPassed": true
+    "buildCommit": "5a460370d0d29bf61b99dab359d994b721ab8ba3",
+    "featureCommit": "ce96d49c44bcf9c2d0f19f7e5e763295bcd72022",
+    "releaseProduct": "1.5.50"
   },
   "pet_empty_tile": {
     "style": "borderless",
@@ -307,15 +295,30 @@
     "production_api_test_requests": 0,
     "approved_paw": "ui/pet-paw-gold.png",
     "equipped_min_visible_height_ratio": 1.745302164,
-    "level_below_artwork": true
+    "level_below_artwork": true,
+    "historical_release": "1.5.47"
   },
   "source_merge_commit": null,
+  "mid_game_restart": true,
+  "restart_heart_cost": 1,
+  "release_validation": {
+    "restart": {
+      "checks": 73,
+      "scenarios": 8
+    },
+    "hearts": 20,
+    "language": 45,
+    "accountCases": 28,
+    "diagnostics": 55,
+    "productionGameRequests": 0,
+    "physicalDevice": false
+  },
+  "restart_browser_fixture_sha256": "e3a971e81b82bb6a82709baef7e1f7559d8cba88c03480dd533bcf8788ed0da9",
+  "restart_browser_fixture_commit": "9f011d5",
   "leaderboard_browser": {
     "page_size": 20,
     "tier_count": 6,
     "authenticated": true,
     "read_only": true
-  },
-  "mid_game_restart": true,
-  "restart_heart_cost": 1
+  }
 }
