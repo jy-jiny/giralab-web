@@ -67,7 +67,7 @@ try {
  await expect(page.getByTestId('heart-status')).toContainText('5 / 5');
  await expect(page.getByRole('button',{name:/연습/})).toHaveCount(0);
  await expect(page.locator('.home-play')).toHaveText('게임 시작');
- for(const viewport of [{width:320,height:568},{width:390,height:844},{width:412,height:915}]) {
+ for(const viewport of [{width:320,height:568},{width:360,height:640},{width:360,height:800},{width:390,height:844},{width:412,height:915}]) {
   await page.setViewportSize(viewport);
   const detail=await page.locator('.theme-detail').evaluate(el=>({scroll:el.scrollHeight,client:el.clientHeight,overflow:getComputedStyle(el).overflowY}));
   assert(detail.scroll<=detail.client+1&&detail.overflow==='hidden','Project details fit without vertical scrolling');
