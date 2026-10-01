@@ -1,5 +1,5 @@
 {
-  "source_commit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
+  "source_commit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
   "approved_image_sha256": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
   "rules_version": 3,
   "game_version": "1.7.2",
@@ -90,8 +90,8 @@
   "theme_terminology_revision": "20260921",
   "theme_terminology_source_commit": "14283c2fafc13887bddacecabc3b9aa7f49052e3",
   "theme_price_display": "출시예정",
-  "previous_source_commit": "56fc77f728db3bc4706e9186333d0499ed648df8",
-  "release_revision": "pause-menu-20260930-1.5.52",
+  "previous_source_commit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
+  "release_revision": "project-ui-20261001-1.5.54",
   "run_result_dialog": true,
   "run_result_tiers": [
     "normal",
@@ -102,22 +102,23 @@
   "run_result_chart": "removed",
   "release_ai_tools": false,
   "build_files_sha256": {
-    "assets/deleteAccount-CmQxR_dp.js": "ba23fae59a9801d4084a58faa0c8c8d6652a777505ccf72f6e2452cadd39de92",
+    "assets/deleteAccount-CTudjlvW.js": "818755bb68176034443377a758ca096052f00bc574be499e66346b586402b47e",
+    "assets/globals-BqT3LEmJ.js": "f7e8df9bc5f6d6b8faff6db1b815360754434c79116f6af99636dfff396fae77",
     "assets/globals-COZb_r2J.css": "c6a1737e9b00a1054ae2c83a610cbea462791f021097745290ced81216a08c13",
-    "assets/globals-DfdR1qU0.js": "96ae69a04353bf6b3f6c99d6f26d8cd900568d6715e9f34ca367dc21a5eec074",
-    "assets/main-BDaqF3Et.css": "36161dbdb6bac16db820014a2584d6446db5fc7c0a91d597535562d11fc79254",
-    "assets/main-VY-ZhOHe.js": "e8ee8164fb883baa4c252e43a2e838981bc1cf44fb425cb26c021b7f07942355",
+    "assets/main-DRtKXYul.css": "6e2706472095ee8bf88516d5bd2b4e6fa0cf5f51837f402ef84c2df3472e8df8",
+    "assets/main-rkmdVWPc.js": "43cb2b6a1f4cbb85384585a70ff88e687cbe9c2e6ecd3831c4b71073e9beedf5",
+    "audio/game-main-menu.mp3": "bd2b8bdf7a87402e1cf6e6500fe56c4e62a9298b474325c8000c67c965d6be48",
     "audio/kitchen-rush.ogg": "e53b5d3882d57c8e3a4b1f4179b349fd6f849bec454176b264616ca558c99647",
     "audio/lunch-rush-v1.json": "b7d87ddeef3b2cb25f5b5f4345a8f2856d94baceb0a9eaa9c81c725dd3a50e66",
     "audio/lunch-rush-v1.ogg": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
-    "delete-account.html": "294394b2a4ec13fdeb781c9877ba83c6b7674b1dadf213f4c7c9a3cc7400622a",
+    "delete-account.html": "62a4d31ddec19914ec67823714bb314dc9f8770e6aed7a927440d861711e09e1",
     "giraffe-chef.png": "a51899962824ff9fc631251fe1a9e1e0a874955e72adeccc870a822edc7d1691",
     "giraffe-scientist-hq.webp": "f5d295cb3dbca80fb033c4a665d5edd172585129c025044372c636d705a8bc93",
     "giraffe-scientist.webp": "e2b4eae943a16023b8c13533027a34202ea01de63975eb4604e08b6ebd8a2d86",
     "giralab-loading-approved-aecda336.jpg": "aecda336dbd02b209b88e906e731e50f78bd882a45a04ea56193b10755501cc4",
     "giralab-loading-d52df73017d8.jpg": "d52df73017d84d2ea77e0f50fae2726b84cdc7cb69376efb96231d124a32d109",
     "giralab-loading-screen.webp": "85609073c18c7ef7dd46a2226a985becbfd128ced575ba6675e54864f2533f7c",
-    "index.html": "6961e1bde52fca0220bd5e389889f7bc769acf06eb4c16594003cd979ebcea8f",
+    "index.html": "8b1bf230cc533b50a41f217673d44ce4073361491730eb53c7c3fbd56ae28532",
     "ingredients.png": "fa6d9ce38fbb1efb4913fd4df9d577b045f49ed01709a6facaae6c1433357a7e",
     "pets/basic.png": "f8dbb53175af45c0636761448deefbafabbdc87c419be581e9b3e593eb17064a",
     "pets/calm.png": "c46e7697fbeabcfa70d903db65b278ad7265220d5327c678fb89accee314c888",
@@ -145,8 +146,8 @@
   "email_auth_ready": false,
   "account_delete_entry": "delete-account.html",
   "source_workflow_run": null,
-  "build_provenance": "Full Vite web build from Android 1.5.52 shared source, including current leaderboard; existing public API namespace preserved.",
-  "sourceCommit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
+  "build_provenance": "Full Vite web build from Android 1.5.54 source; project naming, fixed project details, profile tier and ingredient Ready copy. Existing public APIs preserved.",
+  "sourceCommit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
   "social_auth_ready": true,
   "account_providers": [
     "google"
@@ -160,8 +161,8 @@
   "first_login": "google-before-nickname",
   "automatic_login": true,
   "logout_preserves_server_records": true,
-  "verification_source_commit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
-  "verification_change": "Restart within Pause; explicit Home exits finish the current run and never offer Continue.",
+  "verification_source_commit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
+  "verification_change": "Project selection and details fit the viewport without vertical scrolling; profile shows the actual tier and Ready prepares fresh ingredients.",
   "web_google_challenge_after_credential": true,
   "web_google_dialog_style": "white",
   "web_google_official_button_theme": "outline",
@@ -212,7 +213,7 @@
   "run_result_actions": "one-row",
   "source_ci": {
     "status": "local-release-checks-passed",
-    "tested_commit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
+    "tested_commit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
     "ios": "Not included in local release checks; remote status recorded separately"
   },
   "lobby_play_position": "bottom-below-ranking",
@@ -227,23 +228,23 @@
   "completion_feedback": "once-per-local-success",
   "combo_display": "monotonic-per-success",
   "gauge_display": "immediate-shared-input-clock",
-  "source_tested_commit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
+  "source_tested_commit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
   "instant_refill_motion": "continuous-soft-deceleration",
   "instant_refill_start_wait_ms": 0,
   "instant_refill_duration_ms": {
     "min": 380,
     "max": 500
   },
-  "diagnostic_build_id": "e106529448e1",
+  "diagnostic_build_id": "5543cdfb5264",
   "profile_layout_stable_during_tier_load": true,
-  "app_version": "1.5.52",
+  "app_version": "1.5.54",
   "report_success_close_ms": 1500,
   "diagnostic_game_time_display": "start-to-latest-recorded-event",
   "result_external_report_button": false,
   "gameplay_input_validation": "continuous-asynchronous-replay",
   "input_timing_delivery_window_ms": 60000,
   "next_run": "finish-before-start-ready-go",
-  "build_source_commit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
+  "build_source_commit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
   "research_tier_art": {
     "format": "png",
     "transparent": true,
@@ -275,8 +276,8 @@
     "persistent_retry": true
   },
   "source_integration": {
-    "buildCommit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
-    "releaseProduct": "1.5.52",
+    "buildCommit": "5543cdfb5264a75714dae6b55599f4928bcd0557",
+    "releaseProduct": "1.5.54",
     "leaderboardMain": "fa8085893656cf4ff714d0d2b8c823c78c3a3225"
   },
   "pet_empty_tile": {
@@ -344,5 +345,9 @@
     ],
     "sourceBaseCommit": "4d9df3e1de0f23e67facfc1381bc402e1f85992c",
     "tracePatchCommit": "e106529448e13abecf1ec2d8b4cdbfde34ddd2bc"
-  }
+  },
+  "project_selection_heading": "프로젝트 선택",
+  "project_detail_scroll": false,
+  "profile_tier_label": "actual-tier",
+  "ready_copy_ko": "신선한 재료를 준비하고 있습니다."
 }

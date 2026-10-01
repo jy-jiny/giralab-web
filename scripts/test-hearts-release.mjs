@@ -63,13 +63,14 @@ try {
   return route.fulfill({status:200,headers,contentType:'application/json',body:JSON.stringify(data)});
  });
  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(base);
- await page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+ await page.getByRole('button',{name:'햄버거 프로젝트 선택',exact:true}).click();
  await expect(page.getByTestId('heart-status')).toContainText('5 / 5');
  await expect(page.getByRole('button',{name:/연습/})).toHaveCount(0);
  await expect(page.locator('.home-play')).toHaveText('게임 시작');
  for(const viewport of [{width:320,height:568},{width:390,height:844},{width:412,height:915}]) {
   await page.setViewportSize(viewport);
-  await page.locator('.theme-detail').evaluate(el=>{el.scrollTop=el.scrollHeight;});
+  const detail=await page.locator('.theme-detail').evaluate(el=>({scroll:el.scrollHeight,client:el.clientHeight,overflow:getComputedStyle(el).overflowY}));
+  assert(detail.scroll<=detail.client+1&&detail.overflow==='hidden','Project details fit without vertical scrolling');
   const rank=await page.locator('.theme-ranking').boundingBox(),play=await page.locator('.home-play').boundingBox();
   assert(rank&&play&&rank.y+rank.height+16<=play.y,'Play stays below the rankings');
   assert(play.height>=44&&play.y+play.height<=viewport.height-24,'Bottom button remains reachable');
@@ -78,7 +79,7 @@ try {
  // A full page restart ends even an unstarted old-session board before a new start.
  starts=1;current=fresh(source.first);
  await page.reload();
- await page.getByRole('button',{name:'햄버거 테마 선택',exact:true}).click();
+ await page.getByRole('button',{name:'햄버거 프로젝트 선택',exact:true}).click();
  await expect(page.locator('.home-play')).toBeEnabled();
  await expect(page.locator('.home-play')).toHaveText('게임 시작');
  await page.getByRole('button',{name:'게임 시작',exact:true}).click();
