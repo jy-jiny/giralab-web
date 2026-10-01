@@ -72,7 +72,7 @@ try {
   const detail=await page.locator('.theme-detail').evaluate(el=>({scroll:el.scrollHeight,client:el.clientHeight,overflow:getComputedStyle(el).overflowY}));
   assert(detail.scroll<=detail.client+1&&detail.overflow==='hidden','Project details fit without vertical scrolling');
   const rank=await page.locator('.theme-ranking').boundingBox(),play=await page.locator('.home-play').boundingBox();
-  assert(rank&&play&&rank.y+rank.height+16<=play.y,'Play stays below the rankings');
+  assert(rank&&play&&rank.y+rank.height+(viewport.height<=650?8:16)<=play.y,'Play stays below the rankings');
   assert(play.height>=44&&play.y+play.height<=viewport.height-24,'Bottom button remains reachable');
  }
  await page.setViewportSize({width:390,height:844});
