@@ -140,7 +140,10 @@
     "theme-art/music-glossy-20260919.webp": "c78be11c6f37d8ddc392681f7001ea1ec3776933971b58dcc7f4fc98d79e24cf",
     "theme-art/robot-glossy-20260919.webp": "b532ce013059429ee7eca958c85c9139744125660b90498c3f62b9af274ee989",
     "theme-art/war-glossy-20260919.webp": "1bdb007a6250759f3bab54399d324e2c7e7802f611e0239fe83e558a8f0133a7",
-    "ui/pet-paw-gold.png": "f9d188a600ec787d615ddd6d49e2d7698324482b1a73aee876e3d4e5bede74e5"
+    "ui/pet-paw-gold.png": "f9d188a600ec787d615ddd6d49e2d7698324482b1a73aee876e3d4e5bede74e5",
+    "previews/calm-walk-20261008/index.html": "af7fd6b87b163c45573ca5b972c16e449c27fa4b5ca26dbd6348a5f7dccbdb59",
+    "previews/calm-walk-20261008/lobby-pet.mp4": "31fb90e051ade46c46bb6d955a5e4fe943f2e7ad82d70404cb43cf769dcecd8a",
+    "previews/calm-walk-20261008/lobby-pet-closeup.mp4": "c56c029073c27128c7d381a3e943105428b8118f2106edd788a045e2c5fe9bd5"
   },
   "account_ui": true,
   "email_auth_ready": false,
@@ -349,5 +352,16 @@
   "project_selection_heading": "프로젝트 선택",
   "project_detail_scroll": false,
   "profile_tier_label": "actual-tier",
-  "ready_copy_ko": "신선한 재료를 준비하고 있습니다."
+  "ready_copy_ko": "신선한 재료를 준비하고 있습니다.",
+  "previews": {
+    "calm-walk-20261008": {
+      "recordedSourceCommit": "119dd444fd0131a9e38ee06296a4e605cc18e2d8",
+      "durationSeconds": 13.96,
+      "files": {
+        "previews/calm-walk-20261008/index.html": "af7fd6b87b163c45573ca5b972c16e449c27fa4b5ca26dbd6348a5f7dccbdb59",
+        "previews/calm-walk-20261008/lobby-pet.mp4": "31fb90e051ade46c46bb6d955a5e4fe943f2e7ad82d70404cb43cf769dcecd8a",
+        "previews/calm-walk-20261008/lobby-pet-closeup.mp4": "c56c029073c27128c7d381a3e943105428b8118f2106edd788a045e2c5fe9bd5"
+      }
+    }
+  }
 }
