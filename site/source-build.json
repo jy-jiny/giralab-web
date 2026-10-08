@@ -146,7 +146,9 @@
     "previews/calm-walk-20261008/lobby-pet-closeup.mp4": "c56c029073c27128c7d381a3e943105428b8118f2106edd788a045e2c5fe9bd5",
     "previews/calm-idle-20261008/index.html": "e6a56107aeece8cf959b5394175bb84d83720e21975daec5fb2af3e77c14e769",
     "previews/calm-idle-20261008/lobby-pet-closeup.mp4": "915313367ab28bc668b3a2339e80168d7024c2cd0dcbc2ec40397034daf8de3a",
-    "previews/calm-idle-20261008/lobby-pet.mp4": "674833391c6d333f7824ee3ad059a6df250e6316f899985d77db6fc446539e86"
+    "previews/calm-idle-20261008/lobby-pet.mp4": "674833391c6d333f7824ee3ad059a6df250e6316f899985d77db6fc446539e86",
+    "privacy.html": "597ef20f1072aec7e4b3bc116276acdff1ef64ff13a315eea6a09d2bc81880b3",
+    "terms.html": "df9b8a7ceacffd705054c863f8bc06dcb72acad21b52c6470ce4fd9a819799a3"
   },
   "account_ui": true,
   "email_auth_ready": false,
