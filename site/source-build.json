@@ -143,7 +143,10 @@
     "ui/pet-paw-gold.png": "f9d188a600ec787d615ddd6d49e2d7698324482b1a73aee876e3d4e5bede74e5",
     "previews/calm-walk-20261008/index.html": "af7fd6b87b163c45573ca5b972c16e449c27fa4b5ca26dbd6348a5f7dccbdb59",
     "previews/calm-walk-20261008/lobby-pet.mp4": "31fb90e051ade46c46bb6d955a5e4fe943f2e7ad82d70404cb43cf769dcecd8a",
-    "previews/calm-walk-20261008/lobby-pet-closeup.mp4": "c56c029073c27128c7d381a3e943105428b8118f2106edd788a045e2c5fe9bd5"
+    "previews/calm-walk-20261008/lobby-pet-closeup.mp4": "c56c029073c27128c7d381a3e943105428b8118f2106edd788a045e2c5fe9bd5",
+    "previews/calm-idle-20261008/index.html": "e6a56107aeece8cf959b5394175bb84d83720e21975daec5fb2af3e77c14e769",
+    "previews/calm-idle-20261008/lobby-pet-closeup.mp4": "915313367ab28bc668b3a2339e80168d7024c2cd0dcbc2ec40397034daf8de3a",
+    "previews/calm-idle-20261008/lobby-pet.mp4": "674833391c6d333f7824ee3ad059a6df250e6316f899985d77db6fc446539e86"
   },
   "account_ui": true,
   "email_auth_ready": false,
@@ -361,6 +364,16 @@
         "previews/calm-walk-20261008/index.html": "af7fd6b87b163c45573ca5b972c16e449c27fa4b5ca26dbd6348a5f7dccbdb59",
         "previews/calm-walk-20261008/lobby-pet.mp4": "31fb90e051ade46c46bb6d955a5e4fe943f2e7ad82d70404cb43cf769dcecd8a",
         "previews/calm-walk-20261008/lobby-pet-closeup.mp4": "c56c029073c27128c7d381a3e943105428b8118f2106edd788a045e2c5fe9bd5"
+      }
+    },
+    "calm-idle-20261008": {
+      "recordedSourceCommit": "2624a7271a0ef0e1cebc39deb6deea92ad3710ec",
+      "durationSeconds": 13.96,
+      "motion": "fixed-anchor",
+      "files": {
+        "previews/calm-idle-20261008/index.html": "e6a56107aeece8cf959b5394175bb84d83720e21975daec5fb2af3e77c14e769",
+        "previews/calm-idle-20261008/lobby-pet-closeup.mp4": "915313367ab28bc668b3a2339e80168d7024c2cd0dcbc2ec40397034daf8de3a",
+        "previews/calm-idle-20261008/lobby-pet.mp4": "674833391c6d333f7824ee3ad059a6df250e6316f899985d77db6fc446539e86"
       }
     }
   }
