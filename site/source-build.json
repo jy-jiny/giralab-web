@@ -148,7 +148,10 @@
     "previews/calm-idle-20261008/lobby-pet-closeup.mp4": "915313367ab28bc668b3a2339e80168d7024c2cd0dcbc2ec40397034daf8de3a",
     "previews/calm-idle-20261008/lobby-pet.mp4": "674833391c6d333f7824ee3ad059a6df250e6316f899985d77db6fc446539e86",
     "privacy.html": "597ef20f1072aec7e4b3bc116276acdff1ef64ff13a315eea6a09d2bc81880b3",
-    "terms.html": "df9b8a7ceacffd705054c863f8bc06dcb72acad21b52c6470ce4fd9a819799a3"
+    "terms.html": "df9b8a7ceacffd705054c863f8bc06dcb72acad21b52c6470ce4fd9a819799a3",
+    "previews/calm-wave-20261009/index.html": "6b615815d703ad1d544edb73241995b0d2624507c9926f7a835834dafc624f9e",
+    "previews/calm-wave-20261009/lobby-pet-closeup.mp4": "5b3c1174277becf58a8f6728f090358a30197f823568c2b127005fc16a55865f",
+    "previews/calm-wave-20261009/lobby-pet.mp4": "2f5f76d0f3751ae800aeedaa36d4da41f93a99ee7d9ae58b7d44e22e50cb10c7"
   },
   "account_ui": true,
   "email_auth_ready": false,
@@ -376,6 +379,16 @@
         "previews/calm-idle-20261008/index.html": "e6a56107aeece8cf959b5394175bb84d83720e21975daec5fb2af3e77c14e769",
         "previews/calm-idle-20261008/lobby-pet-closeup.mp4": "915313367ab28bc668b3a2339e80168d7024c2cd0dcbc2ec40397034daf8de3a",
         "previews/calm-idle-20261008/lobby-pet.mp4": "674833391c6d333f7824ee3ad059a6df250e6316f899985d77db6fc446539e86"
+      }
+    },
+    "calm-wave-20261009": {
+      "recordedSourceCommit": "368b9cd454d9c26269c76bd6f7f47a2c2fba6432",
+      "durationSeconds": 13.96,
+      "motion": "seated wave; fixed anchor; 1.5x larger",
+      "files": {
+        "previews/calm-wave-20261009/index.html": "6b615815d703ad1d544edb73241995b0d2624507c9926f7a835834dafc624f9e",
+        "previews/calm-wave-20261009/lobby-pet-closeup.mp4": "5b3c1174277becf58a8f6728f090358a30197f823568c2b127005fc16a55865f",
+        "previews/calm-wave-20261009/lobby-pet.mp4": "2f5f76d0f3751ae800aeedaa36d4da41f93a99ee7d9ae58b7d44e22e50cb10c7"
       }
     }
   }
