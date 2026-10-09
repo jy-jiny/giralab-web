@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>GiraLab · 11종 제자리 동작</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#171b23;color:#faf3df;font:16px system-ui,sans-serif}main{max-width:680px;margin:auto;padding:18px}h1{font-size:23px;margin:0 0 7px}p{color:#c6c2b9;line-height:1.5;margin:7px 0 15px}h2{font-size:19px;margin:17px 0 9px}video{display:block;width:100%;max-width:544px;margin:auto;border-radius:14px;background:#272e37}.choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}button{border:1px solid #444951;border-radius:10px;background:#282e38;color:inherit;padding:5px 2px;min-width:0;font:12px system-ui;cursor:pointer}button[aria-pressed=true]{border:2px solid #ffc25c;background:#423829;padding:4px 1px}button img{width:56px;max-width:100%;display:block;margin:auto}details{margin-top:20px}summary{cursor:pointer;padding:10px 0;color:#ffc25c}.full{max-width:390px;margin-top:10px}footer{font-size:13px;color:#aaa;margin-top:20px}
+@media(min-width:600px){.choices{grid-template-columns:repeat(6,minmax(0,1fr))}}
+</style><main><h1>11종 제자리 동작</h1><p>캐릭터를 누르면 움직임이 바뀝니다.</p><div class="choices" aria-label="캐릭터 선택"></div><h2 id="name">냉각이</h2><video id="closeup" src="./cool-closeup.mp4" autoplay loop muted playsinline controls preload="metadata" aria-label="냉각이 확대 동작"></video><details id="whole"><summary>실제 메인 화면에서 보기</summary><video id="full" class="full" src="./cool-main.mp4" loop muted playsinline controls preload="none" aria-label="냉각이 메인 화면"></video></details><footer>새 동작을 적용한 앱 화면 녹화입니다. 설치된 APK는 아직 업데이트 전입니다.</footer></main>
+<script>
+const pets=[['calm','침착이'],['cool','냉각이'],['focus','집중이'],['starter','준비왕'],['basic','기본기'],['gambler','승부사'],['organizer','정리왕'],['frost','빙결사'],['chain','연쇄장인'],['guardian','위기관리자'],['phoenix','불사조']];
+const closeup=document.querySelector('#closeup'),full=document.querySelector('#full'),whole=document.querySelector('#whole'),choices=document.querySelector('.choices');
+function play(v){v.play().catch(()=>{});}
+function select(id,name){for(const b of choices.children)b.setAttribute('aria-pressed',String(b.dataset.pet===id));document.querySelector('#name').textContent=name;closeup.src=`./${id}-closeup.mp4`;closeup.setAttribute('aria-label',name+' 확대 동작');full.pause();full.src=`./${id}-main.mp4`;full.setAttribute('aria-label',name+' 메인 화면');play(closeup);if(whole.open)play(full);}
+for(const[id,name]of pets){const b=document.createElement('button');b.type='button';b.dataset.pet=id;b.setAttribute('aria-pressed',String(id==='cool'));const img=document.createElement('img');img.src=`./references/${id}.webp`;img.alt='';img.width=56;img.height=56;b.append(img,document.createTextNode(name));b.onclick=()=>select(id,name);choices.append(b);}
+whole.addEventListener('toggle',()=>whole.open?play(full):full.pause());
+document.addEventListener('visibilitychange',()=>{if(document.hidden){closeup.pause();full.pause();}else{play(closeup);if(whole.open)play(full);}});
+</script></html>
