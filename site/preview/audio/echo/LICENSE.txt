@@ -1,0 +1,12 @@
+Prism Current — original ECHO game cue, produced 2026-10-07 for GiraLab.
+
+The score, arrangement and instrument rendering were created for this request
+using scripts/render-echo-stems.py. No third-party recordings, sample libraries,
+SoundFonts, existing compositions, vocals or external generation services were
+used. These assets are supplied for commercial inclusion, modification and
+redistribution within the GiraLab project without additional source-license
+requirements. This is production provenance, not a copyright registration or
+a legal determination of copyright eligibility for automated creation.
+
+Production notes: docs/game/ECHO_MUSIC_PRODUCTION.md
+Verification/hashes: docs/game/evidence/2026-10-07-echo-stems-assets.json

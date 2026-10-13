@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "bpm": 88,
+  "beatsPerBar": 4,
+  "loopBars": 8,
+  "title": "Prism Current",
+  "stems": {
+    "pad": "pad.ogg",
+    "keys": "keys.ogg",
+    "bass": "bass.ogg",
+    "drums": "drums.ogg",
+    "melody": "melody.ogg",
+    "chorus": "chorus.ogg"
+  },
+  "fills": {
+    "normal": "fill-normal.ogg",
+    "advanced": "fill-advanced.ogg",
+    "rare": "fill-rare.ogg",
+    "progression": "fill-progression.ogg"
+  },
+  "notes": {
+    "do": "note-do.ogg",
+    "re": "note-re.ogg",
+    "mi": "note-mi.ogg",
+    "fa": "note-fa.ogg",
+    "sol": "note-sol.ogg",
+    "la": "note-la.ogg",
+    "si": "note-si.ogg"
+  }
+}

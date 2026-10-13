@@ -1,0 +1,30 @@
+{
+  "title": "Lunch Rush",
+  "version": 1,
+  "bpm": 156,
+  "bars": 32,
+  "sample_rate": 44100,
+  "samples": 2171077,
+  "duration_seconds": 49.23077097505669,
+  "channels": 2,
+  "peak_dbfs": -2.38,
+  "rms_dbfs": -16.82,
+  "loop_boundary_jump": 0.00400215111033711,
+  "events": {
+    "kick": 112,
+    "snare": 80,
+    "hat": 304,
+    "clack": 64,
+    "bell": 4,
+    "bass": 224,
+    "clav": 496,
+    "mallet": 220,
+    "tom": 16,
+    "open": 8,
+    "brass": 32,
+    "reed": 32
+  },
+  "source": "Original score; procedural instruments, no third-party recordings or samples",
+  "ogg_sha256": "69cc482d6a5f500d142b8dc636fee97bb700969835b0349a47e42a56a35f827d",
+  "pcm_sha256": "4188846bfb55ec1456ddf9cc41859a30679224e407b732c6076bf5e074d53df0"
+}
