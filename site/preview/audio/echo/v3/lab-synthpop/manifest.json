@@ -1,0 +1,76 @@
+{
+  "version": 3,
+  "pack": "lab-synthpop",
+  "title": "Bubble Circuit",
+  "bpm": 124,
+  "beatsPerBar": 4,
+  "loopBars": 16,
+  "key": "C major",
+  "chords": [
+    "C",
+    "G",
+    "Am",
+    "F",
+    "C",
+    "G",
+    "F",
+    "G",
+    "Am",
+    "F",
+    "C",
+    "G",
+    "F",
+    "G",
+    "C",
+    "C"
+  ],
+  "instruments": {
+    "drums": {
+      "main": "drums.ogg",
+      "extra": "drums-extra.ogg",
+      "hit": "hit-drums.ogg"
+    },
+    "perc": {
+      "main": "perc.ogg",
+      "extra": "perc-extra.ogg",
+      "hit": "hit-perc.ogg"
+    },
+    "bass": {
+      "main": "bass.ogg",
+      "extra": "bass-extra.ogg",
+      "hit": "hit-bass.ogg"
+    },
+    "guitar": {
+      "main": "guitar.ogg",
+      "extra": "guitar-extra.ogg",
+      "hit": "hit-guitar.ogg"
+    },
+    "keys": {
+      "main": "keys.ogg",
+      "extra": "keys-extra.ogg",
+      "hit": "hit-keys.ogg"
+    },
+    "synth": {
+      "main": "synth.ogg",
+      "extra": "synth-extra.ogg",
+      "hit": "hit-synth.ogg"
+    },
+    "vocal": {
+      "main": "vocal.ogg",
+      "extra": "vocal-extra.ogg",
+      "hit": "hit-vocal.ogg",
+      "displayName": "\ube0c\ub77c\uc2a4",
+      "sourceInstrument": "brass",
+      "substituteFor": "vocal",
+      "substitutionReason": "Eleven Music wordless vocal request returned effectively silent audio; user-approved brass fallback."
+    }
+  },
+  "drop": "drop.ogg",
+  "dropBars": 8,
+  "fills": {
+    "normal": "fill-normal.ogg",
+    "advanced": "fill-advanced.ogg",
+    "rare": "fill-rare.ogg",
+    "drop": "fill-drop.ogg"
+  }
+}

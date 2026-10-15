@@ -1,0 +1,487 @@
+PROJECT ECHO v3 / Bubble Circuit / 2026-10-15 KST / plan 2-444
+
+26 sounds x OGG Vorbis q6 + M4A AAC192 = 52 files. 7 main loops, 7 extras, 7 hits, 8-bar drop, 4 unpitched fills. Candidate produced, automatic guide 8-2 passed; human listening approval pending.
+
+TOOL / PLAN / TERMS
+{
+  "checkedAt": "2026-10-15 KST",
+  "requestedUrl": "https://elevenlabs.io/eleven-music-model-specific-terms",
+  "effectiveUrl": "https://elevenlabs.io/music-terms",
+  "lastUpdated": "2026-10-09",
+  "plan": "Creator, active; verified before and after generation",
+  "indieEligibility": "Project states Indie Game eligibility. Game net revenue < USD 500,000; developer/publisher all-game prior financial-year net revenue < USD 1,000,000 including affiliates. Eligibility not independently revenue-audited. Obtain Studio Game-compatible plan within 60 days if eligibility ends.",
+  "usage": "Internal GiraLab game production. Public MP3s are listening demonstrations, not a stock/sample music library. No third-party sample reuse license.",
+  "format": "Creator sources MP3 44.1kHz 128kbps; reencoding to OGG q6/AAC192/MP3 192 does not restore lost source detail.",
+  "creditsBefore": 8536,
+  "creditsAfter": 9031,
+  "observedCreditsDelta": 495,
+  "automaticOverageEnabled": false,
+  "seed": "null: prompt mode cannot be combined with seed; API did not return a seed. No arrangement randomness."
+}
+
+VOCAL SUBSTITUTION
+Wordless vocal generation returned effectively silent output (peak 1.6633e-6 / approximately -115.6 dBFS). Per user authorization, vocal is a BRASS slot. The manifest retains the vocal identifier for schema compatibility and explicitly declares displayName=브라스, sourceInstrument=brass, substituteFor=vocal. Its main/extra/hit use the prior arrange-chorus-01 brass recording. No synthesized substitute or third-party sample library was used.
+
+REUSE / ARRANGEMENT
+R2 WAV mains from outputs/echo-music-v2-20261013/arrangement-r2/stems: drums->drums, bass->bass, melody->guitar, keys->keys, base->synth. Piano gets a small first-beat C-triad pickup so it starts alone immediately. Previous chorus brass recording becomes a new 8-bar drop arrangement and the approved fallback instrument; first chord bars C G Am F C G F G. Extra scores use the same recorded timbres, with response phrases, upper-register accents, octave notes or drum/hand-percussion fills. Drum source is candidate-04 officially separated with six_stems_v1; its original prompt and song ID are recorded below.
+New main percussion: isolated recorded shaker, conga and handclaps, with high-pass filtering and syncopated placements to avoid kit kick/snare/hat doubling. Hits and all fills are cropped/arranged recorded sounds. Existing public/audio/echo fill files are the earlier code-synthesized v1, so they were preserved and not reused.
+Audio editing only: trim, gain/envelopes, Rubber Band pitch changes, EQ, stereo balance, recorded delay copies and tail wrap. No oscillator, procedural percussion or synthesized instrument waveforms. No external artists, songs, commercial tracks, or external sample packs.
+Linked 4x-oversampled lookahead gain derived from the maximum positive/negative sums of all main/extra/drop tracks is baked into the files. This preserves balance while protecting all optional subsets. Initial mix failed true peak and was corrected. One AAC drum M/S encoding had a boundary mismatch; independent-stereo AAC encoding corrected it without changing the master.
+Master 16-bar frame count 1,365,677 / 44,100 = 30.967732426 s. Drop 682,839 frames / 44,100 = 15.483877551 s. Exact source-sample length; AAC codec padding is excluded using MP4 edit-list presentation duration. 8-bar drop follows chord bars 1-8; engine integration must maintain phase.
+Automatic score, 36-bin/octave CQT, tempo and f0 checks support technical compliance, not subjective musical approval. Sparse/noise instruments are not assigned musical f0. Initial harmonic-peak tuning estimator confused overtones with fundamental; final YIN body-fundamental medians all within +/-5 cents. Both original estimator and corrected method are retained as evidence.
+
+EXACT NEW AND REUSED GENERATION REQUESTS / SEEDS / SOURCE HASHES
+[
+  {
+    "reused": true,
+    "name": "candidate-04",
+    "requestedAt": "2026-10-13T22:33:07.326026+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "prompt": "Upbeat, bouncy instrumental for a playful science-lab puzzle game. Exactly 124 BPM, 4/4, straight sixteenth groove, key of C major, no key changes.\nChord loop, one chord per bar: C | G | Am | F | C | G | F | G | Am | F | C | G | F | G | C | C.\nInstruments, each clearly separated: bright synth pad chord stabs; electric bass playing bouncy eighth notes; piano comping on the off-beats; clean electric guitar playing a catchy two-bar hook; live drum kit with four-on-the-floor kick, claps on 2 and 4, sixteenth hi-hats and shaker.\nNo vocals, no humming, no vocal chops. Modern, polished, high-quality production. Not chiptune, not 8-bit.",
+      "music_length_ms": 40000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 1691,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "GRaAHxnV4BQMqsClb8xP",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 640776,
+    "sha256": "89b6a3fae1f08955f8f7ff4d6758826b50785ae472eb5983444ea77e261c62b5",
+    "file": "candidate-04.mp3",
+    "creditsAfter": 1691,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-13T22:33:25.242008+09:00"
+  },
+  {
+    "reused": true,
+    "name": "arrange-base-01",
+    "requestedAt": "2026-10-13T23:43:42.284658+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 12000,
+      "force_instrumental": true,
+      "prompt": "Solo bright warm analog synth pluck. Play single middle C notes at a slow relaxed pace, one note every two seconds, always the same pitch, no chords, no melody. Soft rounded attack, rich smooth body and gentle sparkling upper harmonics, playful polished science-lab puzzle game sound, not retro or 8 bit. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 7601,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "nQEAixoHh3dmBaelK1p8",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 192724,
+    "sha256": "23f233e487136864df3a8226e9a02f4e205d6792b485f6280a7ceb7ab7897ae7",
+    "file": "arrange-base-01.mp3",
+    "creditsAfter": 7601,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-13T23:44:16.842639+09:00"
+  },
+  {
+    "reused": true,
+    "name": "arrange-bass-01",
+    "requestedAt": "2026-10-13T23:44:40.646495+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v1",
+      "music_length_ms": 12000,
+      "force_instrumental": true,
+      "prompt": "Solo fingerstyle electric bass guitar, close miked clean DI studio recording. Play only repeated single C3 notes with space between plucks, one pluck every two seconds, no chords. Warm woody round bass with natural finger attack, slight string texture, funky and tight. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 7601,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "VeUrcNppIGLsu0WPk589",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 192306,
+    "sha256": "7b7a1afa7dd6c4bdb1865d82a927ebc02caa84b6f651903b9c569ec8979bdcff",
+    "file": "arrange-bass-01.mp3",
+    "creditsAfter": 7931,
+    "creditsDelta": 330,
+    "finishedAt": "2026-10-13T23:45:15.854741+09:00"
+  },
+  {
+    "reused": true,
+    "name": "arrange-keys-01",
+    "requestedAt": "2026-10-13T23:45:16.000599+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v1",
+      "music_length_ms": 12000,
+      "force_instrumental": true,
+      "prompt": "Solo acoustic upright piano studio recording. Play only repeated single middle C notes, one note every two seconds, no chords and no melody. Bright rounded felt hammer attack, warm natural body, polished light funk puzzle game mood. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 7931,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "phlzHExDf3AJxgFUZcDA",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 192306,
+    "sha256": "74d61dd0f4ca38cd23948886fa19bc6e9bcbf02d62632ad62aa5b0acb3c97f88",
+    "file": "arrange-keys-01.mp3",
+    "creditsAfter": 7931,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-13T23:45:51.613273+09:00"
+  },
+  {
+    "reused": true,
+    "name": "arrange-melody-02",
+    "requestedAt": "2026-10-13T23:48:17.745392+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 8000,
+      "force_instrumental": true,
+      "prompt": "Isolated clean electric guitar. A guitarist plays just one single high C note, pauses, and repeats that exact same note every two seconds. Beautiful dry picked string attack and gentle decay. Monophonic single notes only. No chords, no drums, no bass, no other instruments. High quality natural guitar recording, no distortion, no accompaniment."
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 8426,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "wmSSnoV6m13Zy3uxHHi7",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 128776,
+    "sha256": "8b55c49a6eb0c566288e97dd07b38be45e0a03f14750853e931bf0f49014faaa",
+    "file": "arrange-melody-02.mp3",
+    "creditsAfter": 8536,
+    "creditsDelta": 110,
+    "finishedAt": "2026-10-13T23:48:51.709670+09:00"
+  },
+  {
+    "reused": true,
+    "name": "arrange-chorus-01",
+    "requestedAt": "2026-10-13T23:46:14.621136+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 12000,
+      "force_instrumental": true,
+      "prompt": "Solo bright orchestral brass ensemble playing a unison single C5 note in short staccato hits, one isolated hit every two seconds, always the same pitch, no chords. Joyful triumphant soft trumpet and french horn timbre, polished game music, no percussion. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 8261,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "tBYnwcipa7DlUi3rgRTw",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 192724,
+    "sha256": "5f398440dce46c573615d308422fbe380d996c6005671775d2025d01e2502c2c",
+    "file": "arrange-chorus-01.mp3",
+    "creditsAfter": 8261,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-13T23:46:23.890878+09:00"
+  },
+  {
+    "reused": false,
+    "name": "perc-clap",
+    "requestedAt": "2026-10-15T08:24:11.521015+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 8000,
+      "force_instrumental": true,
+      "prompt": "Solo small group handclaps, dry isolated studio recording, one crisp handclap every second with silence between claps. A few tight double claps near the end. Only human hands clapping, no drum kit, no snare, no kick, no hi-hats, no instruments, no voices. Professional clean transient, no long reverb."
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 8536,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "Cu0EuJL7JMMwBnNWLhjT",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 144657,
+    "sha256": "a716ef723170534a8ccee7b6e8d9e4de588a0d32ce28cafda27b405ea9f60e27",
+    "file": "perc-clap.mp3",
+    "creditsAfter": 8536,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-15T08:24:19.364764+09:00"
+  },
+  {
+    "reused": false,
+    "name": "perc-conga",
+    "requestedAt": "2026-10-15T08:24:07.815944+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 8000,
+      "force_instrumental": true,
+      "prompt": "Solo muted hand conga and woodblock-like rim slaps, dry isolated close-mic recording. Short dead strokes every second, alternate low palm and higher rim slaps, with silence between hits. Only hand percussion. No drum kit, no kick, no snare, no hi-hat, no music, no vocals, no sustained pitched tones. Natural detailed skin and finger texture."
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 8536,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "lwhg6XevgBLtZNCiy5n7",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 128775,
+    "sha256": "b3ef63f75552b274a020064be196279a2b2f43c7eac050dad098888180adfc77",
+    "file": "perc-conga.mp3",
+    "creditsAfter": 8536,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-15T08:24:12.650378+09:00"
+  },
+  {
+    "reused": false,
+    "name": "perc-shaker",
+    "requestedAt": "2026-10-15T08:24:07.830024+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 8000,
+      "force_instrumental": true,
+      "prompt": "Solo acoustic egg shaker, dry isolated close-mic recording. A bright natural shaker shaken once every second with silence between hits, a few soft and a few strong strokes. Only shaker, no drums, no hi-hat, no cymbals, no music, no vocals, no pitched sounds. Clean professional studio percussion sample source."
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 8536,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "4T4oIkQcmxgcD6UDbOlI",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 128775,
+    "sha256": "51c1965fd567745fd10aba3e32ec4fb26c5d2f4e6358e91126d29f42b0f6ff8b",
+    "file": "perc-shaker.mp3",
+    "creditsAfter": 8536,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-15T08:24:11.390153+09:00"
+  },
+  {
+    "reused": false,
+    "name": "vocal-ah",
+    "requestedAt": "2026-10-15T08:24:12.784620+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "music_length_ms": 12000,
+      "force_instrumental": false,
+      "prompt": "Solo wordless human voice singing short detached ah and oh syllables on a single steady C4 note, A440 tuning, always the same pitch. One gentle ah or oh every two seconds with silence between notes, clear soft chest voice and rounded tone. No lyrics, no spoken words, no accompaniment, no beat, no drums, no bass, no chords, no harmony, no vibrato, no pitch bends, no reverb. Dry isolated studio vocal sample source for a joyful puzzle game."
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "status": "succeeded",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 8536,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "Y5IaBWNdbSRtXEgqo048",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 192723,
+    "sha256": "89ef7e9560e16d48bb80b5ad01116849a47b11eaa1478ac7e713b514da8c2749",
+    "file": "vocal-ah.mp3",
+    "creditsAfter": 8536,
+    "creditsDelta": 0,
+    "finishedAt": "2026-10-15T08:24:18.710957+09:00"
+  }
+]
+
+HISTORICAL LICENSE AND COMPLETE PREVIOUS PROMPTS (historical metrics are not current QA):
+PROJECT ECHO v2 — second arrangement listening sketch / 2026-10-14 KST
+
+User feedback: "너무 단조롭지않나" (the first arrangement is too monotonous).
+This revision reuses only the previously generated and licensed Eleven Music recordings. New API calls: 0. New paid generations/credits attributable to this revision: 0. No new prompts, model requests or API seeds. No key was sent to a network service during this revision. Prior source generation dates, plan, complete prompts and unavailable API seeds are reproduced below. Terms were last checked 2026-10-13 (updated 2026-10-09); no new terms check is claimed for 2026-10-14.
+
+Cause of the reported monotony: first arrangement used one identical bar rhythm for synth, bass, piano and brass; guitar had only two rhythmic patterns. Single-note samples also limit performance variation. This is an arrangement diagnosis supported by the score, not a claim of having performed a human listening review.
+
+Changes: four synth/piano rhythm patterns; six bass patterns and a more audible register; short guitar questions and longer replies with differing note lengths, muted/open articulation, front/back register contrast; sparse brass responses then fuller second-half accents. One-beat drum pullback at 14.516 s, second-half entry 15.484 s, one-bar breathing space 23.226 s, C-major resolution 27.097 s. Snare pickups are high-pass-filtered excerpts of the already generated candidate-04 drum stem. Room taps, envelopes, EQ, panning and Rubber Band pitch edits modify recorded material, without generating oscillator/percussion waveforms. No randomization, no arrangement seed, no external samples.
+
+The fixed 124 BPM, C-major chord table and 16-bar length remain. Distinct bar-rhythm counts before/after: synth 1/4, bass 1/6, piano 1/4, guitar 2/16, brass 1/4. These figures establish structural variation only, NOT musical quality or user satisfaction. Natural performance character and whether the loop is still boring remain listening questions.
+
+Verification: six working WAV stems, all 1,365,677 frames / 30.967732426 s, 44.1 kHz stereo, finite samples, no individual digital clipping, endpoint jump 0. Written score is diatonic and strong-beat starts use chord tones. Detected drum tempo 124.0072009 BPM; beat-fit maximum residual 9.377 ms. Published MP3 -15.24 LUFS / -1.53 dBTP, 745166 bytes. Anonymous Android-Chrome-User-Agent HTTPS GET returned 200 and matching SHA-256 ccd2647cd7001248c87adc32b5e1123b6305af61ae870ab7cffaca245aac0ea5. Actual physical-phone playback and preference approval remain unconfirmed.
+
+Preview URL: https://github.com/jy-jiny/giralab-web/releases/download/echo-music-v2-arrangement-r2-20261014/echo-v2-arrangement-r2-preview.mp3
+This remains a listening sketch, not the final section 8-2/34-file submission or four-type 8-3 set. Working full mix is -15.3728 LUFS, base -21 LUFS. Final effects, full tuning/chroma/bleed acceptance and final encoding set remain incomplete. Game code and existing public/audio/echo unchanged.
+Scripts require outputs/echo-music-v2-20261013 with its existing arrangement/sources, arrangement/pitched, raw separated drums and local pydeps; they are evidence/reproduction copies, not self-contained product code. This release grants no third-party stock-music or sample reuse license. AI generation provenance is disclosed in release notes and MP3 metadata.
+
+PREVIOUS SOURCE GENERATION LICENSE AND EXACT PROMPTS (historical first-preview measurements and URLs below are preserved as dated evidence, not revision-2 measurements):
+
+PROJECT ECHO v2 — Bubble Circuit / arrangement listening sketch
+Date: 2026-10-13 KST
+Status: User requested the feel first. Two listening MP3s; not final game asset delivery.
+
+Authorization: User approved "ElevenLabs instrument sources edited/arranged to the same score" with "해봐 어떤느낌인지 먼저보자". Original single-song generation/separation workflow is superseded only as described in the guide's dated amendment. Game code and existing public/audio/echo were not changed.
+
+Tool: ElevenLabs Eleven Music. Active Creator plan verified through subscription API. Terms https://elevenlabs.io/music-terms, updated 2026-10-09, rechecked 2026-10-13. Creator permits this indie-game use under the terms; eligibility follows the project's existing indie-game statement, not an independent revenue audit. Indie definition: game lifetime net revenue under USD 500,000 and developer/publisher all-game net revenue under USD 1,000,000 in the most recent completed financial year, including affiliates; if eligibility ends obtain a Studio Game-compatible plan within 60 days. Creator high-quality downloads unavailable: source mp3_44100_128, previews reencoded 192 kbps without a claim of restored source detail.
+Sources kept privately for GiraLab production. Public previews are listening demonstrations, not a stock-music/sample library or a license for third-party reuse. AI generation disclosed in release notes and audio metadata.
+
+Six new requests: five 12-second isolated instrument sources plus an 8-second replacement guitar. Observed character_count 7601 -> 8536, difference 935 credits; final limit 131000, no plan changes or additional automatic billing. Per-request zero deltas may reflect delayed accounting; not a claim of free generation.
+Model IDs: music_v1 for bass, piano and rejected guitar; music_v2_5 for synth, brass and accepted guitar. All use force_instrumental=true. No API seeds sent or returned because prompt-mode and seed are mutually exclusive in the API; seed=null is recorded honestly. Arrangement has no randomization and no random seed.
+
+Reused drums: original candidate-04, music_v2_5, song ID GRaAHxnV4BQMqsClb8xP; six_stems_v1 official separation of the cropped 16-bar mix. Source provenance and complete original prompts in ../LICENSE.txt and ../generation-records.json. Decode alignment 1105 samples, previously corrected from 123.9924707 to 124 BPM. No new stem separation was required for the new isolated samples.
+
+Editing: measured source pitches (not assumed from prompts): synth approximately C4 with a recorded G4 fifth; bass D2+18 cents; piano Bb3-1 cent; accepted guitar C4-4 cents; brass approximately C4. Detailed source selection offsets and pitch targets in arrangement-record.json. Rubber Band pitch shifts, high-pass filtering, gain/envelope edits, short recorded-audio room taps, tail wrap and recorded-context loop splice. These are edits of generated audio, not code-synthesized instrument waveforms. First guitar rejected due A/C#/E chord contamination. Synth sample uses root-only transposition to preserve its perfect-fifth pair inside each chord. Melody is E4-C5 range to avoid a shrill two-octave transposition from the source. No external sample packs, artists, song references, cloned stems or oscillator generation.
+
+Score: C major, 124 BPM, 4/4, straight sixteenths. Chords C G Am F C G F G Am F C G F G C C. Bass root/fifth/octave, offbeat piano, two-bar guitar motif with four-bar variants, brass accents. All MIDI event targets are diatonic, and events on beats 1/3 use chord tones; this checks the written score, not an assertion that all recorded overtones pass final tuning/chroma acceptance.
+Six WAV working stems: 44.1 kHz stereo, identical 1,365,677 samples / 30.967732426 seconds. Stem length/rate/finite/clip checks passed; detected drum tempo 124.0062366 BPM; maximum beat-fit residual 5.805 ms. Preview MP3 full: 30.967732 s, -15.22 LUFS, -1.67 dBTP. Buildup: 54.193537 s, -15.09 LUFS, -1.50 dBTP. Full mix working WAV -15.262 LUFS; base -20 LUFS. Do not report final section 8-2 passed: final 34 OGG/M4A files, seven tuned note effects, four fills, full tuning/chroma/bleed and user listening acceptance are pending.
+
+Publication: https://github.com/jy-jiny/giralab-web/releases/tag/echo-music-v2-arranged-preview-20261013
+Both MP3s returned HTTP 200 via anonymous Android-Chrome User-Agent requests, with no auth/cookie and matching SHA-256/size. Actual physical-phone playback and user taste approval are not yet confirmed. Buildup begins with base+drums at 40%; bass 7.742 s, keys 15.484 s, full drums 23.226 s, guitar 30.968 s, brass 38.710 s, last 8 bars all layers.
+
+Reproduction scripts in this evidence folder assume the original outputs/echo-music-v2-20261013 working directory containing private raw sources and local pydeps. Do not execute them from the evidence folder without restoring those inputs. Exact request metadata and hashes are in generation-records.json; audio hashes in publication.json. No credentials are included.
+
+EXACT NEW REQUEST PROMPTS AND SETTINGS
+
+arrange-base-01
+{
+  "model_id": "music_v2_5",
+  "music_length_ms": 12000,
+  "force_instrumental": true,
+  "prompt": "Solo bright warm analog synth pluck. Play single middle C notes at a slow relaxed pace, one note every two seconds, always the same pitch, no chords, no melody. Soft rounded attack, rich smooth body and gentle sparkling upper harmonics, playful polished science-lab puzzle game sound, not retro or 8 bit. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+}
+seed: not supplied / not returned
+selection: used as edited sample source
+
+arrange-bass-01
+{
+  "model_id": "music_v1",
+  "music_length_ms": 12000,
+  "force_instrumental": true,
+  "prompt": "Solo fingerstyle electric bass guitar, close miked clean DI studio recording. Play only repeated single C3 notes with space between plucks, one pluck every two seconds, no chords. Warm woody round bass with natural finger attack, slight string texture, funky and tight. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+}
+seed: not supplied / not returned
+selection: used as edited sample source
+
+arrange-keys-01
+{
+  "model_id": "music_v1",
+  "music_length_ms": 12000,
+  "force_instrumental": true,
+  "prompt": "Solo acoustic upright piano studio recording. Play only repeated single middle C notes, one note every two seconds, no chords and no melody. Bright rounded felt hammer attack, warm natural body, polished light funk puzzle game mood. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+}
+seed: not supplied / not returned
+selection: used as edited sample source
+
+arrange-melody-01
+{
+  "model_id": "music_v1",
+  "music_length_ms": 12000,
+  "force_instrumental": true,
+  "prompt": "Solo clean electric guitar, dry studio recording. Repeated single C5 notes plucked separately with a pick, one note every two seconds, no chords, no strumming, no melody. Beautiful rounded muted funk guitar pluck, natural string attack, bright warm tone, no distortion. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+}
+seed: not supplied / not returned
+selection: rejected: A major chord contamination, not an isolated note
+
+arrange-chorus-01
+{
+  "model_id": "music_v2_5",
+  "music_length_ms": 12000,
+  "force_instrumental": true,
+  "prompt": "Solo bright orchestral brass ensemble playing a unison single C5 note in short staccato hits, one isolated hit every two seconds, always the same pitch, no chords. Joyful triumphant soft trumpet and french horn timbre, polished game music, no percussion. Dry studio recording, excellent natural timbre, no vocals, no other instruments, no drum accompaniment, no background noise. Each note rings and decays clearly before the next note. "
+}
+seed: not supplied / not returned
+selection: used as edited sample source
+
+arrange-melody-02
+{
+  "model_id": "music_v2_5",
+  "music_length_ms": 8000,
+  "force_instrumental": true,
+  "prompt": "Isolated clean electric guitar. A guitarist plays just one single high C note, pauses, and repeats that exact same note every two seconds. Beautiful dry picked string attack and gentle decay. Monophonic single notes only. No chords, no drums, no bass, no other instruments. High quality natural guitar recording, no distortion, no accompaniment."
+}
+seed: not supplied / not returned
+selection: used as edited sample source
+
+
+PUBLICATION / 2026-10-15 KST
+https://github.com/jy-jiny/giralab-web/releases/tag/echo-loop-pack-v3-20261015
+Complete ordered listening MP3: https://github.com/jy-jiny/giralab-web/releases/download/echo-loop-pack-v3-20261015/echo-v3-00-complete-listening.mp3
+Six MP3s and listening order text: unauthenticated Android browser User-Agent HTTPS GET 200, byte count and SHA-256 match for all seven assets. Actual physical-phone playback and subjective approval remain unconfirmed.
