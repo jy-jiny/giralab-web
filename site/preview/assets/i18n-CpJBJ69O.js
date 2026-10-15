@@ -1,1 +1,0 @@
-import{a as e}from"./i18n-r_gbGL_q.js";export{e as setLanguage};
