@@ -1,0 +1,4 @@
+{
+  "version": 0,
+  "note": "No loop pack yet (plan 2-444). The engine falls back to the v1 stems when this manifest does not parse as version 3."
+}

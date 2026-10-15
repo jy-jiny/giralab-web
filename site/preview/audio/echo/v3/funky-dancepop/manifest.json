@@ -1,0 +1,150 @@
+{
+  "version": 3,
+  "pack": "funky-dancepop",
+  "title": "Funky Recipe Lab",
+  "bpm": 123.96926536731634,
+  "beatsPerBar": 4,
+  "loopBars": 8,
+  "key": "F# minor",
+  "chords": [
+    "F#m",
+    "A/B",
+    "F#m",
+    "A/B",
+    "F#m",
+    "A/B",
+    "F#m",
+    "A/B"
+  ],
+  "bed": "bed.ogg",
+  "main": "beat-main.ogg",
+  "riser": "riser.ogg",
+  "layers": [
+    "beat",
+    "bass",
+    "chords",
+    "synth",
+    "vocal",
+    "lead"
+  ],
+  "loops": {
+    "loop-beat-basic": {
+      "layer": "beat",
+      "file": "loop-beat-basic.ogg"
+    },
+    "loop-beat-rest": {
+      "layer": "beat",
+      "file": "loop-beat-rest.ogg"
+    },
+    "loop-beat-funky": {
+      "layer": "beat",
+      "file": "loop-beat-funky.ogg"
+    },
+    "loop-beat-synco": {
+      "layer": "beat",
+      "file": "loop-beat-synco.ogg"
+    },
+    "loop-beat-break": {
+      "layer": "beat",
+      "file": "loop-beat-break.ogg"
+    },
+    "loop-bass-pulse": {
+      "layer": "bass",
+      "file": "loop-bass-pulse.ogg"
+    },
+    "loop-bass-bounce": {
+      "layer": "bass",
+      "file": "loop-bass-bounce.ogg"
+    },
+    "loop-bass-walk": {
+      "layer": "bass",
+      "file": "loop-bass-walk.ogg"
+    },
+    "loop-bass-slap": {
+      "layer": "bass",
+      "file": "loop-bass-slap.ogg"
+    },
+    "loop-chords-stab": {
+      "layer": "chords",
+      "file": "loop-chords-stab.ogg"
+    },
+    "loop-chords-off": {
+      "layer": "chords",
+      "file": "loop-chords-off.ogg"
+    },
+    "loop-chords-riff": {
+      "layer": "chords",
+      "file": "loop-chords-riff.ogg"
+    },
+    "loop-synth-pad": {
+      "layer": "synth",
+      "file": "loop-synth-pad.ogg"
+    },
+    "loop-synth-arp": {
+      "layer": "synth",
+      "file": "loop-synth-arp.ogg"
+    },
+    "loop-synth-riff": {
+      "layer": "synth",
+      "file": "loop-synth-riff.ogg"
+    },
+    "loop-vocal-hook": {
+      "layer": "vocal",
+      "file": "loop-vocal-hook.ogg"
+    },
+    "loop-vocal-adlib": {
+      "layer": "vocal",
+      "file": "loop-vocal-adlib.ogg"
+    },
+    "loop-lead-riff": {
+      "layer": "lead",
+      "file": "loop-lead-riff.ogg"
+    }
+  },
+  "fills": {
+    "normal": "fill-normal.ogg",
+    "advanced": "fill-advanced.ogg",
+    "rare": "fill-rare.ogg",
+    "drop": "fill-drop.ogg"
+  },
+  "taps": {
+    "kick": "tap-kick.ogg",
+    "snare": "tap-snare.ogg",
+    "hat": "tap-hat.ogg",
+    "rest": "tap-rest.ogg",
+    "low": "tap-low.ogg",
+    "mid": "tap-mid.ogg",
+    "high": "tap-high.ogg"
+  },
+  "production": {
+    "specVersion": "3.2",
+    "stage": 1,
+    "approved": false,
+    "readyLoops": [
+      "loop-beat-basic",
+      "loop-bass-pulse",
+      "loop-chords-stab",
+      "loop-synth-pad"
+    ],
+    "pendingLoops": [
+      "loop-beat-rest",
+      "loop-beat-funky",
+      "loop-beat-synco",
+      "loop-beat-break",
+      "loop-bass-bounce",
+      "loop-bass-walk",
+      "loop-bass-slap",
+      "loop-chords-off",
+      "loop-chords-riff",
+      "loop-synth-arp",
+      "loop-synth-riff",
+      "loop-vocal-hook",
+      "loop-vocal-adlib",
+      "loop-lead-riff"
+    ],
+    "loopSamples": 683008,
+    "riserBars": 1,
+    "riserSamples": 85376,
+    "note": "Only four recipe loops exist in stage1. The other14 file mappings are reserved, intentionally unavailable until listening approval. This candidate pack is not integrated into the game."
+  }
+}
