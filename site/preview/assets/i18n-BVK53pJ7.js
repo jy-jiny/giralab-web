@@ -1,0 +1,1 @@
+import{a as e}from"./i18n-BwgzKezt.js";export{e as setLanguage};
