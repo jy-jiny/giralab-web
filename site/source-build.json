@@ -550,7 +550,17 @@
     "previews/character-showcase-20261016/pets/soft-3d/organizer.webp": "b6595c50cd83d43e3b0f2656bcfd32a6ef8145d2d430da0f36d15cb3b5ec728f",
     "previews/character-showcase-20261016/pets/soft-3d/phoenix.webp": "375433a98a9a8e79aefde4b6f0a1c51c4d2dd17e9097740d272be4113a8b039a",
     "previews/character-showcase-20261016/pets/soft-3d/starter.webp": "a895e9d16e4c9eeceb88a0199417f06315601a6cb6d199ccd83930f499b6c270",
-    "previews/character-showcase-20261016/preview-build.json": "548385af075dc7800744ea7609f961c320619a7892dc013bf1cc9114475a530d"
+    "previews/character-showcase-20261016/preview-build.json": "548385af075dc7800744ea7609f961c320619a7892dc013bf1cc9114475a530d",
+    "previews/character-films-20261017/assets/index-CYvORkzh.js": "27a67607bb96ce970e2631567946dcf6a4310cda9c817270df80dc2a4de5d9d6",
+    "previews/character-films-20261017/assets/index-iOBDie7B.css": "cc97c8ef4fbe6da88845566b48f7bea7734656692504cdb572cf698c8f2cb1a6",
+    "previews/character-films-20261017/index.html": "39a198779838528ac8aab6a43d30a54b26c8caf87db7237b2de2211abd0986ea",
+    "previews/character-films-20261017/pets/films/calm-poster.webp": "97096485cf81088df119770839cdf74f121fe08965cd540102dba381883e7c44",
+    "previews/character-films-20261017/pets/films/calm.mp4": "49ad11788659c21086344adfde46b08f98681fe8ff66573e8677aa1622254c0b",
+    "previews/character-films-20261017/pets/films/cool-poster.webp": "88dc34938a9b8e7d270517da58ed10ac5ff191b05260def5226fb547b32f7d08",
+    "previews/character-films-20261017/pets/films/cool.mp4": "ee82c6ac01eeff0048d9abf3d8764f520c3bd276279d52e29d1adfc3fc071e53",
+    "previews/character-films-20261017/pets/soft-3d/calm.webp": "86eff0bcc8ff5e7f72d61f5d3ac7120c888c84696179ec6f3b4bdcf41d0ed769",
+    "previews/character-films-20261017/pets/soft-3d/cool.webp": "ed4daee249e684c1fef8ad78e0db0370ec9a7ca6b90632ed455d6d75cc121649",
+    "previews/character-films-20261017/preview-build.json": "d66cd053be861c778782c9f4834487de230ba70707913a272b6c1740ce110f62"
   },
   "account_ui": true,
   "email_auth_ready": false,
