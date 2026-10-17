@@ -1,0 +1,12 @@
+{
+  "preview": true,
+  "designStudy": true,
+  "source": "7298fce274cf2d0d9f6b7d94f029eb21a057f615",
+  "storage": "memory-only",
+  "productionApi": false,
+  "characters": [
+    "calm",
+    "cool"
+  ],
+  "mode": "complete-scene-video"
+}
