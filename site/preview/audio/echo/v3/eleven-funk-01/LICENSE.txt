@@ -1,3 +1,1490 @@
+2026-10-18 AAC CONTAINER TIMELINE REPAIR (2-498)
+20 persistent M4A containers: movie/edit duration now uses44100Hz, exactly661504samples. AAC mdat payload SHA and FFmpeg decoded PCM SHA are identical before/after; no re-encoding, note, waveform, seed, prompt, or rights change. OGG/riser/fills/taps unchanged. See docs/game/evidence/echo-fullpack-activation-20261018/aac-timeline-repair.json. Container whole-file hashes supersede the previous20M4A hashes.
+
+2026-10-18 FULL-PACK USER APPROVAL AND ACTIVATION
+User reply: 승인. All 18 recipe loops approved for PROJECT ECHO.
+Approval evidence: docs/game/evidence/echo-fullpack-activation-20261018/approval.json
+No new generation, upload, composition, pitch change, or audio re-encoding in this activation. Existing prompts, seeds, Creator plan and Music Terms check date below remain unchanged. Prior pending-approval notes below are historical. Physical phone check remains separate.
+
+FULL18RECIPE PACK DELIVERY /2026-10-18KST /DEV-20261018-013
+32sounds/64OGG+M4A,18recipes/20persistent8bar loops/661504samples,127.999226BPM,Eminor/Em7x6-Am7-C. Candidate full technical delivery complete; full musical approval pending and new14not activated by this task. Existing public stage1/preview/game preserved.
+User scope: "다 만들어" authorized remaining14; subsequent explicit "동의" authorized the exact14MP3payload official reupload/separation. All14six_stems_v1 succeeded; no new reference upload. Prior auto-review rejection is resolved for those14payloads. Newly generated solo piano/vocal sources were not uploaded again for separation.
+Creative source: Eleven Music music_v2_5.19successful new performances303.75seconds,14selected/5unused; original selected song zCVhsAvDC8fGdMQm1kT0 and its official stems retained. No instrument waveform synthesis/manual note sequencing/pitch correction. Solo wordless vocal generations selected; brass/string fallback trials unused, fallbackUsed=false. Other-group synth/lead is not guaranteed perfectly isolated.
+Technical processing: contiguous8bar trims, encoder/stem-delay alignment, limited overlap EQ, constant gains, restrained common peak control(mean0.20738dB/max2.99595dB), codec boundary ramps(head4ms, five variations24ms;tail6ms). Existing12persistentformat files remastered/reencoded; other24effects/taps unchanged. No inserted separator silence.
+Creator active at generation and final check; no overage enabled. Terms checked2026-10-18: https://elevenlabs.io/music-terms (updated09October2026). Existing individual/Indie Game eligibility and rawMusicLibrary restrictions remain. This project music/audition is not a stock collection or third-party reuse license. Account counter25434→35404(+9970; not an individual billing allocation because concurrent activity is possible).
+Full-QA/publication: docs/game/evidence/echo-fullpack-20261018/. OGG-14.85631→-12.68032LUFS/M4A-14.86520→-12.69818,contrast2.176/2.167LU,all-layer-choiceTPbound<=-1.31823dBTP.8projectMP3publicHTTPSverified. Final preference/phone playback not claimed.
+Selected14source mapping with song-id/seed/SHA follows:
+[
+  {
+    "name": "loop-beat-rest",
+    "source": "loop-beat-rest-r2",
+    "sourceStem": "drums",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [],
+    "constantGainDb": -7.53065584677924,
+    "sourcePeakCeilingDbtp": -10,
+    "sourcePeakReductionMeanDb": 0.009236871169628768,
+    "sourcePeakReductionMaxDb": 0.9178504966153705,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -26.345198381342996,
+    "sourceSongId": "JTiyQSCqEkGLfuKW9yFP",
+    "seed": 202610180,
+    "sourceMp3Sha256": "83495f366ecb5f683a008be73d4d31ea1f9f3c447a3843d240862c34d6dfc5c7",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-beat-funky",
+    "source": "loop-beat-funky-r2",
+    "sourceStem": "drums",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [],
+    "constantGainDb": -6.049414140720895,
+    "sourcePeakCeilingDbtp": -10,
+    "sourcePeakReductionMeanDb": 0.0457209334721416,
+    "sourcePeakReductionMaxDb": 2.29987373164527,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -25.549475102445687,
+    "sourceSongId": "6wTRPf50eNjUHwW4o0fG",
+    "seed": 202610181,
+    "sourceMp3Sha256": "6b3c3851d500f3b4da93e94166715b7a2677cd8d3d0813cba787fcdf3a6855c8",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-beat-synco",
+    "source": "loop-beat-synco-r2",
+    "sourceStem": "drums",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [],
+    "constantGainDb": -6.389512312963575,
+    "sourcePeakCeilingDbtp": -10,
+    "sourcePeakReductionMeanDb": 0.04068235425682725,
+    "sourcePeakReductionMaxDb": 2.0659271108435857,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -25.53381178438532,
+    "sourceSongId": "dbdqn0yR5V7PU6BX1BKJ",
+    "seed": 202610182,
+    "sourceMp3Sha256": "f1eb649ba239915f850227ee74ee60535318cf3ade6a73b501b82557690327b4",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-beat-break",
+    "source": "loop-beat-break-r3",
+    "sourceStem": "drums",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [],
+    "constantGainDb": -6.560399437531501,
+    "sourcePeakCeilingDbtp": -10,
+    "sourcePeakReductionMeanDb": 0.05259091396645954,
+    "sourcePeakReductionMaxDb": 3.2790443052933904,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -25.5786180687669,
+    "sourceSongId": "LfzMTzOqZa86170uIEkQ",
+    "seed": 202610183,
+    "sourceMp3Sha256": "5c32d5d2a3c91278a65c6647b7115d6deaa9e63a5685ef50dc7ca57b6df7b515",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-bass-bounce",
+    "source": "loop-bass-bounce-r2",
+    "sourceStem": "bass",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "Remove90percent of own30-180Hz band to complement existing bed"
+    ],
+    "constantGainDb": 5.723910364749031,
+    "sourcePeakCeilingDbtp": -14,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -31.000203723408887,
+    "sourceSongId": "FEqu0tviQyZ7UNZgLcdx",
+    "seed": 202610184,
+    "sourceMp3Sha256": "41dccf952c2e8c6fc2e37c4c08266a76859d486bce575ace5c23636184316cc5",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-bass-walk",
+    "source": "loop-bass-walk-r3",
+    "sourceStem": "bass",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "Remove90percent of own30-180Hz band to complement existing bed"
+    ],
+    "constantGainDb": 2.159447437187879,
+    "sourcePeakCeilingDbtp": -14,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -31.00000003912518,
+    "sourceSongId": "P8SHARtEfz5fHXn5KIui",
+    "seed": 202610185,
+    "sourceMp3Sha256": "63097f8761c06d074a5fc905f0459fca29eae8ec81e22e5186eebb033b0fe093",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-bass-slap",
+    "source": "loop-bass-slap-r2",
+    "sourceStem": "bass",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "Remove90percent of own30-180Hz band to complement existing bed"
+    ],
+    "constantGainDb": 0.19796061643548768,
+    "sourcePeakCeilingDbtp": -14,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -31.000010928213268,
+    "sourceSongId": "CB6GpYoXjPGp4AV0WLXW",
+    "seed": 202610186,
+    "sourceMp3Sha256": "cc2e81943a31e70f861afdf8a48d47b057215c1a7b73f05e7db1f1baea0abf32",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-chords-off",
+    "source": "loop-chords-off-solo-r4",
+    "sourceStem": "solo electric piano",
+    "sourceStartSamples": 1105,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass150Hz, no pitch shift"
+    ],
+    "constantGainDb": 2.7800889762405845,
+    "sourcePeakCeilingDbtp": -6.5,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 8,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -21.4,
+    "sourceSongId": "cUCOzrrRFnoZwW7kPEQK",
+    "seed": 202610220,
+    "sourceMp3Sha256": "e19dfbc4bdf9a782b9b5b5818e74310887420c52b495335ac4a71f8ea197c8a2",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-chords-riff",
+    "source": "loop-chords-riff-r3",
+    "sourceStem": "guitar",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass150Hz, no pitch shift"
+    ],
+    "constantGainDb": 2.7465775542977866,
+    "sourcePeakCeilingDbtp": -6.5,
+    "sourcePeakReductionMeanDb": 0.1654802298736793,
+    "sourcePeakReductionMaxDb": 6.52600102753516,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -22.296374989634856,
+    "sourceSongId": "ROCa63V0QFsVVzNia0yP",
+    "seed": 202610188,
+    "sourceMp3Sha256": "239e5d2d70438f6c642949e886768a967fced752eed6a6981517274b4617d133",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-synth-arp",
+    "source": "loop-synth-arp-r2",
+    "sourceStem": "other",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass180Hz, no pitch shift"
+    ],
+    "constantGainDb": 1.4748039896486134,
+    "sourcePeakCeilingDbtp": -9,
+    "sourcePeakReductionMeanDb": 0.022696521255179434,
+    "sourcePeakReductionMaxDb": 2.168863563272385,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -23.878232911667318,
+    "sourceSongId": "SvvZobXvYYRfcQAZoDen",
+    "seed": 202610189,
+    "sourceMp3Sha256": "fec36ba7a56ffdb1b9b46d74dc91a9521ac412c4af1c03a55f40d7976686936d",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-synth-riff",
+    "source": "loop-synth-riff-r3",
+    "sourceStem": "other",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass180Hz, no pitch shift"
+    ],
+    "constantGainDb": 3.104460263365631,
+    "sourcePeakCeilingDbtp": -9,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -23.800225975165507,
+    "sourceSongId": "ZMnywYskz7LfEbx53iq3",
+    "seed": 202610190,
+    "sourceMp3Sha256": "c4622b67bc573994d7ed0db049c47dfc94b9c534a19d803c1417df9e7a9302a4",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-vocal-hook",
+    "source": "loop-vocal-hook-solo-r4",
+    "sourceStem": "wordless vocal generation",
+    "sourceStartSamples": 1105,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass180Hz, no pitch shift"
+    ],
+    "constantGainDb": -17.02864101093822,
+    "sourcePeakCeilingDbtp": -13,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 8,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -30.0000551970499,
+    "sourceSongId": "1BX1Xwgt37TQj1c7mjNY",
+    "seed": 202610221,
+    "sourceMp3Sha256": "87efece90dd627e1b446c2e8e1eaf2ca703229bf1c260348a9c6e3d75a390c5b",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-vocal-adlib",
+    "source": "loop-vocal-adlib-solo-r4",
+    "sourceStem": "wordless vocal generation",
+    "sourceStartSamples": 1105,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass180Hz, no pitch shift"
+    ],
+    "constantGainDb": -9.562186145730092,
+    "sourcePeakCeilingDbtp": -13,
+    "sourcePeakReductionMeanDb": 0.0,
+    "sourcePeakReductionMaxDb": 0.0,
+    "nextCycleTailHeadBlendMs": 8,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -30.0000337074848,
+    "sourceSongId": "jAGi2fhbm1Nx0Ap0e2Qq",
+    "seed": 202610222,
+    "sourceMp3Sha256": "6f1183dde79503e8c4615b965dde3e29b3e1ee944586967a417ede6407829730",
+    "model": "music_v2_5"
+  },
+  {
+    "name": "loop-lead-riff",
+    "source": "loop-lead-riff-r3",
+    "sourceStem": "other",
+    "sourceStartSamples": 2210,
+    "oneContiguousEightBarPerformance": true,
+    "sourceEq": [
+      "third-order highpass180Hz, no pitch shift"
+    ],
+    "constantGainDb": -3.4131083623708847,
+    "sourcePeakCeilingDbtp": -12,
+    "sourcePeakReductionMeanDb": 0.005121497672476916,
+    "sourcePeakReductionMaxDb": 2.075307332257061,
+    "nextCycleTailHeadBlendMs": 0,
+    "endBridgeSamples": 128,
+    "pitchShiftSemitones": 0,
+    "noteResequencing": false,
+    "preMasterLufs": -29.004798844345157,
+    "sourceSongId": "4pPEMouGP1UjEG1wSEmH",
+    "seed": 202610193,
+    "sourceMp3Sha256": "4baa91e5682c49b697789e6dc732d8fb5fe33bc3111f49df275e9c5a2279fe5f",
+    "model": "music_v2_5"
+  }
+]
+
+Exact successful generation prompts/plans/seeds (including5unused trials):
+[
+  {
+    "name": "loop-bass-bounce-r2",
+    "songId": "FEqu0tviQyZ7UNZgLcdx",
+    "seed": 202610184,
+    "seedReason": null,
+    "sha256": "41dccf952c2e8c6fc2e37c4c08266a76859d486bce575ace5c23636184316cc5",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo bass loop]\n{Solo muted electric bass, bouncy short root-and-octave syncopation with room between plucks, warm round punch, playful simple pocket, no long solo. Eight-bar harmony: six bars E\nminor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo muted electric bass, bouncy short root-and-octave syncopation with room between plucks, warm round punch, playful simple pocket, no long solo."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "chords",
+              "keyboards",
+              "guitar accompaniment",
+              "vocals",
+              "backing band",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610184,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-bass-slap-r2",
+    "songId": "CB6GpYoXjPGp4AV0WLXW",
+    "seed": 202610186,
+    "seedReason": null,
+    "sha256": "cc2e81943a31e70f861afdf8a48d47b057215c1a7b73f05e7db1f1baea0abf32",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo bass loop]\n{Solo electric slap bass, tasteful clean thumb-and-pop funk accents, round low roots and occasional upper-octave pops, sparse tight rhythmic phrase, polished controlled transients.\nEight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo electric slap bass, tasteful clean thumb-and-pop funk accents, round low roots and occasional upper-octave pops, sparse tight rhythmic phrase, polished controlled transients."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "chords",
+              "keyboards",
+              "guitar accompaniment",
+              "vocals",
+              "backing band",
+              "virtuosic bass solo",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610186,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-bass-walk-r3",
+    "songId": "P8SHARtEfz5fHXn5KIui",
+    "seed": 202610185,
+    "seedReason": null,
+    "sha256": "63097f8761c06d074a5fc905f0459fca29eae8ec81e22e5186eebb033b0fe093",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo bass loop]\n{Solo fingerstyle electric bass, a fluid restrained walking funk line moving through chord tones with short stepwise approaches, low register, simple satisfying motion. Eight-bar\nharmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo fingerstyle electric bass, a fluid restrained walking funk line moving through chord tones with short stepwise approaches, low register, simple satisfying motion."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "chords",
+              "keyboards",
+              "guitar accompaniment",
+              "vocals",
+              "backing band",
+              "chromatic jazz solo",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610185,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-beat-break-r3",
+    "songId": "LfzMTzOqZa86170uIEkQ",
+    "seed": 202610183,
+    "seedReason": null,
+    "sha256": "5c32d5d2a3c91278a65c6647b7115d6deaa9e63a5685ef50dc7ca57b6df7b515",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo beat loop]\n{High energy but controlled breakbeat drum variation, snare ghosts and short tom responses, driving closed hats, concise natural fills. Do not stop the pulse or finish the song.\nEight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "High energy but controlled breakbeat drum variation, snare ghosts and short tom responses, driving closed hats, concise natural fills. Do not stop the pulse or finish the song."
+            ],
+            "negative_styles": [
+              "bass",
+              "harmony",
+              "melodic instruments",
+              "singing",
+              "full backing band",
+              "huge cymbal wash",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610183,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-beat-funky-r2",
+    "songId": "6wTRPf50eNjUHwW4o0fG",
+    "seed": 202610181,
+    "seedReason": null,
+    "sha256": "6b3c3851d500f3b4da93e94166715b7a2677cd8d3d0813cba787fcdf3a6855c8",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo beat loop]\n{Tight funky drum kit groove with springy syncopated kick, dry snare backbeat, delicate sixteenth hats and tasteful ghost notes. Stylish danceable forward motion. Eight-bar\nharmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Tight funky drum kit groove with springy syncopated kick, dry snare backbeat, delicate sixteenth hats and tasteful ghost notes. Stylish danceable forward motion."
+            ],
+            "negative_styles": [
+              "bass",
+              "harmony",
+              "melodic instruments",
+              "singing",
+              "full backing band",
+              "drum solo fills",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610181,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-beat-rest-r2",
+    "songId": "JTiyQSCqEkGLfuKW9yFP",
+    "seed": 202610180,
+    "seedReason": null,
+    "sha256": "83495f366ecb5f683a008be73d4d31ea1f9f3c447a3843d240862c34d6dfc5c7",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo beat loop]\n{Airy sparse drum groove, deliberate breathing spaces, restrained kick and crisp snare, occasional closed hat. Natural understated variation with audible space; preserve the steady\npulse. Eight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording\nonly.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Airy sparse drum groove, deliberate breathing spaces, restrained kick and crisp snare, occasional closed hat. Natural understated variation with audible space; preserve the steady",
+              "pulse."
+            ],
+            "negative_styles": [
+              "bass",
+              "harmony",
+              "melodic instruments",
+              "singing",
+              "full backing band",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610180,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-beat-synco-r2",
+    "songId": "dbdqn0yR5V7PU6BX1BKJ",
+    "seed": 202610182,
+    "seedReason": null,
+    "sha256": "f1eb649ba239915f850227ee74ee60535318cf3ade6a73b501b82557690327b4",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo beat loop]\n{Percussive syncopated broken drum groove, short kick anticipations, crisp snare and shuffled-sounding but straight-grid sixteenth hats. Tight pocket and playful accents. Eight-bar\nharmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Percussive syncopated broken drum groove, short kick anticipations, crisp snare and shuffled-sounding but straight-grid sixteenth hats. Tight pocket and playful accents."
+            ],
+            "negative_styles": [
+              "bass",
+              "harmony",
+              "melodic instruments",
+              "singing",
+              "full backing band",
+              "swung tempo",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610182,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-chords-off-r3",
+    "songId": "I0bGnoJ5ZOwnWgKqUX18",
+    "seed": 202610187,
+    "seedReason": null,
+    "sha256": "82243fcb5e42b18e8e179cb9e9b5a9f512ffa1a54e41d71edf52224a1a3eb9f2",
+    "selected": false,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo chords loop]\n{Solo warm electric piano, short mellow offbeat chord comping, clean staccato voicings with space, upper-mid register, understated jazzy funk touch. Eight-bar harmony: six bars E\nminor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo warm electric piano, short mellow offbeat chord comping, clean staccato voicings with space, upper-mid register, understated jazzy funk touch."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "low bass",
+              "guitar",
+              "synthesizer",
+              "vocals",
+              "backing band",
+              "lead solo",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610187,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-chords-off-solo-r4",
+    "songId": "cUCOzrrRFnoZwW7kPEQK",
+    "seed": 202610220,
+    "seedReason": null,
+    "sha256": "e19dfbc4bdf9a782b9b5b5818e74310887420c52b495335ac4a71f8ea197c8a2",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo electric piano]\n{Solo electric piano offbeat chord comping.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "Solo warm electric piano only. Short clean offbeat chord comping in middle register, mellow funky pocket with space. Absolutely no other instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "E minor seventh for six bars",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "synth",
+              "vocals",
+              "backing band",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          },
+          {
+            "text": "[Solo electric piano]\n{Continue offbeat chords. One bar A minor seventh, one bar C major.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "Solo warm electric piano only. Short clean offbeat chord comping in middle register, mellow funky pocket with space. Absolutely no other instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "A minor seventh for one bar, then C major for one bar",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "synth",
+              "vocals",
+              "backing band",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          },
+          {
+            "text": "[Solo electric piano]\n{Continue into the next cycle on E minor seventh, do not stop.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "Solo warm electric piano only. Short clean offbeat chord comping in middle register, mellow funky pocket with space. Absolutely no other instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "E minor seventh for two bars",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "synth",
+              "vocals",
+              "backing band",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610220,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-chords-riff-r3",
+    "songId": "ROCa63V0QFsVVzNia0yP",
+    "seed": 202610188,
+    "seedReason": null,
+    "sha256": "239e5d2d70438f6c642949e886768a967fced752eed6a6981517274b4617d133",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo chords loop]\n{Solo clean muted rhythm guitar, a fresh short chord riff with clipped chord-tone answers, middle register, bright warm percussive comping, sparse enough to accompany a separate\nhook. Eight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording\nonly.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo clean muted rhythm guitar, a fresh short chord riff with clipped chord-tone answers, middle register, bright warm percussive comping, sparse enough to accompany a separate",
+              "hook."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "low bass",
+              "keyboard",
+              "synthesizer",
+              "vocals",
+              "backing band",
+              "distorted guitar",
+              "lead solo",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610188,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-lead-riff-r3",
+    "songId": "4pPEMouGP1UjEG1wSEmH",
+    "seed": 202610193,
+    "seedReason": null,
+    "sha256": "4baa91e5682c49b697789e6dc732d8fb5fe33bc3111f49df275e9c5a2279fe5f",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo lead loop]\n{Solo delicate bell-like electric lead keyboard, a beautiful concise high-register three-note call-and-response hook, very few notes with room for the original guitar melody, warm\nclean rounded sound, no solo noodling. Eight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo\nexactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo delicate bell-like electric lead keyboard, a beautiful concise high-register three-note call-and-response hook, very few notes with room for the original guitar melody, warm",
+              "clean rounded sound, no solo noodling."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "chord accompaniment",
+              "guitar",
+              "vocals",
+              "backing band",
+              "dense runs",
+              "harsh or thin timbre",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610193,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-synth-arp-r2",
+    "songId": "SvvZobXvYYRfcQAZoDen",
+    "seed": 202610189,
+    "seedReason": null,
+    "sha256": "fec36ba7a56ffdb1b9b46d74dc91a9521ac412c4af1c03a55f40d7976686936d",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo synth loop]\n{Solo silky analog pluck synthesizer, a light flowing chord-tone arpeggio in upper-mid register, soft rounded transient, small evolving accents, airy polished texture, no heavy\nbass. Eight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording\nonly.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo silky analog pluck synthesizer, a light flowing chord-tone arpeggio in upper-mid register, soft rounded transient, small evolving accents, airy polished texture, no heavy",
+              "bass."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass line",
+              "guitar",
+              "piano",
+              "vocals",
+              "backing band",
+              "harsh digital timbre",
+              "big lead",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610189,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-synth-riff-r3",
+    "songId": "ZMnywYskz7LfEbx53iq3",
+    "seed": 202610190,
+    "seedReason": null,
+    "sha256": "c4622b67bc573994d7ed0db049c47dfc94b9c534a19d803c1417df9e7a9302a4",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo synth loop]\n{Solo rounded vintage analog synthesizer, a sparse two-bar rhythmic motif in mid-to-high register, warm expressive and memorable but restrained, short smooth notes and space.\nEight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo rounded vintage analog synthesizer, a sparse two-bar rhythmic motif in mid-to-high register, warm expressive and memorable but restrained, short smooth notes and space."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass line",
+              "guitar",
+              "piano",
+              "vocals",
+              "backing band",
+              "aggressive buzz",
+              "huge lead solo",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610190,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-vocal-adlib-r3",
+    "songId": "TrXL58zeAG4lBBRBM6bh",
+    "seed": 202610192,
+    "seedReason": null,
+    "sha256": "7ae21c8d27b00c468aa1f988d12a8a1332cf9dda14afcdc1fe9a9afcaeff7105",
+    "selected": false,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo vocal loop]\n{Solo wordless human humming and ah-oh ad-libs, a different airy high-register answering phrase with short tasteful ornaments and lots of space. No words or lyrics, warm expressive\nnatural human voice, controlled short ambience. Eight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep this harmony and the reference\ntempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo wordless human humming and ah-oh ad-libs, a different airy high-register answering phrase with short tasteful ornaments and lots of space. No words or lyrics, warm expressive",
+              "natural human voice, controlled short ambience."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "instruments",
+              "bass",
+              "backing band",
+              "spoken words",
+              "intelligible lyrics",
+              "choir wall",
+              "full sung song",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610192,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-vocal-adlib-solo-r4",
+    "songId": "jAGi2fhbm1Nx0Ap0e2Qq",
+    "seed": 202610222,
+    "seedReason": null,
+    "sha256": "6f1183dde79503e8c4615b965dde3e29b3e1ee944586967a417ede6407829730",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo wordless a cappella]\nAh oh... hey... ah oh...",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "One real-sounding human voice alone, a cappella. Airy wordless humming and ah-oh answering ad-libs in the upper register, expressive short phrases and space. No words. No instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "E minor seventh for six bars",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "instruments",
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "backing track",
+              "intelligible lyrics",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          },
+          {
+            "text": "[Solo wordless a cappella]\nAh... oh...",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "One real-sounding human voice alone, a cappella. Airy wordless humming and ah-oh answering ad-libs in the upper register, expressive short phrases and space. No words. No instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "A minor seventh for one bar, then C major for one bar",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "instruments",
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "backing track",
+              "intelligible lyrics",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          },
+          {
+            "text": "[Solo wordless a cappella]\nAh oh... ah...",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "One real-sounding human voice alone, a cappella. Airy wordless humming and ah-oh answering ad-libs in the upper register, expressive short phrases and space. No words. No instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "E minor seventh for two bars",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "instruments",
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "backing track",
+              "intelligible lyrics",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610222,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-vocal-adlib-strings-r5",
+    "songId": "RkIqidKsOMHSfGgpfHxR",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "sha256": "1e07b54f09e6476727b12341f0cffeaeb6aba36ae42d680b3f9d9c2d8eef6e95",
+    "selected": false,
+    "request": {
+      "model_id": "music_v2_5",
+      "prompt": "An isolated small pizzicato string ensemble, no other instruments. A light expressive high-register answering funk phrase of short separated notes and little ornaments. 128 BPM, 4/4, E minor, A440. Eight-bar loop plus two continuing bars, exactly18.75seconds. Play only E and G, the two common chord tones of Em7 for six bars, Am7 for one bar and C major for one bar, then repeat. Stylish restrained syncopation and space, different from a brass hook. No drums, no bass, no guitar, no piano, no synthesizer, no singing, no backing track. Begin immediately on the downbeat and continue playing at the end, no fade-out or final cadence. Rich natural strings, warm and elegant, no dramatic orchestral swell.",
+      "music_length_ms": 18750,
+      "force_instrumental": true,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-vocal-hook-brass-r5",
+    "songId": "5IVRgH2BshcpUNaWHfGD",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "sha256": "50b8ba8405fc54bb46caa4ec4a4553f02b499dc3ab6d63ab2519ec1dfafa5db5",
+    "selected": false,
+    "request": {
+      "model_id": "music_v2_5",
+      "prompt": "An isolated solo muted brass section, no other instruments. A warm catchy syncopated funk hook of short separated stabs. 128 BPM, 4/4, E minor, A440. Eight-bar loop plus two continuing bars, exactly18.75seconds. Play only the two common chord tones E and G in the upper middle register, beautifully phrased with generous breathing space. These two notes fit the accompaniment Em7 for six bars, Am7 for one bar, C major for one bar, then repeat. No drums, no bass, no guitar, no piano, no synthesizer, no singing, no backing track. Start on a downbeat, no count-in. Keep playing through the end; no fade-out, no final cadence. Polished natural performance, smooth rounded attack, restrained dynamics.",
+      "music_length_ms": 18750,
+      "force_instrumental": true,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-vocal-hook-r2",
+    "songId": "qOnYRAl1FtlrKm81lzGM",
+    "seed": 202610191,
+    "seedReason": null,
+    "sha256": "5c2f919af76433dce86f597e38d98d25da8939a6fd5907c4dbbf28d801b6858d",
+    "selected": false,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Eight-bar solo vocal loop]\n{Solo wordless human vocal chops, a warm airy oh-ah-hey melodic hook with few short syllables and generous breathing space. No words or lyrics. Natural human timbre, tasteful light\nroom ambience, high register chord tones, intimate polished funk-pop hook. Eight-bar harmony: six bars E minor seventh, then one bar A minor seventh, then one bar C major. Keep\nthis harmony and the reference tempo exactly. Instrument recording only.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "128 BPM exact steady tempo",
+              "4/4 straight sixteenth funky dance-pop groove",
+              "E minor, A=440 tuning",
+              "exactly eight bars, one chord per bar: Em7 | Em7 | Em7 | Em7 | Em7 | Em7 | Am7 | C",
+              "match the reference pocket and harmonic timing while performing the requested solo instrument only",
+              "start immediately on the first downbeat, no pickup or count-in",
+              "repeatable phrase, continue into the loop instead of a fade-out or ending cadence",
+              "full polished professional instrument recording, natural musical phrasing",
+              "Solo wordless human vocal chops, a warm airy oh-ah-hey melodic hook with few short syllables and generous breathing space. No words or lyrics. Natural human timbre, tasteful light",
+              "room ambience, high register chord tones, intimate polished funk-pop hook."
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "instruments",
+              "bass",
+              "backing band",
+              "spoken words",
+              "intelligible lyrics",
+              "choir wall",
+              "full sung song",
+              "tempo change",
+              "key change",
+              "silence at the beginning",
+              "fade out",
+              "count-in",
+              "click track",
+              "final ending"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610191,
+      "store_for_inpainting": true
+    }
+  },
+  {
+    "name": "loop-vocal-hook-solo-r4",
+    "songId": "1BX1Xwgt37TQj1c7mjNY",
+    "seed": 202610221,
+    "seedReason": null,
+    "sha256": "87efece90dd627e1b446c2e8e1eaf2ca703229bf1c260348a9c6e3d75a390c5b",
+    "selected": true,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo wordless a cappella]\nAh oh... hey... ah oh...",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "One real-sounding human voice alone, a cappella. Warm catchy wordless ah-oh-hey hook in the upper register. Few syllables and clear breathing space. No words. No instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "E minor seventh for six bars",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "instruments",
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "backing track",
+              "intelligible lyrics",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          },
+          {
+            "text": "[Solo wordless a cappella]\nAh... oh...",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "One real-sounding human voice alone, a cappella. Warm catchy wordless ah-oh-hey hook in the upper register. Few syllables and clear breathing space. No words. No instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "A minor seventh for one bar, then C major for one bar",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "instruments",
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "backing track",
+              "intelligible lyrics",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          },
+          {
+            "text": "[Solo wordless a cappella]\nAh oh... ah...",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "One real-sounding human voice alone, a cappella. Warm catchy wordless ah-oh-hey hook in the upper register. Few syllables and clear breathing space. No words. No instruments.",
+              "128 BPM exact, 4/4, straight sixteenth funky dance-pop pocket",
+              "E minor, A440 tuning",
+              "E minor seventh for two bars",
+              "continuous natural performance, start on downbeat, no count-in, no introduction, no fade-out",
+              "dry intimate isolated recording, clear warm professional timbre"
+            ],
+            "negative_styles": [
+              "instruments",
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "backing track",
+              "intelligible lyrics",
+              "key change",
+              "tempo change",
+              "ending cadence",
+              "fade out"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610221,
+      "store_for_inpainting": true
+    }
+  }
+]
+
+--- Prior production history ---
+FULL-PACK PRODUCTION PROGRESS /2026-10-18KST /DEV-20261018-009
+User explicitly requested all remaining14loops.14new15-second Eleven music_v2_5 generations received, not yet accepted as final isolated loops. Prompts/seeds/song-ids/hashes/Creator subscription and terms checked2026-10-18 recorded in docs/game/evidence/echo-fullpack-20261018/. Existing source/reference rights below retained. Official separation of these14newMP3payloads was rejected before execution by automatic approval review pending explicit consent; no new separation POST or bypass. Existing36delivery files and pending14 remain unchanged. No new public audition or game deployment in this progress update.
+
+AUDITION CONTINUITY UPDATE /2026-10-18KST /DEV-20261018-006 /ISS-20261018-006
+The earlier full-review montage contained half-second silent separators; these were removed in a new uninterrupted render on one global loop timeline. Existing36OGG/M4A files are byte-identical to the prior delivery. The earlier54s preview did not contain separators; the user's exact reported timestamp remains unknown. No claim that automated energy checks establish musical approval.
+New project audition links: https://github.com/jy-jiny/giralab-web/releases/download/echo-continuous-20261018/09-continuous-loop-60s.mp3 and https://github.com/jy-jiny/giralab-web/releases/download/echo-continuous-20261018/10-continuous-full-review.mp3
+New prompt/seed/paid generation/reference upload/separation: none. Existing selected Eleven source, Creator plan at original generation, prompt/seed-null and terms-checked2026-10-18 records below are retained. No new legal/plan verification is implied. Composition/performance remains Eleven Music's. Processing only continuous playback of existing performances,20ms state gain crossfades,3ms clip-edge fades and fixed whole-clip-0.3dB headroom; no per-loop-cycle fade or silent separator. Notes/pitch/loop assets/game code unchanged. QA/publication evidence: docs/game/evidence/echo-continuity-20261018/. Pack remains unapproved/inactive; exact user-reported continuity and phone playback remain unverified.
+
 GiraLab PROJECT ECHO — original-performance stage1 delivery update /2026-10-18KST /DEV-20261018-005
 
 CURRENT STATUS: stage1 technical delivery complete,18sounds/36OGG+M4A files. Four recipe layers ready; remaining14recipes NOT started. approved=false, not activated, user musical approval of this final stage1 still pending. The user explicitly replied "그래" to relaxing literal first-bar recipe order while retaining recipe-to-layer mapping and preserving the natural original performance. This supersedes historical waiting/strict-order statements below; game recipe token sequences, layer assignments and drop rules remain unchanged.
