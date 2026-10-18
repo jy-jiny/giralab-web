@@ -1,16 +1,20 @@
 {
   "version": 3,
-  "pack": "giralab-funk-a",
-  "title": "GiraLab Funk A (sample-sequenced)",
-  "bpm": 117.6,
+  "pack": "eleven-funk-01",
+  "title": "Eleven Funk 01 · 원곡 연주 보존 1단계",
+  "bpm": 127.99922600619195,
   "beatsPerBar": 4,
-  "loopBars": 4,
-  "key": "A dorian",
+  "loopBars": 8,
+  "key": "E minor",
   "chords": [
+    "Em7",
+    "Em7",
+    "Em7",
+    "Em7",
+    "Em7",
+    "Em7",
     "Am7",
-    "D9",
-    "Am7",
-    "Bm7 E7"
+    "C"
   ],
   "bed": "bed.ogg",
   "main": "beat-main.ogg",
@@ -28,73 +32,17 @@
       "layer": "beat",
       "file": "loop-beat-basic.ogg"
     },
-    "loop-beat-rest": {
-      "layer": "beat",
-      "file": "loop-beat-rest.ogg"
-    },
-    "loop-beat-funky": {
-      "layer": "beat",
-      "file": "loop-beat-funky.ogg"
-    },
-    "loop-beat-synco": {
-      "layer": "beat",
-      "file": "loop-beat-synco.ogg"
-    },
-    "loop-beat-break": {
-      "layer": "beat",
-      "file": "loop-beat-break.ogg"
-    },
     "loop-bass-pulse": {
       "layer": "bass",
       "file": "loop-bass-pulse.ogg"
-    },
-    "loop-bass-bounce": {
-      "layer": "bass",
-      "file": "loop-bass-bounce.ogg"
-    },
-    "loop-bass-walk": {
-      "layer": "bass",
-      "file": "loop-bass-walk.ogg"
-    },
-    "loop-bass-slap": {
-      "layer": "bass",
-      "file": "loop-bass-slap.ogg"
     },
     "loop-chords-stab": {
       "layer": "chords",
       "file": "loop-chords-stab.ogg"
     },
-    "loop-chords-off": {
-      "layer": "chords",
-      "file": "loop-chords-off.ogg"
-    },
-    "loop-chords-riff": {
-      "layer": "chords",
-      "file": "loop-chords-riff.ogg"
-    },
     "loop-synth-pad": {
       "layer": "synth",
       "file": "loop-synth-pad.ogg"
-    },
-    "loop-synth-arp": {
-      "layer": "synth",
-      "file": "loop-synth-arp.ogg"
-    },
-    "loop-synth-riff": {
-      "layer": "synth",
-      "file": "loop-synth-riff.ogg"
-    },
-    "loop-vocal-hook": {
-      "layer": "vocal",
-      "file": "loop-vocal-hook.ogg"
-    },
-    "loop-vocal-adlib": {
-      "layer": "vocal",
-      "file": "loop-vocal-adlib.ogg"
-    },
-    "loop-lead-riff": {
-      "layer": "lead",
-      "file": "loop-lead-riff.ogg"
     }
   },
   "fills": {
@@ -112,6 +60,25 @@
     "mid": "tap-mid.ogg",
     "high": "tap-high.ogg"
   },
-  "activatedFrom": "audio-candidates/echo/giralab-funk-a",
-  "approved": false
+  "approved": false,
+  "sourceSongId": "zCVhsAvDC8fGdMQm1kT0",
+  "sampleRate": 44100,
+  "loopSamples": 661504,
+  "pendingLoops": [
+    "loop-beat-rest",
+    "loop-beat-funky",
+    "loop-beat-synco",
+    "loop-beat-break",
+    "loop-bass-bounce",
+    "loop-bass-walk",
+    "loop-bass-slap",
+    "loop-chords-off",
+    "loop-chords-riff",
+    "loop-synth-arp",
+    "loop-synth-riff",
+    "loop-vocal-hook",
+    "loop-vocal-adlib",
+    "loop-lead-riff"
+  ],
+  "activatedFrom": "audio-candidates/echo/eleven-funk-01"
 }

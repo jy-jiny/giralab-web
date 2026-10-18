@@ -1,0 +1,2121 @@
+GiraLab PROJECT ECHO — original-performance stage1 delivery update /2026-10-18KST /DEV-20261018-005
+
+CURRENT STATUS: stage1 technical delivery complete,18sounds/36OGG+M4A files. Four recipe layers ready; remaining14recipes NOT started. approved=false, not activated, user musical approval of this final stage1 still pending. The user explicitly replied "그래" to relaxing literal first-bar recipe order while retaining recipe-to-layer mapping and preserving the natural original performance. This supersedes historical waiting/strict-order statements below; game recipe token sequences, layer assignments and drop rules remain unchanged.
+
+SOURCE AND CREATIVE WORK: Existing ElevenLabs Eleven Music music_v2_5 source song-id zCVhsAvDC8fGdMQm1kT0, user-selected original generated2026-10-17 under Creator. Original MP3 SHA2560865a4f82e57db7424a2e5899edeb65f11f6580cba96db83684a6fba452531a2. Original prompt: An exuberant instrumental dance-pop track with a fast, springy groove, playful funk energy and an instantly memorable melodic hook. Bright, stylish, feel-good and irresistibly danceable. Punchy tight rhythm, satisfying bass movement, a sense of lift and a natural musical journey. Rich full-bodied polished production. No vocals.
+Original seed null because prompt and seed were mutually exclusive; no response seed was supplied. Official six_stems_v1 separation from2026-10-17 reused; ZIP SHA256fdee945a9023aa396b5cfe08cf89c420e14ad22d940d546572fb8e30a915826e. Stem MP3s align after removing1105padding samples. Only the continuous source30.000000-45.000090703second phrase is used; all note order, pitch and musical timing are retained. No new Eleven generation, reference upload, stem separation, API charge, MIDI, oscillator/synthetic instrument waveform, note resequencing, pitch correction or musical time stretch in this update. Composition/performance remains Eleven Music's work.
+
+SOURCE MAPPING: bed from native bass30-180Hz band; basic beat from native kit at lower fixed level and in phase with main; bass recipe from native bass with0.90of the shared30-180Hz band removed to avoid doubling its sub; chords recipe preserves the native guitar hook/comp plus very weak piano; synth slot uses the original other-group texture. The other group is NOT claimed to be a perfectly isolated pure synthesizer. Native full drum kit retained for main; no new clap/sub-kick events were synthesized or hand sequenced. No vocal or vocal replacement adopted in stage1; vocal recipes remain phase2.
+
+TECHNICAL PROCESSING: source trims, zero-phase overlap EQ (guitar150Hz highpass, bass band separation), mild source peak ceilings (native drums0.62,guitar0.40,2ms lookahead/60ms release, auto-level disabled), fixed balances, linked delivery peak mastering2ms anticipation/35ms release. Linked control averages0.17335dB, max2.36137dB;3.8517% of samples exceed1dB reduction. This is transparent delivery headroom, not new notes or phrase gating. Last128samples bridge loop boundary. A decoded AAC guitar seam initially jumped0.0099847 versus0.008 limit;4ms leading/6ms trailing fade to zero fixed it to0.000290M4A/0.000257OGG without altering sample length. All persistent loops exactly661504samples after BOTH codecs decode,44.1k stereo,8bars,export127.999226BPM/source128.012225BPM,actual kick median127.949710BPM. Key Eminor,Em7x6/Am7/C. Source extensions/passing tones are retained; no pitch forcing.
+
+QA:18sounds/36files passed format, length, finite, truepeak and loop seam tests; unchanged24effect/tap files SHA-verified against their earlier pitch/impact/unpitched tests. Actual16first-bar beats include attack/range indicators; literal order is descriptive after explicit user waiver. All32subset/main states per format passed;30random3/4-layer draws passed levels/truepeak/chroma. Eight unique random states appeared; repeats are explicit because only four layers exist, with all32states supplementing coverage. Harmonic peaks were compared with same-time native source combinations, retaining native passing tones/extensions. Min source-profile cosine0.96645,max newly outside-key ratio0.02271. Full-open/level3 pre-game-bus reference includes engine bed0.7/beat0.5 duck and1.12main lift: OGG-15.257575 to-12.926298LUFS,2.331276LU contrast;M4A-15.258810 to-12.933897LUFS,2.324913LU contrast;worst all-state truepeak-1.114937dBTP. The engine's lower-level0.72/lowpass2200Hz mix and bus compressor are separate; exact in-game output/physical-phone playback not verified or activated. The QA records indicative lower-level mixes instead of claiming they equal the delivery reference.
+
+RIGHTS: Source generation plan Creator (individual-use), reusing existing authorized outputs; no claim of a fresh account subscription check today. Music Terms https://elevenlabs.io/music-terms checked2026-10-18, page updated09October2026. Existing individual/Indie Game eligibility and revenue monitoring from earlier rights record remain applicable. No artist, songwriter, song, album, publisher or label names in prompts. SFX source requests/seeds and earlier exact generation receipts are retained in this file's history. This is GiraLab project music, not a sample/music library or a third-party reuse license.
+
+PUBLIC AUDITIONS: Original requested8-3public HTTPS delivery after approved first-bar revision;8project audition MP3s only, no raw loop/stem collection or internal records uploaded. Full134.08585s review preserves required order; same-layer replacement comparison is phase2 after stage1 approval.20ms state crossfades and3ms clip-edge fades are playback preparation, no source-note edits. Short54.37533s preview uses an extra fixed-0.3dB codec headroom after initial MP3 decoded peak-0.9916dBTP; final-1.72654dBTP. Every public MP3 verified with anonymous Android UA HTTPS200, bytes and SHA256. No physical-device playback claim. Game code/public audio/activation/app version1.6.21code100/APK/fixed preview/production game/server/DB unchanged.
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/00-full-review.mp3
+3219574bytes /SHA256a51c035d3e32b3a6af4e6d414a9f6c273d0917dd85ea70120884f95f48883046 /134.085850s /decodedTP-1.333852dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/01-bed-alone.mp3
+361899bytes /SHA256e1a14df1f07f4edaaeca0c1a322cd1052b77f1dd979b96a4e3ea9be0288b0fa8 /15.000091s /decodedTP-14.076143dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/02-build-up.mp3
+721804bytes /SHA256ebd4fa63442885424606864c7aba07f9cc5ca60779ec813a7f5fd1c58fde25ca /30.000181s /decodedTP-2.693817dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/04-riser-main.mp3
+766914bytes /SHA256b648d0fe8e17ca27d4ce0642b59ec052aed20db5c16c1c9daa7bec4ee6739834 /31.875193s /decodedTP-1.416299dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/05-random-combinations.mp3
+1081628bytes /SHA256a63db0d352418c87a19677fcb9353f4e9e4eb0bf3d3ca88de10eccbd14fb1428 /45.000272s /decodedTP-3.932612dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/06-taps-fills.mp3
+234649bytes /SHA25637aa05bb95c04e9409ac826d3f2b9c391eb2ddd78f812ec45913e485dbe66e77 /9.710113s /decodedTP-2.453580dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/07-layer-solos.mp3
+721785bytes /SHA2564f28730854eb089af90baf196588906dc3e0e54f8cebd5ca279b9cd68bda5f32 /30.000181s /decodedTP-5.296234dBTP
+https://github.com/jy-jiny/giralab-web/releases/download/echo-native-stage1-20261018/08-musical-preview.mp3
+1306701bytes /SHA2561479f733bf32edb4f1aa434decedcb912d3e549552af1a63041060bb540a6d5f /54.375329s /decodedTP-1.726542dBTP
+
+STEM SOURCE HASHES AND PREPARATION
+{
+  "sourceSongId": "zCVhsAvDC8fGdMQm1kT0",
+  "sourceRangeSeconds": [
+    30,
+    45.000090702947844
+  ],
+  "loopSamples": 661504,
+  "sourceStems": [
+    {
+      "stem": "drums",
+      "file": "/mnt/c/Users/nahap/Documents/GiraLab/outputs/echo-eleven-unfold-20261017/raw/stems-eleven-whole-01/drums.mp3",
+      "sha256": "83c36cd3b73d877adcd0bbf68d1659054da61ed05bdc1336f858effc50e4258c",
+      "removedPaddingSamples": 1105,
+      "sourceRangeSeconds": [
+        30,
+        45.000090702947844
+      ],
+      "rmsDbfs": -19.806650558294795
+    },
+    {
+      "stem": "bass",
+      "file": "/mnt/c/Users/nahap/Documents/GiraLab/outputs/echo-eleven-unfold-20261017/raw/stems-eleven-whole-01/bass.mp3",
+      "sha256": "8f2af83d16a93198816800ab62337fec9caa6552666719808a09bbdcfcbb584e",
+      "removedPaddingSamples": 1105,
+      "sourceRangeSeconds": [
+        30,
+        45.000090702947844
+      ],
+      "rmsDbfs": -22.698978667118524
+    },
+    {
+      "stem": "guitar",
+      "file": "/mnt/c/Users/nahap/Documents/GiraLab/outputs/echo-eleven-unfold-20261017/raw/stems-eleven-whole-01/guitar.mp3",
+      "sha256": "034f38856a80467a55b71ce6524beccfe1ec8e6708b6a79a629cda398b596385",
+      "removedPaddingSamples": 1105,
+      "sourceRangeSeconds": [
+        30,
+        45.000090702947844
+      ],
+      "rmsDbfs": -25.330581474316176
+    },
+    {
+      "stem": "other",
+      "file": "/mnt/c/Users/nahap/Documents/GiraLab/outputs/echo-eleven-unfold-20261017/raw/stems-eleven-whole-01/other.mp3",
+      "sha256": "9c4220be4aa15b05069ea9892351b1684967bd3489d5a30a8fdf0d78c45ba6aa",
+      "removedPaddingSamples": 1105,
+      "sourceRangeSeconds": [
+        30,
+        45.000090702947844
+      ],
+      "rmsDbfs": -28.3429938558224
+    },
+    {
+      "stem": "piano",
+      "file": "/mnt/c/Users/nahap/Documents/GiraLab/outputs/echo-eleven-unfold-20261017/raw/stems-eleven-whole-01/piano.mp3",
+      "sha256": "aea6ab35ea7d40f3d93d47617a496f34472db1eccae2bcb42b64238d5b51a230",
+      "removedPaddingSamples": 1105,
+      "sourceRangeSeconds": [
+        30,
+        45.000090702947844
+      ],
+      "rmsDbfs": -41.16309929741618
+    }
+  ],
+  "technicalPreparation": {
+    "bed": "30-180Hz zero-phase bandpass of continuous native bass",
+    "loop-beat-basic": "native continuous drum kit at0.36 relative gain; same hits as original, no event deletion",
+    "loop-bass-pulse": "native continuous bass minus0.60 of its30-180Hz band for less overlap with bed; E2 fundamental remains",
+    "loop-chords-stab": "native continuous guitar plus very weak piano, original timing and octave unchanged",
+    "loop-synth-pad": "native continuous other group, timbre identity is not asserted to be a perfectly isolated synth",
+    "beat-main": "native continuous full drum kit; same phase as basic beat",
+    "seam": "last128samples bridge to first sample only",
+    "noteRearrangement": false,
+    "pitchOrTimeCorrection": false,
+    "waveformSynthesis": false
+  }
+}
+
+--- Prior source prompts, seeds, failures and rights history (preserved) ---
+2026-10-17 KST — explicit public audition consent resolved / DEV-20261017-006
+
+Latest human reply "동의" explicitly authorizes publication of the three prepared comparison MP3s listed in the preceding question. The previous automatic review rejection is historical and resolved by this consent; no indirect bypass. Only these three project auditions were published to jy-jiny/giralab-web release echo-eleven-reference-review-20261017:
+https://github.com/jy-jiny/giralab-web/releases/download/echo-eleven-reference-review-20261017/01-original-preserved-direction.mp3
+54.375329 seconds / 1306728 bytes / SHA256 334a0255ae3014234ec24f251719672ba728ab91d25d02b23ae2ee31af4e95fb / unauthenticated Android-UA HTTPS200, bytes and SHA256 verified. Physical phone playback not verified.
+https://github.com/jy-jiny/giralab-web/releases/download/echo-eleven-reference-review-20261017/02-recipe-generation-check.mp3
+33.000181 seconds / 793902 bytes / SHA256 c5fc9eb05cb653dad77108774f76e9363682cd6a45612da1fd30faa2d71fce79 / unauthenticated Android-UA HTTPS200, bytes and SHA256 verified. Physical phone playback not verified.
+https://github.com/jy-jiny/giralab-web/releases/download/echo-eleven-reference-review-20261017/03-bed-solo.mp3
+15.000091 seconds / 361908 bytes / SHA256 4dabae34b416d91a548b2a92b69ea93573750d3307004ba6c9adc00f62cbf25b / unauthenticated Android-UA HTTPS200, bytes and SHA256 verified. Physical phone playback not verified.
+No new generation, reference upload, stem separation, source editing, plan change or extra generation charge. All original prompts/seeds/Creator/Music Terms date2026-10-17 and provenance remain in the earlier record. No raw loop/stem library or internal document was publicly uploaded. Original-preserved direction is an alternative discussion audition; failed-generation comparison contains unaccepted outputs. Bed solo is a partial audition. All are AI-generated source music from ElevenLabs for GiraLab project review, not a third-party sample license.
+The pack remains14sounds/28files,4recipe loops missing,approved=false/stage1Complete=false. Publication consent is not a change of first-bar recipe rules, pack approval, or game activation. Previous pending-publication statements below are history; current public verification is docs/game/evidence/echo-conditioned-20261017/publication.json.
+
+--- Previous production history (preserved) ---
+2026-10-17 KST — reference-consent and conditioned-generation update / DEV-20261017-005
+
+CURRENT STATUS: explicit user reply "동의" authorized the selected original30-45seconds upload to ElevenLabs /v1/music/upload. That exact WAV (SHA80464b33a18ef5b2dc5e5eb0ba4ad1d796896d4d0520dbff292d16acd51bab9d) was registered successfully, HTTP200; stored song-id 34dUVxDbu6ouH17yRCfM_upload. This resolves the historical upload block below. No additional stem or comparison-audio uploads to ElevenLabs.
+Twelve 15-second recipe recordings were generated with music_v2_5 and music_v2 using that reference: two-bar+six-bar plan, a simpler single-chunk solo plan, then independent two-bar opening+conditioned continuation. All HTTP200, all twelve unaccepted after actual first-bar/range/harmony screening. Generation success is not delivery success. The four recipe files are still absent;14sounds/28files remain, stage1Complete=false, approved=false. No first-bar-rule waiver, no remaining14 recipes, no activation.
+Exact composition plans, seeds202610170 through202610181, returned song IDs, source provenance and hashes are recorded below. Model seeds are advisory and do not guarantee exact reproduction. The original source remains music_v2_5 song-id zCVhsAvDC8fGdMQm1kT0; official six_stems_v1 separation from10/17 is reused, no new separation. Source30-45seconds:128.012225BPM measured,127.999226BPM export, E minor,Em7x6/Am7/C,661504samples.
+Creator active,22756->25434 of131000 credits observed (+2678 including reference upload and twelve generations; usage updates can be delayed). No purchase, overage or plan change. Music Terms https://elevenlabs.io/music-terms rechecked2026-10-17, page updated09October2026. Creator individual-use eligibility and Indie Game revenue conditions from the earlier rights record still apply. No artists, song titles, publishers or labels in prompts. Output used only for GiraLab project auditions/internal preparation, not a third-party sample library.
+No note rearrangement, MIDI, oscillator/code waveform synthesis, pitch correction or musical time stretching. Audition edits are contiguous excerpts, source stem layering with common continuous phase, fixed gain, codecs, and an existing unpitched riser. The source-preserved direction includes original guitar/other/piano and is explicitly an alternative comparison, not a replacement for the four missing recipe loops or an approved rule change.
+Three MP3s prepared and decoded: source-preserved54.375s (-16.680LUFS,-1.905dBTP), failed-generation comparison33.000s(-16.551LUFS,-1.866dBTP), bed15.000s(-15.265LUFS,-5.161dBTP). The public-upload process was rejected before execution: automatic approval review requires explicit disclosure consent for these incomplete comparison files. No new MP3 published; pending human response. Earlier public taps/fills link remains valid. No full-stage1 minus12LUFS/contrast/30-combination validation is claimed.
+Prior consent-waiting statements below are historical, not current. The new publication consent is separate from the resolved ElevenLabs reference-registration consent.
+
+EXACT NEW GENERATION REQUESTS AND RECEIPTS
+[
+  {
+    "name": "conditioned-beat-r1",
+    "requestedAt": "2026-10-17T22:30:59.394441+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Instrumental: solo drums]\n{Bar 1: kick on ONE, closed hi-hat on TWO, snare on THREE, silent FOUR. Bar 2: same sparse pattern.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "dry punchy electronic drum-kit stem only",
+              "first bar: exactly three separate quarter-note hits: kick, closed hi-hat, snare, rest",
+              "at 0.000 seconds one kick only; at 0.46875 one closed hi-hat only; at 0.93750 one snare only; 1.40625 to 1.87500 silence",
+              "linear single-drum-at-a-time playing, each dry hit decays before the next beat",
+              "bars one and two: E minor seventh, Em7"
+            ],
+            "negative_styles": [
+              "vocals",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "melody",
+              "four-on-the-floor",
+              "backbeat on two and four",
+              "offbeat hi-hats",
+              "eighth notes",
+              "crash cymbals",
+              "additional hits in the first bar"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Continue the same isolated instrument with natural subtle variation. Six remaining bars: Em7, Em7, Em7, Em7, Am7, C major.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "dry punchy electronic drum-kit stem only",
+              "same tempo and phase as preceding two bars",
+              "remaining bars 3 to 6 Em7, bar 7 Am7, bar 8 C major",
+              "only chord tones, warm springy restrained funk"
+            ],
+            "negative_styles": [
+              "vocals",
+              "bass",
+              "guitar",
+              "piano",
+              "synth",
+              "melody",
+              "four-on-the-floor",
+              "backbeat on two and four",
+              "offbeat hi-hats",
+              "eighth notes",
+              "crash cymbals",
+              "additional hits in the first bar"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610170,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610170,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "3iRSCVJ03ciB90eJFcSg",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "746adbb6c77adc2e6f5ff64cb4a5dd4d9380b350e74e6d0932b825452879c585",
+    "file": "conditioned-beat-r1.mp3",
+    "finishedAt": "2026-10-17T22:31:04.588640+09:00"
+  },
+  {
+    "name": "conditioned-bass-r1",
+    "requestedAt": "2026-10-17T22:30:59.394441+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Instrumental: solo bass]\n{Bar 1: E2, E2, rest, rest. Two short quarter notes then two beats of complete silence. Bar 2: repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "solo warm muted electric bass, round short staccato low register E2 to E3",
+              "first bar two low E2 plucks only on beats one and two, silent beats three and four",
+              "first note at 0.000, second note at 0.46875, both short and muted, complete silence from 0.93750 to 1.87500",
+              "bass only, root-based understated pulse supporting an existing sub bass bed",
+              "bars one and two: E minor seventh, Em7"
+            ],
+            "negative_styles": [
+              "vocals",
+              "drums",
+              "percussion",
+              "guitar chords",
+              "piano",
+              "synth pad",
+              "full band",
+              "high lead",
+              "busy slap fills",
+              "continuous first-bar notes"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "medium"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Continue the same isolated instrument with natural subtle variation. Six remaining bars: Em7, Em7, Em7, Em7, Am7, C major.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "solo warm muted electric bass, round short staccato low register E2 to E3",
+              "same tempo and phase as preceding two bars",
+              "remaining bars 3 to 6 Em7, bar 7 Am7, bar 8 C major",
+              "only chord tones, warm springy restrained funk"
+            ],
+            "negative_styles": [
+              "vocals",
+              "drums",
+              "percussion",
+              "guitar chords",
+              "piano",
+              "synth pad",
+              "full band",
+              "high lead",
+              "busy slap fills",
+              "continuous first-bar notes"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610171,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610171,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "Zkzifc1VyP1F1o4TQunL",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "a22cf82e2a7edfb59ab2e71a6dcd7163681c42301b86d9a45ca87dd3d5512536",
+    "file": "conditioned-bass-r1.mp3",
+    "finishedAt": "2026-10-17T22:31:04.831070+09:00"
+  },
+  {
+    "name": "conditioned-chords-r1",
+    "requestedAt": "2026-10-17T22:31:04.733226+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Instrumental: solo chord stabs]\n{Bar 1: mid-register Em7 stab on ONE, mid-register Em7 stab on TWO, higher Em7 voicing on THREE, rest on FOUR. Bar 2: repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "solo clean muted electric guitar chord stabs, warm bright premium funk tone",
+              "first bar exactly three short attacks: middle, middle, high, silence",
+              "mid E4 G4 B4 D5 voicing on beats one and two, higher G5 B5 D6 voicing on beat three, complete silence beat four",
+              "tight warm staccato chords, smooth musical development after the opening recipe",
+              "bars one and two: E minor seventh, Em7"
+            ],
+            "negative_styles": [
+              "vocals",
+              "drums",
+              "bass line",
+              "percussion",
+              "piano",
+              "orchestra",
+              "full band",
+              "distorted guitar",
+              "eighth-note strumming",
+              "fourth-beat first-bar attack"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "medium"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Continue the same isolated instrument with natural subtle variation. Six remaining bars: Em7, Em7, Em7, Em7, Am7, C major.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "solo clean muted electric guitar chord stabs, warm bright premium funk tone",
+              "same tempo and phase as preceding two bars",
+              "remaining bars 3 to 6 Em7, bar 7 Am7, bar 8 C major",
+              "only chord tones, warm springy restrained funk"
+            ],
+            "negative_styles": [
+              "vocals",
+              "drums",
+              "bass line",
+              "percussion",
+              "piano",
+              "orchestra",
+              "full band",
+              "distorted guitar",
+              "eighth-note strumming",
+              "fourth-beat first-bar attack"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610172,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610172,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "ZdFoA4QkIpirX2YvPZEj",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "f484020110c2a4d7c44ebeee0fdf471e772f139ba707f5c6472b36393ddb9456",
+    "file": "conditioned-chords-r1.mp3",
+    "finishedAt": "2026-10-17T22:31:09.229443+09:00"
+  },
+  {
+    "name": "conditioned-pad-r1",
+    "requestedAt": "2026-10-17T22:31:04.973096+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Instrumental: solo synth]\n{Bar 1: one middle-register Em7 chord on ONE, then three silent beats. Bar 2: repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "solo velvet warm analog synth chord, tasteful mellow soft pad with short plucked envelope",
+              "first bar a single soft mid-register Em7 chord on beat one and rests on beats two three four",
+              "one E4 G4 B4 D5 chord at 0.000 seconds, short warm decay under 0.35 seconds, silence 0.46875 to 1.87500",
+              "airy sophisticated understated analog texture, no harsh buzzing, no arpeggio",
+              "bars one and two: E minor seventh, Em7"
+            ],
+            "negative_styles": [
+              "vocals",
+              "drums",
+              "bass line",
+              "guitar",
+              "piano",
+              "percussion",
+              "full band",
+              "arpeggios",
+              "melodic lead",
+              "continuous sustained first bar",
+              "additional first-bar attacks",
+              "harsh synth"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "medium"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Continue the same isolated instrument with natural subtle variation. Six remaining bars: Em7, Em7, Em7, Em7, Am7, C major.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "128 BPM, 4/4, eight bars exactly",
+              "E minor, A4=440 Hz",
+              "polished exuberant springy funky dance-pop timbre matching the reference",
+              "isolated instrumental overdub, one instrument only, no accompaniment",
+              "start immediately on the downbeat, no intro, no count-in, no fade",
+              "seamless eight-bar loop, no tempo drift",
+              "solo velvet warm analog synth chord, tasteful mellow soft pad with short plucked envelope",
+              "same tempo and phase as preceding two bars",
+              "remaining bars 3 to 6 Em7, bar 7 Am7, bar 8 C major",
+              "only chord tones, warm springy restrained funk"
+            ],
+            "negative_styles": [
+              "vocals",
+              "drums",
+              "bass line",
+              "guitar",
+              "piano",
+              "percussion",
+              "full band",
+              "arpeggios",
+              "melodic lead",
+              "continuous sustained first bar",
+              "additional first-bar attacks",
+              "harsh synth"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 202610173,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610173,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "0nzfvIxbZnBIdafr4RCp",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "eb054c014e79b86538023982c6f3d7a68347b2bd0be6e0d08c7be5717a09cab6",
+    "file": "conditioned-pad-r1.mp3",
+    "finishedAt": "2026-10-17T22:31:09.465663+09:00"
+  },
+  {
+    "name": "conditioned-beat-r2",
+    "requestedAt": "2026-10-17T22:32:04.385254+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo drum machine]\n{Boom. Tss. Pah. Silence. Repeat.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "Solo drum machine exercise",
+              "single linear rhythm",
+              "128 BPM",
+              "4/4",
+              "quarter-note kick, closed hi-hat, snare, rest",
+              "one bar repeated eight times",
+              "three separated dry hits and then one whole beat of silence",
+              "only three hits per bar"
+            ],
+            "negative_styles": [
+              "bass",
+              "pitched instruments",
+              "backing track",
+              "singing",
+              "hi-hat ostinato",
+              "four-on-the-floor",
+              "busy drumming",
+              "layered percussion"
+            ],
+            "context_adherence": "low",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610174,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610174,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "SX9XliBNi8QjxQlV3aPM",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "725e73ed625337eead76de57e59ee6fee52d66f978ca30b2c30f9ee021036792",
+    "file": "conditioned-beat-r2.mp3",
+    "finishedAt": "2026-10-17T22:32:06.922289+09:00"
+  },
+  {
+    "name": "conditioned-bass-r2",
+    "requestedAt": "2026-10-17T22:32:04.385254+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo muted electric bass]\n{Low E. Low E. Silence. Silence. Repeat.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "Solo muted electric bass",
+              "128 BPM",
+              "4/4",
+              "two short low-register plucks followed by two quarter rests",
+              "beats one and two only",
+              "E minor",
+              "first six bars E2 E2 rest rest, seventh bar A1 A1 rest rest, eighth bar C2 C2 rest rest",
+              "eight-bar repeated simple pulse"
+            ],
+            "negative_styles": [
+              "drum kit",
+              "percussion",
+              "guitar",
+              "keyboard",
+              "synth",
+              "singing",
+              "backing track",
+              "slap bass",
+              "busy melody",
+              "notes on beat three or four"
+            ],
+            "context_adherence": "low",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610175,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610175,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "DFyNuN9cyNwYBLbPcwbh",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "3918a9d2ec885fc01bd0ad9771485f43a5492f9e2719940e15402afeec4a619b",
+    "file": "conditioned-bass-r2.mp3",
+    "finishedAt": "2026-10-17T22:32:07.795856+09:00"
+  },
+  {
+    "name": "conditioned-chords-r2",
+    "requestedAt": "2026-10-17T22:32:07.064457+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo muted electric piano]\n{Middle chord. Middle chord. High chord. Silence. Repeat.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "Solo dry electric piano",
+              "128 BPM",
+              "4/4",
+              "three quarter-note staccato chord stabs followed by a quarter rest",
+              "first two stabs in middle register, third one octave higher",
+              "E minor",
+              "eight bars Em7 Em7 Em7 Em7 Em7 Em7 Am7 C",
+              "short clear separated attacks",
+              "playful polished warm funky touch"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "synth",
+              "singing",
+              "backing track",
+              "eighth-note runs",
+              "fourth beat chord"
+            ],
+            "context_adherence": "low",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610176,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610176,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "xZnpo7Wp3ar7ILJ5sAHD",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "58a64953434b0e5ccc83d302152c3f7c49d266bf3d69bda6a7da82d35150e629",
+    "file": "conditioned-chords-r2.mp3",
+    "finishedAt": "2026-10-17T22:32:10.083453+09:00"
+  },
+  {
+    "name": "conditioned-pad-r2",
+    "requestedAt": "2026-10-17T22:32:07.938445+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo plucked analog synth]\n{One middle-register chord. Three quarter rests. Repeat.}",
+            "duration_ms": 15000,
+            "positive_styles": [
+              "Solo plucked soft analog synthesizer",
+              "128 BPM",
+              "4/4",
+              "exactly one short mid-register chord per bar on beat one",
+              "three beats of silence after each chord",
+              "E minor",
+              "eight bars Em7 Em7 Em7 Em7 Em7 Em7 Am7 C",
+              "velvet warm subtle timbre",
+              "short soft decay, no long sustain"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "singing",
+              "backing track",
+              "arpeggio",
+              "lead melody",
+              "continuous sustained tones"
+            ],
+            "context_adherence": "low",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 0,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610177,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610177,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "kuuJwIB4TIbWZp4CBYv3",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "6c113e25513f44e747c1ef29b52d20467c5cc4aa9cd7474f248c431af0748915",
+    "file": "conditioned-pad-r2.mp3",
+    "finishedAt": "2026-10-17T22:32:11.148309+09:00"
+  },
+  {
+    "name": "conditioned-beat-r3",
+    "requestedAt": "2026-10-17T22:33:01.169547+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo drum machine]\n{Boom. Tss. Pah. Silence. Repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "Solo drum machine exercise",
+              "single linear rhythm",
+              "128 BPM",
+              "4/4",
+              "quarter-note kick, closed hi-hat, snare, rest",
+              "one bar repeated twice",
+              "three separated dry hits and then one whole beat of silence",
+              "only three hits per bar",
+              "instrumental opening with two bars only",
+              "strict silence on rest beats, no pickup, no count-in"
+            ],
+            "negative_styles": [
+              "bass",
+              "pitched instruments",
+              "backing track",
+              "singing",
+              "hi-hat ostinato",
+              "four-on-the-floor",
+              "busy drumming",
+              "layered percussion"
+            ],
+            "context_adherence": "low"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Same solo instrument. Continue for six bars. Harmony Em7 Em7 Em7 Em7 Am7 C.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "Solo drum machine exercise",
+              "single linear rhythm",
+              "128 BPM",
+              "4/4",
+              "quarter-note kick, closed hi-hat, snare, rest",
+              "three separated dry hits and then one whole beat of silence",
+              "only three hits per bar",
+              "six bars Em7 Em7 Em7 Em7 Am7 C",
+              "same solo instrument as the opening, no backing band"
+            ],
+            "negative_styles": [
+              "bass",
+              "pitched instruments",
+              "backing track",
+              "singing",
+              "hi-hat ostinato",
+              "four-on-the-floor",
+              "busy drumming",
+              "layered percussion"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 3750,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610178,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610178,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "z3CTp4Ux1LkwWJFLTMlE",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "ee9e895685ec27979a13103b92df8851a96f1b77d2ffb11bfe81745d4fddc776",
+    "file": "conditioned-beat-r3.mp3",
+    "finishedAt": "2026-10-17T22:33:04.736686+09:00"
+  },
+  {
+    "name": "conditioned-bass-r3",
+    "requestedAt": "2026-10-17T22:33:01.170547+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo muted electric bass]\n{Low E. Low E. Silence. Silence. Repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "Solo muted electric bass",
+              "128 BPM",
+              "4/4",
+              "two short low-register plucks followed by two quarter rests",
+              "beats one and two only",
+              "E minor",
+              "first six bars E2 E2 rest rest, seventh bar A1 A1 rest rest, eighth bar C2 C2 rest rest",
+              "two-bar repeated simple pulse",
+              "instrumental opening with two bars only",
+              "strict silence on rest beats, no pickup, no count-in"
+            ],
+            "negative_styles": [
+              "drum kit",
+              "percussion",
+              "guitar",
+              "keyboard",
+              "synth",
+              "singing",
+              "backing track",
+              "slap bass",
+              "busy melody",
+              "notes on beat three or four"
+            ],
+            "context_adherence": "low"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Same solo instrument. Continue for six bars. Harmony Em7 Em7 Em7 Em7 Am7 C.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "Solo muted electric bass",
+              "128 BPM",
+              "4/4",
+              "two short low-register plucks followed by two quarter rests",
+              "beats one and two only",
+              "E minor",
+              "six bars Em7 Em7 Em7 Em7 Am7 C",
+              "same solo instrument as the opening, no backing band"
+            ],
+            "negative_styles": [
+              "drum kit",
+              "percussion",
+              "guitar",
+              "keyboard",
+              "synth",
+              "singing",
+              "backing track",
+              "slap bass",
+              "busy melody",
+              "notes on beat three or four"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 3750,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610179,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610179,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "XExYKu8vsERBnV0YRAw0",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "103946773987cb4f66b737df3803999e3ea5e53c1fbe3cbb341448c79d3a968a",
+    "file": "conditioned-bass-r3.mp3",
+    "finishedAt": "2026-10-17T22:33:04.681374+09:00"
+  },
+  {
+    "name": "conditioned-chords-r3",
+    "requestedAt": "2026-10-17T22:33:04.831661+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo muted electric piano]\n{Middle chord. Middle chord. High chord. Silence. Repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "Solo dry electric piano",
+              "128 BPM",
+              "4/4",
+              "three quarter-note staccato chord stabs followed by a quarter rest",
+              "first two stabs in middle register, third one octave higher",
+              "E minor",
+              "two bars Em7 Em7 Em7 Em7 Em7 Em7 Am7 C",
+              "short clear separated attacks",
+              "playful polished warm funky touch",
+              "instrumental opening with two bars only",
+              "strict silence on rest beats, no pickup, no count-in"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "synth",
+              "singing",
+              "backing track",
+              "eighth-note runs",
+              "fourth beat chord"
+            ],
+            "context_adherence": "low"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Same solo instrument. Continue for six bars. Harmony Em7 Em7 Em7 Em7 Am7 C.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "Solo dry electric piano",
+              "128 BPM",
+              "4/4",
+              "three quarter-note staccato chord stabs followed by a quarter rest",
+              "first two stabs in middle register, third one octave higher",
+              "E minor",
+              "short clear separated attacks",
+              "playful polished warm funky touch",
+              "six bars Em7 Em7 Em7 Em7 Am7 C",
+              "same solo instrument as the opening, no backing band"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "synth",
+              "singing",
+              "backing track",
+              "eighth-note runs",
+              "fourth beat chord"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 3750,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610180,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610180,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "IwQQEf4IEFsCSu0DgO5j",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "e33f88f8cc29540eecfb0f007778f868d0eea1d92dceeeb5ced35cf75f14d3b0",
+    "file": "conditioned-chords-r3.mp3",
+    "finishedAt": "2026-10-17T22:33:08.691426+09:00"
+  },
+  {
+    "name": "conditioned-pad-r3",
+    "requestedAt": "2026-10-17T22:33:04.888892+09:00",
+    "endpoint": "/v1/music",
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Solo plucked analog synth]\n{One middle-register chord. Three quarter rests. Repeat.}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "Solo plucked soft analog synthesizer",
+              "128 BPM",
+              "4/4",
+              "exactly one short mid-register chord per bar on beat one",
+              "three beats of silence after each chord",
+              "E minor",
+              "two bars Em7 Em7 Em7 Em7 Em7 Em7 Am7 C",
+              "velvet warm subtle timbre",
+              "short soft decay, no long sustain",
+              "instrumental opening with two bars only",
+              "strict silence on rest beats, no pickup, no count-in"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "singing",
+              "backing track",
+              "arpeggio",
+              "lead melody",
+              "continuous sustained tones"
+            ],
+            "context_adherence": "low"
+          },
+          {
+            "text": "[Instrumental continuation]\n{Same solo instrument. Continue for six bars. Harmony Em7 Em7 Em7 Em7 Am7 C.}",
+            "duration_ms": 11250,
+            "positive_styles": [
+              "Solo plucked soft analog synthesizer",
+              "128 BPM",
+              "4/4",
+              "exactly one short mid-register chord per bar on beat one",
+              "three beats of silence after each chord",
+              "E minor",
+              "velvet warm subtle timbre",
+              "short soft decay, no long sustain",
+              "six bars Em7 Em7 Em7 Em7 Am7 C",
+              "same solo instrument as the opening, no backing band"
+            ],
+            "negative_styles": [
+              "drums",
+              "percussion",
+              "bass",
+              "guitar",
+              "piano",
+              "singing",
+              "backing track",
+              "arpeggio",
+              "lead melody",
+              "continuous sustained tones"
+            ],
+            "context_adherence": "high",
+            "conditioning_ref": {
+              "song_id": "34dUVxDbu6ouH17yRCfM_upload",
+              "range": {
+                "start_ms": 3750,
+                "end_ms": 15000
+              }
+            },
+            "condition_strength": "low"
+          }
+        ]
+      },
+      "seed": 202610181,
+      "store_for_inpainting": true
+    },
+    "outputFormat": "mp3_44100_128",
+    "seed": 202610181,
+    "seedReason": null,
+    "status": "succeeded",
+    "subscriptionSnapshotCheckedAt": "2026-10-17T22:30:56.067861+09:00",
+    "subscriptionBefore": {
+      "tier": "creator",
+      "status": "active",
+      "character_count": 22962,
+      "character_limit": 131000,
+      "can_extend_character_limit": false
+    },
+    "postSubmitted": true,
+    "httpStatus": 200,
+    "responseHeaders": {
+      "song-id": "Ekd8K0NIt82fleL3GqSI",
+      "content-type": "audio/mpeg"
+    },
+    "bytes": 240788,
+    "sha256": "e261057e642ed43dd7470e358f6e906b96d731f59e150cfa526d06509bc94f81",
+    "file": "conditioned-pad-r3.mp3",
+    "finishedAt": "2026-10-17T22:33:08.320930+09:00"
+  }
+]
+
+REFERENCE UPLOAD RECEIPT
+{
+  "name": "original-reference",
+  "requestedAt": "2026-10-17T22:29:35.008056+09:00",
+  "endpoint": "/v1/music/upload",
+  "request": {},
+  "outputFormat": "mp3_44100_128",
+  "seed": null,
+  "seedReason": null,
+  "status": "succeeded",
+  "subscriptionHttpStatus": 200,
+  "subscriptionBefore": {
+    "tier": "creator",
+    "status": "active",
+    "character_count": 22756,
+    "character_limit": 131000,
+    "can_extend_character_limit": false
+  },
+  "postSubmitted": true,
+  "httpStatus": 200,
+  "responseHeaders": {
+    "song-id": "34dUVxDbu6ouH17yRCfM_upload",
+    "content-type": "application/json"
+  },
+  "bytes": 112,
+  "sha256": "6b5a78a03b2051bff5f7fd1b8101728273f7c190e7931ddbe693468e51704054",
+  "file": "original-reference.upload.json",
+  "uploadedSongId": "34dUVxDbu6ouH17yRCfM_upload",
+  "creditsAfter": 22756,
+  "creditsDelta": 0,
+  "finishedAt": "2026-10-17T22:29:37.782874+09:00"
+}
+
+--- Earlier preparation history (preserved) ---
+GiraLab PROJECT ECHO — Eleven-selected-source stage1 INCOMPLETE candidate
+2026-10-17 KST / plan2-444 / DEV-20261017-004 / issue ISS-20261014-001
+
+CURRENT STATUS: 14 prepared sounds / 28 OGG+M4A files. Four first-stage recipe loops missing; remaining14 recipe loops not started. approved=false / stage1Complete=false. Do not activate this pack as a final product.
+Source selected by user: Eleven Music music_v2_5 song-id zCVhsAvDC8fGdMQm1kT0, generated2026-10-17, Creator active. Original MP3 SHA 0865a4f82e57db7424a2e5899edeb65f11f6580cba96db83684a6fba452531a2. Original prompt/seed are in prior source generation receipt docs/game/evidence/echo-eleven-unfold-20261017/source-generation-receipt.json. Original seed null: prompt and seed cannot be combined; no returned seed. Source prompt: An exuberant instrumental dance-pop track with a fast, springy groove, playful funk energy and an instantly memorable melodic hook. Bright, stylish, feel-good and irresistibly danceable. Punchy tight rhythm, satisfying bass movement, a sense of lift and a natural musical journey. Rich full-bodied polished production. No vocals.
+Reuse: official six_stems_v1 separation from2026-10-17; no new separation. Contiguous bass/drums source30.0-45.00009seconds for bed/main, one stable E2 bass note75.22-75.58seconds for low tap. Old kikhK9DEoy0amHvnfgXj / rejected v2/v3 music / GM soundfont or external sample reused: none.
+Measured source tempo128.012225BPM, export127.999226BPM /44.1k stereo /8bars661504samples. E minor, Em7*6 / Am7 / C based on actual bass/harmonic peaks; global G-major/D-major ambiguity was checked against E-bass and C-natural in last2bars. Chord extensions in the source are retained. No pitch or musical time correction.
+New generated sources: ElevenLabs Eleven Music music_v2_5/music_v2/music_v1 and Eleven Sound Effects eleven_text_to_sound_v2. Exact requests, composition plans and seeds below. Explicit seed20261017 only for composition-plan beat-c/beat-d; prompt jobs have null seed because incompatible with prompt, SFX exposes no seed. Successful HTTP responses 23, total local request receipts 30; seven failed account preflights did not POST, verified in preflight-retry-proof.json.
+Account Creator active revalidated2026-10-17; observed credits22024->22756/131000 (delta732); immediate per-call usage can be delayed. No plan change, purchase or credit-limit extension. Source reference upload was rejected before execution and no charge/output is claimed for it.
+Music Terms checked2026-10-17, https://elevenlabs.io/music-terms, page updated2026-10-09. General Sound Effects service terms: https://elevenlabs.io/terms-of-use. Indie eligibility follows project guide statement, not independent accounting: game lifetime net revenue<USD500,000 and developer/publisher all-games prior-year revenue<USD1,000,000 including affiliates; monitor continued qualification and obtain appropriate plan within60days of exceeding. Creator is an individual-use plan. No artist/song/album/publisher/label names in prompts. This is GiraLab project music, not a sample/music library or third-party reuse offer.
+Processing: contiguous recording cuts, 30-180Hz bed filtering, fixed gains, 128sample loop boundary bridge, millisecond edges, short unpitched-effect decay envelopes, codecs. These are technical edits of generated/recorded sound. No oscillator/waveform synthesis, MIDI performance, note rearrangement or pitch correction. Some generated effects are quiet and normalized; perceptual quality remains user listening, never inferred from format checks.
+Tap pitches actually adopted: lowE2 from source, midE4 from tap-high-r3, highG4 from tap-mid-r1. The requested E5 candidate was discarded after final decoded cents exceeded5. The generated bass-register tap requests returned inappropriate C4/A2 and were not pitch-shifted into place.
+Five basic-beat generations failed first-bar kick/hat/snare/rest. Failure is retained, not marked complete. Four-layer30-combination/full-minus12LUFS/main-contrast and full8-3 music audition are not run because those layers are missing.
+Reference registration blocked: selected original30-45seconds,15second WAV SHA 80464b33a18ef5b2dc5e5eb0ba4ad1d796896d4d0520dbff292d16acd51bab9d, destination https://api.elevenlabs.io/v1/music/upload. Automatic approval review required separate explicit user consent. No upload/retry/indirect workaround. User question pending.
+Publication: only taps/fills progress demonstration https://github.com/jy-jiny/giralab-web/releases/download/echo-eleven-stage1-progress-20261017/taps-fills-progress.mp3 /156475bytes/SHA4d95327b43e3b2dc51a873ca8f3b0fb0124229cd83b0851582fc0e270fcbe6c4, unauthenticated AndroidUA HTTPS200. Not a complete first-stage listening submission. Raw stem/loop library not published. No game code, existing audio, root manifest activation, app version, APK, fixed preview, production web, server or DB modified.
+
+ADOPTED SOURCE PROCESSING RECORDS
+{
+  "pack": "eleven-funk-01",
+  "assets": [
+    {
+      "name": "bed",
+      "samples": 661504,
+      "seconds": 15.000090702947846,
+      "source": "official source bed; selected song zCVhsAvDC8fGdMQm1kT0",
+      "processing": {
+        "contiguousSourceRangeSeconds": [
+          30.0,
+          45.000090702947844
+        ],
+        "sourceStem": "bass",
+        "bassBandpassHz": [
+          30,
+          180
+        ],
+        "constantGainDb": -0.685447243510179,
+        "circularBoundaryBridgeSamples": 128,
+        "noteRearrangement": false,
+        "pitchOrTimeEditing": false,
+        "finalMixCalibration": "pending four recipe loops"
+      },
+      "persistentLoop": true
+    },
+    {
+      "name": "beat-main",
+      "samples": 661504,
+      "seconds": 15.000090702947846,
+      "source": "official source drums; selected song zCVhsAvDC8fGdMQm1kT0",
+      "processing": {
+        "contiguousSourceRangeSeconds": [
+          30.0,
+          45.000090702947844
+        ],
+        "sourceStem": "drums",
+        "bassBandpassHz": null,
+        "constantGainDb": -1.5034779350982832,
+        "circularBoundaryBridgeSamples": 128,
+        "noteRearrangement": false,
+        "pitchOrTimeEditing": false,
+        "finalMixCalibration": "pending four recipe loops"
+      },
+      "persistentLoop": true
+    },
+    {
+      "name": "riser",
+      "samples": 82688,
+      "seconds": 1.8750113378684807,
+      "source": "ElevenLabs riser",
+      "processing": {
+        "sourceStartSeconds": 0.0,
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 4,
+        "constantGainDb": -17.841290711365264,
+        "noteRearrangement": false,
+        "pitchOrTimeEditing": false
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "fill-normal",
+      "samples": 29316,
+      "seconds": 0.6647619047619048,
+      "source": "Eleven fill-normal-r2",
+      "processing": {
+        "sourceStartSeconds": 0.015487528344671202,
+        "singleContiguousTrim": true,
+        "constantGainDb": 23.416392484889766,
+        "edgeFadeMs": 2,
+        "pitchOrTimeEditing": false,
+        "replacesUnsuitableEarlierCandidate": true
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "fill-advanced",
+      "samples": 35280,
+      "seconds": 0.8,
+      "source": "Eleven Sound Effects riser",
+      "processing": {
+        "sourceStartSeconds": 0.45,
+        "singleContiguousTrim": true,
+        "decayTimeConstantSeconds": 0.06,
+        "constantGainDb": -2.527640722119603,
+        "edgeFadeMs": 2,
+        "pitchOrTimeEditing": false,
+        "rejectedSnareFlamReason": "strong persistent pitch periodicity"
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "fill-rare",
+      "samples": 28630,
+      "seconds": 0.6492063492063492,
+      "source": "ElevenLabs fill-rare",
+      "processing": {
+        "sourceStartSeconds": 0.8307936507936508,
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 2,
+        "constantGainDb": -11.655128316144005,
+        "noteRearrangement": false,
+        "pitchOrTimeEditing": false,
+        "frontLoadedDecayEnvelope": {
+          "timeConstantSeconds": 0.12,
+          "purpose": "Keep the generated impact strongest within first20ms; no new notes/sounds."
+        }
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "fill-drop",
+      "samples": 20116,
+      "seconds": 0.4561451247165533,
+      "source": "ElevenLabs fill-drop",
+      "processing": {
+        "sourceStartSeconds": 2.0238548752834467,
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 2,
+        "constantGainDb": -6.873178889707667,
+        "noteRearrangement": false,
+        "pitchOrTimeEditing": false
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-kick",
+      "samples": 15435,
+      "seconds": 0.35,
+      "source": "Eleven beat-b",
+      "processing": {
+        "sourceStartSeconds": 0,
+        "singleContiguousTrim": true,
+        "constantGainDb": -6.19441661941616,
+        "edgeFadeMs": 2,
+        "pitchOrTimeEditing": false,
+        "replacesUnsuitableEarlierCandidate": true
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-snare",
+      "samples": 17640,
+      "seconds": 0.4,
+      "source": "Eleven tap-snare-r2",
+      "processing": {
+        "sourceStartSeconds": 0.0,
+        "singleContiguousTrim": true,
+        "constantGainDb": 36.37369767739574,
+        "edgeFadeMs": 2,
+        "pitchOrTimeEditing": false,
+        "replacesUnsuitableEarlierCandidate": true
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-hat",
+      "samples": 8820,
+      "seconds": 0.2,
+      "source": "Eleven beat-a",
+      "processing": {
+        "sourceStartSeconds": 0.245,
+        "singleContiguousTrim": true,
+        "constantGainDb": 1.9831934245517715,
+        "edgeFadeMs": 2,
+        "pitchOrTimeEditing": false,
+        "replacesUnsuitableEarlierCandidate": true
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-rest",
+      "samples": 3528,
+      "seconds": 0.08,
+      "source": "ElevenLabs tap-rest-r1",
+      "processing": {
+        "sourceStartSeconds": 0.21596371882086168,
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 2,
+        "constantGainDb": -21.794553170901786,
+        "noteRearrangement": false,
+        "pitchOrTimeEditing": false
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-mid",
+      "samples": 17640,
+      "seconds": 0.4,
+      "source": "Eleven Music tap-high-r3",
+      "processing": {
+        "measuredSourceNote": "E4",
+        "sourceStartSeconds": 0.024036281179138322,
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 2,
+        "constantGainDb": -14.272315884023811,
+        "pitchOrTimeEditing": false
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-high",
+      "samples": 17640,
+      "seconds": 0.4,
+      "source": "Eleven Music tap-mid-r1",
+      "processing": {
+        "measuredSourceNote": "G4",
+        "sourceStartSeconds": 0.024058956916099772,
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 2,
+        "constantGainDb": -8.606533013275884,
+        "pitchOrTimeEditing": false,
+        "rejectedEarlierE5DecodedCents": [
+          5.153790295207493,
+          5.011891107790341
+        ]
+      },
+      "persistentLoop": false
+    },
+    {
+      "name": "tap-low",
+      "samples": 15876,
+      "seconds": 0.36,
+      "source": "official bass from selected song",
+      "processing": {
+        "sourceStartSeconds": 75.22000000000007,
+        "sourceDurationSeconds": 0.36,
+        "measuredSourceHz": 82.40573448986291,
+        "measuredSourceNote": "E2",
+        "singleContiguousTrim": true,
+        "edgeFadeMs": 3,
+        "constantGainDb": -4.9879832130386355,
+        "pitchOrTimeEditing": false
+      },
+      "persistentLoop": false
+    }
+  ],
+  "missingRecipeLoops": [
+    "loop-beat-basic",
+    "loop-bass-pulse",
+    "loop-chords-stab",
+    "loop-synth-pad"
+  ],
+  "stage1Complete": false,
+  "referenceUpload": "blocked pending explicit user consent; no retry"
+}
+
+ALL GENERATION REQUESTS, PROMPTS, COMPOSITION PLANS AND SEEDS
+[
+  {
+    "name": "beat-a",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One isolated percussion stem only, a light funky dance-pop drum loop at exactly 128 BPM in 4/4. Start immediately on beat one, no intro. The first bar is exactly three dry sounds and one rest: beat 1 one deep kick drum; beat 2 one short closed hi-hat; beat 3 one crisp snare drum; beat 4 absolute silence. No other hits or overlapping drums anywhere in the first bar. Subsequent bars develop this same kick-hat-snare-rest groove with subtle funky variation. Eight bars, seamless loop. Warm punchy professionally recorded acoustic and electronic drum texture. Percussion alone, no bass line, no pitched instruments, no melody, no vocals.",
+      "music_length_ms": 15000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": {
+      "song-id": "7IljuABQbzLuLGRR5T6l",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "beat-b",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "Three clean isolated dry drum hits in precise sequence against a silent background: one deep kick at the beginning, one very short closed hi hat at 0.469 seconds, one crisp snare at 0.938 seconds, then silence. Exactly kick, hat, snare, rest: three evenly spaced hits on beats one two and three of one 4/4 bar at 128 BPM. No additional sounds, no music, no voice, no background noise, no metronome. Premium punchy drum recording.",
+      "duration_seconds": 1.875,
+      "prompt_influence": 0.8,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "21",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "beat-c",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": 20261017,
+    "seedReason": null,
+    "request": {
+      "model_id": "music_v2_5",
+      "composition_plan": {
+        "chunks": [
+          {
+            "text": "[Isolated percussion]\n{kick, closed hi-hat, snare, rest}",
+            "duration_ms": 3750,
+            "positive_styles": [
+              "128 BPM in 4/4",
+              "isolated dry percussion recording",
+              "very sparse linear three-hit rhythm",
+              "one kick only on beat one",
+              "one closed hi-hat only on beat two",
+              "one snare only on beat three",
+              "complete silence on beat four",
+              "repeat this same four-beat bar twice",
+              "premium warm tight funky dance-pop drum sound"
+            ],
+            "negative_styles": [
+              "four-on-the-floor",
+              "snare on beats two and four",
+              "eighth-note hi hats",
+              "extra hits",
+              "overlapping drums",
+              "melody",
+              "bass line",
+              "vocals",
+              "background music"
+            ],
+            "context_adherence": "high"
+          }
+        ]
+      },
+      "seed": 20261017
+    },
+    "responseHeaders": {
+      "song-id": "el2y3T8C6tY6TRxYLeVX",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "beat-d",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": 20261017,
+    "seedReason": null,
+    "request": {
+      "model_id": "music_v1",
+      "composition_plan": {
+        "positive_global_styles": [
+          "128 BPM",
+          "isolated dry percussion",
+          "instrumental",
+          "sparse linear drum pattern",
+          "silent background"
+        ],
+        "negative_global_styles": [
+          "vocals",
+          "melody",
+          "bass line",
+          "four-on-the-floor",
+          "extra drum hits"
+        ],
+        "sections": [
+          {
+            "section_name": "Two bars of kick hat snare rest",
+            "duration_ms": 3750,
+            "lines": [],
+            "positive_local_styles": [
+              "one bass drum hit on beat one only",
+              "one closed hi-hat on beat two only",
+              "one snare on beat three only",
+              "absolute silence on beat four",
+              "repeat the same bar twice",
+              "three hits per bar total",
+              "all hits separated and never overlapping"
+            ],
+            "negative_local_styles": [
+              "eighth note hats",
+              "snare on beat two",
+              "snare on beat four",
+              "kick on beat two",
+              "kick on beat three",
+              "kick on beat four"
+            ]
+          }
+        ]
+      },
+      "respect_sections_durations": true,
+      "seed": 20261017
+    },
+    "responseHeaders": {
+      "song-id": "i8EH4gHRfXoRtzaZyJlG",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "beat-e",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "A drummer plays a tiny sparse three-hit linear drum fill: BOOM, TSS, PAH, silence. Exactly three separate evenly spaced sounds: bass drum first, closed hi-hat second, snare third, then a long silent rest. Each sound stands alone. At 128 beats per minute, the three hits occupy beats one, two and three, beat four is silent. No repeating beat, no music, no voice. Dry tight close-miked professional drums.",
+      "duration_seconds": 1.875,
+      "prompt_influence": 0.3,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "21",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "fill-advanced-r2",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "A punchy snare flam with a short dry rattle tail.",
+      "duration_seconds": 1.0,
+      "prompt_influence": 0.3,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "11",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "fill-advanced",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "A strong immediate snare-flam and handclap impact followed by a short delicate shaker rattle decay. Polished funky dance-pop success accent, strongest at the very start. No pitched tones, no voice, no melody or background music.",
+      "duration_seconds": 1.0,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "11",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "fill-drop",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "An explosive immediate clap and snare impact with a punchy noisy dance-drop accent, followed by a descending airy white-noise spray and rattle tail. Strongest hit at the very beginning. Unpitched, no bass note, no melody, no voice, no tonal chimes.",
+      "duration_seconds": 2.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "28",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "fill-normal-r2",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "A single crisp hand clap.",
+      "duration_seconds": 0.7,
+      "prompt_influence": 0.3,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "8",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "fill-normal",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One crisp short dry clap and tiny unpitched sparkling noise accent. Strongest impact immediately at the beginning, fast decay. A restrained satisfying rhythm-game success sound. No musical note, no voice, no ambience.",
+      "duration_seconds": 0.7,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "8",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "fill-rare",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "A bright powerful immediate layered clap and snare impact followed by an energetic short tomless snare roll and sparkling noise tail. Unpitched exciting rare success accent, strongest at the beginning. No tuned bells, no chord, no singing.",
+      "duration_seconds": 1.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "17",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "riser",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "An unpitched white-noise sweep that rises smoothly in intensity for one musical bar. Airy filtered noise lifting into a drop, no melody, no chord, no voice, no whistles or tuned tones. Clean polished dance-pop transition, dry separate sound effect.",
+      "duration_seconds": 1.875,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "21",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-hat-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One single very short tight closed hi-hat hit, a crisp metallic ts. Immediate attack and fast decay. Isolated dry sound, no other drums, no music or background noise.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "6",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-hat",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One single very short tight closed hi-hat hit, a crisp metallic ts. Immediate attack and fast decay. Isolated dry sound, no other drums, no music or background noise.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": null
+  },
+  {
+    "name": "tap-high-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single isolated plucked electric-piano note B4, exactly 493.883301 Hz fundamental, standard A440 tuning. Play only that one note once right at the start with a short warm rounded attack and a clean 300 millisecond decay, then silence. No chord, no second note, no sequence, no accompaniment, no drums, no voice. Premium realistic rounded musical instrument recording.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": {
+      "song-id": "NXrdoNS1qHoe0W1AElw5",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-high-r2",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "An isolated solo bright piano playing one high tonic E in E minor. A single short clear upper-register E5 piano note right at the start, then silence. No chord and no other note. Clean professional acoustic piano note, no accompaniment, no percussion, no voice. Standard concert tuning A440.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2"
+    },
+    "responseHeaders": {
+      "song-id": "JgASuqUwAMZYNVZyLjCJ",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-high-r3",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single high E5 note on a warm clean electric-piano, key E minor, A440 tuning. A brief clear high pitched plink followed by a natural short decay and silence. No chords, no melody, no accompaniment, no other sounds.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v1"
+    },
+    "responseHeaders": {
+      "song-id": "cs0E7yxj3XJ075p0mLnl",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-high",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single isolated plucked electric-piano note B4, exactly 493.883301 Hz fundamental, standard A440 tuning. Play only that one note once right at the start with a short warm rounded attack and a clean 300 millisecond decay, then silence. No chord, no second note, no sequence, no accompaniment, no drums, no voice. Premium realistic rounded musical instrument recording.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": null
+  },
+  {
+    "name": "tap-kick-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One single dry short punchy kick drum hit. Immediate attack then a tight natural decay. Isolated professional drum sample, no loop, no other sounds, no background.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "6",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-kick",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One single dry short punchy kick drum hit. Immediate attack then a tight natural decay. Isolated professional drum sample, no loop, no other sounds, no background.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": null
+  },
+  {
+    "name": "tap-low-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single isolated plucked electric-piano note E2, exactly 82.406889 Hz fundamental, standard A440 tuning. Play only that one note once right at the start with a short warm rounded attack and a clean 300 millisecond decay, then silence. No chord, no second note, no sequence, no accompaniment, no drums, no voice. Premium realistic rounded musical instrument recording.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": {
+      "song-id": "Kclwjecl3ExhQUQY04f9",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-low-r2",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "An isolated solo electric bass playing only the low tonic E in E minor. One clean short low E2 bass pluck at the start, then let it decay into silence. A single deep warm low-register bass note, not a chord or melody. No accompaniment, no beat, no voice. Standard concert tuning A440.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2"
+    },
+    "responseHeaders": {
+      "song-id": "OwicVPxCMhAv5gdyPkmt",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-low",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single isolated plucked electric-piano note E2, exactly 82.406889 Hz fundamental, standard A440 tuning. Play only that one note once right at the start with a short warm rounded attack and a clean 300 millisecond decay, then silence. No chord, no second note, no sequence, no accompaniment, no drums, no voice. Premium realistic rounded musical instrument recording.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": null
+  },
+  {
+    "name": "tap-mid-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single isolated plucked electric-piano note G3, exactly 195.997718 Hz fundamental, standard A440 tuning. Play only that one note once right at the start with a short warm rounded attack and a clean 300 millisecond decay, then silence. No chord, no second note, no sequence, no accompaniment, no drums, no voice. Premium realistic rounded musical instrument recording.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": {
+      "song-id": "tfpvhHqrIqy2EXd4b6Mt",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-mid",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/music",
+    "seed": null,
+    "seedReason": "Not supplied: prompt and seed mutually exclusive",
+    "request": {
+      "prompt": "One single isolated plucked electric-piano note G3, exactly 195.997718 Hz fundamental, standard A440 tuning. Play only that one note once right at the start with a short warm rounded attack and a clean 300 millisecond decay, then silence. No chord, no second note, no sequence, no accompaniment, no drums, no voice. Premium realistic rounded musical instrument recording.",
+      "music_length_ms": 3000,
+      "force_instrumental": true,
+      "model_id": "music_v2_5"
+    },
+    "responseHeaders": null
+  },
+  {
+    "name": "tap-rest-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One tiny soft dry wooden finger tick, extremely brief and subtle. A minimal quiet tactile button tick. No drum rhythm, no music, no tonal note or voice.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "6",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-rest",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One tiny soft dry wooden finger tick, extremely brief and subtle. A minimal quiet tactile button tick. No drum rhythm, no music, no tonal note or voice.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": null
+  },
+  {
+    "name": "tap-snare-r1",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One single dry crisp acoustic snare drum hit. Immediate sharp attack and short papery decay. Isolated professional drum sample, no kick, no cymbal, no music or ambience.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "6",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-snare-r2",
+    "status": "succeeded",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "A single dry acoustic snare drum hit.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.3,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": {
+      "character-cost": "6",
+      "content-type": "audio/mpeg"
+    }
+  },
+  {
+    "name": "tap-snare",
+    "status": "unknown_or_failed",
+    "endpoint": "/v1/sound-generation",
+    "seed": null,
+    "seedReason": null,
+    "request": {
+      "text": "One single dry crisp acoustic snare drum hit. Immediate sharp attack and short papery decay. Isolated professional drum sample, no kick, no cymbal, no music or ambience.",
+      "duration_seconds": 0.5,
+      "prompt_influence": 0.65,
+      "model_id": "eleven_text_to_sound_v2",
+      "loop": false
+    },
+    "responseHeaders": null
+  }
+]
