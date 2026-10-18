@@ -1,4 +1,4 @@
-import"./modulepreload-polyfill-EeOZK34R.js";var e={a:{title:`① 폭탄 게이지 위`,note:`<strong>두 게이지를 한곳에서 확인.</strong><br>구분이 쉽고 안정적 · 게임판이 조금 작아져요.`},b:{title:`② 점수판 안`,note:`<strong>콤보 숫자와 시간을 붙여서.</strong><br>게임판 크기 유지 · 막대가 가장 작아요.`},c:{title:`③ 게임판 윗변`,note:`<strong>재료를 보다가 바로 확인.</strong><br>시야에 잘 들어옴 · 게임판이 조금 작아져요.`}},t=new URLSearchParams(location.search),n=t.get(`compare`)===`1`,r=Object.hasOwn(e,t.get(`option`))?t.get(`option`):`a`,i=[],a;document.body.classList.toggle(`compare`,n);var o=`
+import"./modulepreload-polyfill-iJ-6Fn-a.js";var e={a:{title:`① 폭탄 게이지 위`,note:`<strong>두 게이지를 한곳에서 확인.</strong><br>구분이 쉽고 안정적 · 게임판이 조금 작아져요.`},b:{title:`② 점수판 안`,note:`<strong>콤보 숫자와 시간을 붙여서.</strong><br>게임판 크기 유지 · 막대가 가장 작아요.`},c:{title:`③ 게임판 윗변`,note:`<strong>재료를 보다가 바로 확인.</strong><br>시야에 잘 들어옴 · 게임판이 조금 작아져요.`}},t=new URLSearchParams(location.search),n=t.get(`compare`)===`1`,r=Object.hasOwn(e,t.get(`option`))?t.get(`option`):`a`,i=[],a;document.body.classList.toggle(`compare`,n);var o=`
 .preview-notice,.board-overlay{display:none!important}
 .phone-game.bite-game{pointer-events:none!important}
 .bite-score-clock{display:none!important}
