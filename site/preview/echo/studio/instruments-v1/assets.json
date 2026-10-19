@@ -12,6 +12,12 @@
       "job": "4f7ee7e3-add7-415e-be92-fbd10afed359",
       "sha256": "9d119e8490c730258c37e27abbc2965ac76f9a57329a58094013d29ee5abdbfb",
       "bytes": 4678898
+    },
+    {
+      "file": "rest-original.png",
+      "job": "f46f71d5-ae84-4119-aefc-ac4e9d1be3f4",
+      "sha256": "e7c645dd7d43c70a6fdc3f40386d2a2f4291099bfe7d36ffe336ceec69485975",
+      "bytes": 2939373
     }
   ],
   "files": [
@@ -73,6 +79,18 @@
         "top": 50,
         "width": 1479,
         "height": 1996
+      }
+    },
+    {
+      "id": "rest",
+      "file": "rest.webp",
+      "sha256": "80ed092077174cac3d018b6b3bd1aa8bc43c5fed51afd27e966aab7feb3f1424",
+      "bytes": 12256,
+      "crop": {
+        "left": 313,
+        "top": 360,
+        "width": 1505,
+        "height": 1450
       }
     }
   ]
