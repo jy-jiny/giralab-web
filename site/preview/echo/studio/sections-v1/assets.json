@@ -1,0 +1,59 @@
+{
+  "approvedConcept": "f3c9f263-546f-48c1-a2a1-6c25c479ca7d",
+  "files": [
+    {
+      "name": "stage",
+      "job": "566be0b7-4453-4a78-be5d-aaafcfb8b5c2",
+      "originalSha256": "e37e2b33e4d955f462484aefd077ffd870fbdd37320224a2e7d8a0131f26d37f",
+      "originalBytes": 4597089,
+      "file": "public/echo/studio/sections-v1/stage.webp",
+      "sha256": "d30138d40934851ccefc77d0817f3338d0feafdef0a053dac417230c529ccdc7",
+      "bytes": 341598,
+      "metadata": {
+        "format": "webp",
+        "mediaType": "image/webp",
+        "size": 341598,
+        "width": 1728,
+        "height": 741,
+        "space": "srgb",
+        "channels": 3,
+        "depth": "uchar",
+        "isProgressive": false,
+        "isPalette": false,
+        "hasProfile": false,
+        "hasAlpha": false,
+        "autoOrient": {
+          "width": 1728,
+          "height": 741
+        }
+      }
+    },
+    {
+      "name": "giraffe",
+      "job": "e760b0c5-4ca8-4c82-873a-484be17b70cf",
+      "originalSha256": "a4748633f0421e3436a403d453a2f22c2e068d850c8f3417518855b2038fa7be",
+      "originalBytes": 4740394,
+      "file": "public/echo/studio/sections-v1/giraffe.webp",
+      "sha256": "3c62f7c844a59ee2561c397634467b764272780a75e7cb0ebb8d9f763318d59c",
+      "bytes": 50394,
+      "metadata": {
+        "format": "webp",
+        "mediaType": "image/webp",
+        "size": 50394,
+        "width": 480,
+        "height": 480,
+        "space": "srgb",
+        "channels": 4,
+        "depth": "uchar",
+        "isProgressive": false,
+        "isPalette": false,
+        "hasProfile": false,
+        "hasAlpha": true,
+        "autoOrient": {
+          "width": 480,
+          "height": 480
+        }
+      }
+    }
+  ]
+}
