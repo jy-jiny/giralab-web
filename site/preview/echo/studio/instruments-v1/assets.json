@@ -1,0 +1,79 @@
+{
+  "adoptedConcept": "2dd544d7-2f91-49ee-bae5-1f8d7cb27751",
+  "originals": [
+    {
+      "file": "materials.png",
+      "job": "92ace8cc-ed83-41ba-b011-133bf8ee7921",
+      "sha256": "2f42667bea0ec8af5d5db713aae8aa8f24ce18d2c6ea24a292789372a7e41a4b",
+      "bytes": 2847409
+    },
+    {
+      "file": "giraffe.png",
+      "job": "4f7ee7e3-add7-415e-be92-fbd10afed359",
+      "sha256": "9d119e8490c730258c37e27abbc2965ac76f9a57329a58094013d29ee5abdbfb",
+      "bytes": 4678898
+    }
+  ],
+  "files": [
+    {
+      "id": "low",
+      "file": "low.webp",
+      "sha256": "d4f9d12729cb1ca7401ff8b490339beae82808650afa01feb8519f286e48adce",
+      "bytes": 19578,
+      "cell": {
+        "left": 0,
+        "width": 896
+      },
+      "crop": {
+        "left": 148,
+        "top": 202,
+        "width": 656,
+        "height": 744
+      }
+    },
+    {
+      "id": "mid",
+      "file": "mid.webp",
+      "sha256": "ef9dfa41718d49901fdb4d72bc50a83570817bf1beda99e483cda242a718902e",
+      "bytes": 22960,
+      "cell": {
+        "left": 896,
+        "width": 896
+      },
+      "crop": {
+        "left": 62,
+        "top": 232,
+        "width": 792,
+        "height": 714
+      }
+    },
+    {
+      "id": "high",
+      "file": "high.webp",
+      "sha256": "1e4e902ae311f937e3b37e33c2e6b07f051c266960a21409a9e2da30d98db249",
+      "bytes": 16114,
+      "cell": {
+        "left": 1792,
+        "width": 896
+      },
+      "crop": {
+        "left": 121,
+        "top": 190,
+        "width": 614,
+        "height": 774
+      }
+    },
+    {
+      "id": "giraffe",
+      "file": "giraffe.webp",
+      "sha256": "ae578588e232588229459803d0d1199624490b439bfb361870606b6efd6f5739",
+      "bytes": 58862,
+      "crop": {
+        "left": 286,
+        "top": 50,
+        "width": 1479,
+        "height": 1996
+      }
+    }
+  ]
+}
