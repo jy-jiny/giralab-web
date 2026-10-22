@@ -1,0 +1,1 @@
+import{a as e}from"./i18n-B60OhJv4.js";export{e as setLanguage};
