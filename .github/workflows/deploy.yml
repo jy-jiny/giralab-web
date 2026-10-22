@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches: [main]
-    paths: ['site/**', 'scripts/test-hearts-release.mjs', 'scripts/hearts-fixture.json', 'scripts/verify-release.py', '.github/workflows/deploy.yml']
+    paths: ['site/**', 'scripts/test-hearts-release.mjs', 'scripts/hearts-fixture.json', 'scripts/verify-release.py', 'scripts/run-browser-check.sh', '.github/workflows/deploy.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,14 +20,8 @@ jobs:
         run: python3 scripts/verify-release.py
       - name: Check compiled JavaScript
         run: for f in site/assets/*.js; do node --check "$f"; done
-      - name: Install isolated browser tools
-        run: |
-          npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
-          node "$RUNNER_TEMP/giralab-browser-tools/node_modules/playwright/cli.js" install --with-deps chromium
       - name: Verify hearts, paid replay and compact results without production API access
-        env:
-          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-hearts-release.mjs
+        run: bash scripts/run-browser-check.sh
   deploy:
     needs: verify
     if: github.event_name != 'pull_request'
@@ -51,13 +45,7 @@ jobs:
         uses: actions/deploy-pages@v4
       - name: Verify every published byte against the tested build
         run: python3 scripts/verify-release.py https://jy-jiny.github.io/giralab-web/
-      - name: Install isolated browser tools
-        run: |
-          npm install --prefix "$RUNNER_TEMP/giralab-browser-tools" --no-package-lock --ignore-scripts --no-audit --no-fund playwright@1.62.1
-          node "$RUNNER_TEMP/giralab-browser-tools/node_modules/playwright/cli.js" install --with-deps chromium
       - name: Verify the actual live result layout with isolated API fixtures
-        env:
-          GIRALAB_BROWSER_TOOLS: ${{ runner.temp }}/giralab-browser-tools
-        run: node scripts/test-hearts-release.mjs https://jy-jiny.github.io/giralab-web/
+        run: bash scripts/run-browser-check.sh https://jy-jiny.github.io/giralab-web/
 
 
