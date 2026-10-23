@@ -1,5 +1,5 @@
 """Verify the immutable, independently tested Vite bundle locally or on Pages."""
-import hashlib,json,sys,time,urllib.request
+import hashlib,json,sys,time,urllib.request,urllib.error
 from pathlib import Path
 root=Path('site').resolve()
 meta=json.loads((root/'source-build.json').read_text(encoding='utf-8'))
@@ -9,7 +9,16 @@ assert meta['server_api']=='https://tqqgnrfklhmxwsphjera.supabase.co/functions/v
 assert meta['auth_api']=='https://giralab-auth.netlify.app'
 def digest(data):return hashlib.sha256(data).hexdigest()
 def fetch(name):
-    with urllib.request.urlopen(sys.argv[1].rstrip('/')+'/'+name+'?release='+str(time.time_ns()),timeout=30) as r:return r.read()
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(sys.argv[1].rstrip('/')+'/'+name+'?release='+str(time.time_ns()),timeout=30) as r:return r.read()
+        except urllib.error.HTTPError as error:
+            if error.code not in (429,502,503,504) or attempt==3:raise
+            print(json.dumps({'retry':name,'status':error.code,'attempt':attempt+1}),file=sys.stderr,flush=True)
+        except (urllib.error.URLError,TimeoutError) as error:
+            if attempt==3:raise
+            print(json.dumps({'retry':name,'error':type(error).__name__,'attempt':attempt+1}),file=sys.stderr,flush=True)
+        time.sleep(attempt+1)
 for name,expected in meta['build_files_sha256'].items():
     file=(root/name).resolve();assert file.is_relative_to(root)
     assert digest(file.read_bytes())==expected,('local',name)
