@@ -1,0 +1,28 @@
+Kenney Interface Sounds: confirmation_001.ogg
+https://kenney.nl/assets/interface-sounds
+License: CC0
+Original OGG preserved. WAV is a 44.1kHz stereo PCM decode at original pitch for cross-platform playback. Runtime changes only playbackRate: +0.25 semitone per combo, capped at +12 from combo49.
+
+	
+
+	Interface Sounds (1.0)
+
+	Created/distributed by Kenney (www.kenney.nl)
+	Creation date: 11-02-2020
+
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	This content is free to use in personal, educational and commercial projects.
+
+	Support us by crediting Kenney or www.kenney.nl (this is not mandatory)
+
+			------------------------------
+
+	Donate:   http://support.kenney.nl
+	Patreon:  http://patreon.com/kenney/
+
+	Follow on Twitter for updates:
+	http://twitter.com/KenneyNL
