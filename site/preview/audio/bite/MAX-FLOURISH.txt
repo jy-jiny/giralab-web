@@ -1,0 +1,18 @@
+BITE max-combo flourish - ElevenLabs-generated audio
+
+File: tarararang-original.mp3
+Generated: 2026-10-26 using the existing active paid ElevenLabs account.
+Model: eleven_text_to_sound_v3; requested duration 0.75 seconds.
+SHA-256: 68d7e8ae7774fb0b8a99ce7d88ea66c2e7cb59294fa7cb7b6ce1a4b3cb8d530f
+
+The MP3 is the original API response, byte-identical to the approved audition.
+No cuts, EQ, normalization, pitch changes, fades or re-encoding.
+Runtime: once on every BITE success at combo >=13, simultaneous with the
+base success cue, playbackRate=1, relative gain=0.3133600057261435 (the
+approved combo audition balance), through the shared effects volume bus.
+The flourish stops on pause, backgrounding and disposal and is absent
+after a combo reset. A failed or late load never delays or repeats a hit.
+This file is separate from the Kenney CC0 pack described in LICENSE.txt.
+
+Prompt:
+One short melodic victory flourish for a cute puzzle game: ta-ra-ra-ra-rang! Five quick connected notes ascend a major arpeggio on warm rounded marimba and velvety harp, ending in a sweet luminous chord. Clearly pitched, soft felt attacks, overlapping resonant notes, a gentle ringing finish. Joyful, nimble and magical. Under one second. No voice, bells, metallic clang, hiss, airy wash, shaker, noise, drums or echo.

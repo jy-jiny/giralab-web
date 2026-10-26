@@ -8,6 +8,8 @@ SHA-256: 46d63a378deec6bbb96e68106d19dc7a4159de8139de9a68860111658db2ab13
 The MP3 is the original API response, without trimming, EQ, gain changes,
 layering, fades or re-encoding. Runtime playback rate increases by one
 semitone per combo, capped at +12 from combo 13. A new chain starts at 1x.
+From combo 13, MAX-FLOURISH.txt describes the separately generated cue
+mixed once alongside each success. This original MP3 remains unchanged.
 This file is not part of the Kenney CC0 pack described in LICENSE.txt.
 
 Prompt:
