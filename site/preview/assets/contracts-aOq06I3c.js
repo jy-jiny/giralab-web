@@ -1,0 +1,1 @@
+var e={player:`/api/player`,leaderboard:`/api/leaderboard`,progress:`/api/progress`};function t(e){if(typeof e!=`string`)return null;let t=e.normalize(`NFC`).trim();return/^[\p{L}\p{N}_]{2,10}$/u.test(t)?t:null}export{t as n,e as t};
