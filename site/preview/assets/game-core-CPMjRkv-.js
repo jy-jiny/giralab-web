@@ -1,0 +1,1 @@
+import"./versus-D7m0Uo91.js";import"./pets-DKvrW2GJ.js";import{g as e}from"./game-core-B9Ja1ZU_.js";export{e as createGame};
