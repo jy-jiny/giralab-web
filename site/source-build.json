@@ -994,7 +994,11 @@
     "preview/tutorial/invite/popup-ko-v2.webp": "574e3fefce10f6824fcb9b89fe9d907ae08c89fdc5f001a3da31c8c5825b22d0",
     "preview/ui/character-lock-seal-v1.webp": "4cd870cd5a5f4059c73537fd892401d516f42aee53b1e3d2479427266699786e",
     "preview/ui/pet-paw-gold.png": "f9d188a600ec787d615ddd6d49e2d7698324482b1a73aee876e3d4e5bede74e5",
-    "preview/welcome/giraffe-lab-v1.webp": "e0d771a525d2063afc7e9a8a7d3a9f7ed8ed396e32c745cbb595b0af4dc44aa6"
+    "preview/welcome/giraffe-lab-v1.webp": "e0d771a525d2063afc7e9a8a7d3a9f7ed8ed396e32c745cbb595b0af4dc44aa6",
+    "previews/game-layout-20261029/c.html": "85c416a3815f11c391c6009de70dd6ae7b8c7620bab62c0e1af58b4c1730db75",
+    "previews/game-layout-20261029/c.webp": "d45a175ae27b34ce4f071f432e099eb96275de4033b8d1061e8166d21da1bd96",
+    "previews/game-layout-20261029/c2.html": "0b95c8f3c81ce1dc8fa63718336e9da843c3388dd025dfd1e7d63338d6f3d2f7",
+    "previews/game-layout-20261029/c2.webp": "726669be30f897144df344630777dd11cc9ee17bed2919f48ddbc832a6c2843a"
   },
   "account_ui": true,
   "email_auth_ready": false,
