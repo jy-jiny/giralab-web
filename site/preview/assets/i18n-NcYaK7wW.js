@@ -1,1 +1,0 @@
-import{a as e}from"./i18n-Mi0aenux.js";export{e as setLanguage};
