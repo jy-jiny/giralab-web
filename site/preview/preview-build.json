@@ -1,11 +1,11 @@
 {
   "preview": true,
-  "source": "23615cd0daa1fe0e9b89192a689cbe10be2a5375",
+  "source": "bd1c9aa65fe0a8f2b0d29db75d5faac8bb3d5be8",
   "version": {
-    "versionName": "1.6.39",
-    "versionCode": 121
+    "versionName": "1.6.40",
+    "versionCode": 122
   },
-  "builtAt": "2026-11-09T08:37:14.614Z",
+  "builtAt": "2026-11-09T13:20:36.357Z",
   "storage": "memory-only",
   "productionApi": false
 }
