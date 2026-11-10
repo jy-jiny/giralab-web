@@ -26,7 +26,7 @@ jobs:
     needs: verify
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     permissions:
       contents: read
       pages: write
@@ -46,6 +46,8 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+          # Pages file sync of the ~300MB site took over 9 minutes on 2026-11-10 (three runs cancelled at the old 10-minute limit).
+          timeout: 1500000
       - name: Verify every published byte against the tested build
         run: python3 scripts/verify-release.py https://jy-jiny.github.io/giralab-web/
       - name: Verify the actual live result layout with isolated API fixtures
