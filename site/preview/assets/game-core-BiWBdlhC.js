@@ -1,0 +1,1 @@
+import"./pets-apq_3w67.js";import{S as e}from"./game-core-Q3cAPP6S.js";export{e as createGame};
