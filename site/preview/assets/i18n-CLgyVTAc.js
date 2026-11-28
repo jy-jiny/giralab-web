@@ -1,1 +1,0 @@
-import{a as e}from"./i18n-Duyl4vB2.js";export{e as setLanguage};

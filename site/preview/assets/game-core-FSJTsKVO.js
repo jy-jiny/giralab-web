@@ -1,0 +1,1 @@
+import"./pets-BHgUhhXp.js";import{T as e}from"./game-core-BAxO33Kr.js";export{e as createGame};
